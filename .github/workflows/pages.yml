@@ -1,30 +1,26 @@
-name: Shell → GitHub Pages (build + gate + deploy)
+name: Shell → GitHub Pages (build + gate + commit automático)
 on:
   push: {branches: [main]}
   workflow_dispatch: {}
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: true
+permissions: {contents: write}
+concurrency: {group: shell-pages, cancel-in-progress: false}
 jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: {node-version: '20'}
-      - name: Build do shell
-        run: npm ci --no-fund --no-audit && npm run build
-      - name: Gate anti-secret (bloqueia deploy se detectar padrão sensível)
-        run: python3 scripts/gate_check.py
-      - uses: actions/upload-pages-artifact@v3
-        with: {path: dist}
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Build
+        run: cd src && npm ci --no-fund --no-audit && node build.mjs
+      - name: Gate anti-secret
+        run: |
+          cp src/dist/index.html src/dist/app.js . 2>/dev/null || { echo 'build não gerou artefatos'; exit 1; }
+          python3 scripts/gate_check.py
+      - name: Publicar artefatos na raiz (Pages serve main)
+        run: |
+          git config user.name "portal-shell-ci" && git config user.email "ci@users.noreply.github.com"
+          git add index.html app.js
+          git diff --cached --quiet && echo "sem mudanças" || (git commit -m "deploy: shell compilado [skip ci]" && git push)
+          echo "PAGES_URL=https://ruianycs.github.io/portal-ouvidoria-shell/" >> $GITHUB_STEP_SUMMARY
