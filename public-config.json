@@ -1,5 +1,5 @@
 {
  "supabase_url": "https://mxjdefwvaluwuqordfnt.supabase.co",
  "supabase_anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14amRlZnd2YWx1d3Vxb3JkZm50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3Mjg3MjYsImV4cCI6MjEwNjMwNDcyNn0.yDkNv9V_5bdXXXieU-b4i-YJZx95TwyExSgWIiLGUo8",
- "_nota": "valores p\u00fablicos por design (publishable key); service_role NUNCA aqui"
+ "_nota": "valores p\u00fablicos por design (publishable key); credenciais privilegiadas nunca neste repo"
 }
