@@ -1,6 +1,9 @@
 import {createClient} from '@supabase/supabase-js';
 const auth=createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
 const $=id=>document.getElementById(id),frame=$('view');let session=null,generation=0,current='index.html',channel='';
+const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000;
+function dentroDaJanela(){const t=Number(localStorage.getItem(PORTAL_LOGIN_AT)||0);if(!t)return true;return Date.now()-t<SESSAO_MAX_MS;}
+function encerraPorTempo(){try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}clear('Sessão de 8 horas encerrada. Entre novamente.');auth.auth.signOut({scope:'global'}).catch(()=>{});}
 function clear(message=''){session=null;generation++;frame.srcdoc='';$('internal').hidden=true;$('login').hidden=false;$('error').textContent=message;}
 async function resource(path){
  const r=await fetch(SUPABASE_URL+'/functions/v1/portal-content',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,apikey:SUPABASE_PUBLIC_KEY,'Content-Type':'application/json'},body:JSON.stringify({path})});
@@ -20,7 +23,7 @@ async function navigate(page,q='',hash='',push=true){
 }
 window.addEventListener('message',async e=>{if(e.source!==frame.contentWindow||e.data?.channel!==channel||!session)return;const d=e.data,active=channel;if(d.type==='navigate')navigate(d.path,d.q,d.hash);else if(d.type==='resource'){try{const r=await resource(d.path);if(active===channel&&session)frame.contentWindow.postMessage({channel:active,id:d.id,...r},'*');}catch(err){if(active===channel&&session)frame.contentWindow.postMessage({channel:active,id:d.id,error:err.message},'*');}}});
 $('enter').onclick=async()=>{const redirect=new URL(location.href);redirect.search='';redirect.hash='';const {error}=await auth.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{hd:'arrobabandalarga.com.br',prompt:'select_account'}}});if(error)$('error').textContent=error.message;};
-$('exit').onclick=async()=>{clear();await auth.auth.signOut({scope:'global'});};
-auth.auth.onAuthStateChange((event,s)=>{if(!s){clear();return;}session=s;if(event!=='TOKEN_REFRESHED'){const r=route();setTimeout(()=>navigate(r.page,r.q,r.hash,false),0);}});
+$('exit').onclick=async()=>{try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}clear();await auth.auth.signOut({scope:'global'});};
+auth.auth.onAuthStateChange((event,s)=>{if(!s){clear();return;}if(!localStorage.getItem(PORTAL_LOGIN_AT)){localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));}if(!dentroDaJanela()){encerraPorTempo();return;}session=s;if(event!=='TOKEN_REFRESHED'){const r=route();setTimeout(()=>navigate(r.page,r.q,r.hash,false),0);}});
 window.addEventListener('popstate',()=>{const r=route();navigate(r.page,r.q,r.hash,false);});
-setInterval(()=>{if(session&&session.expires_at*1000<=Date.now())clear('Sessão expirada. Entre novamente.');},1000);
+setInterval(()=>{if(!session)return;if(!dentroDaJanela()){encerraPorTempo();return;}if(session.expires_at*1000<=Date.now())clear('Sessão expirada. Entre novamente.');},1000);
