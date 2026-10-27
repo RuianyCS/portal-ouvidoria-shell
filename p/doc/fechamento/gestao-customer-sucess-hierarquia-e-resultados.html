@@ -1,0 +1,291 @@
+
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GESTÃO CUSTOMER SUCESS - Hierarquia e Resultados — Portal da Ouvidoria</title><style>
+:root{--navy:#0f3d63;--azul:#1769aa;--amarelo:#f5b63b;--bg:#f6f8fb;--fg:#1c2733;--mut:#5f6f7f;
+--card:#fff;--line:#e3e9f0;--rail:250px;--railmin:64px;--read:860px;--shadow:0 1px 2px rgba(16,40,64,.06),0 6px 18px rgba(16,40,64,.05)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--azul);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--amarelo);outline-offset:2px;border-radius:4px}
+.sb-toggle{position:absolute;opacity:0;pointer-events:none}
+/* ---------- sidebar ---------- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--rail);background:var(--navy);color:#c9d8e6;display:flex;flex-direction:column;z-index:40;border-right:1px solid rgba(255,255,255,.06)}
+.side-top{display:flex;align-items:center;gap:8px;padding:16px 14px 10px}
+.logo{display:flex;align-items:center;gap:9px;color:#fff;font-size:.95rem;font-weight:600;flex:1;min-width:0;text-decoration:none}
+.logo:hover{text-decoration:none}
+.logo .mark{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--amarelo);color:#17324d;font-weight:800;flex:none}
+.logo b{color:var(--amarelo);font-weight:700}
+.rail-btn{display:grid;place-items:center;width:28px;height:28px;border-radius:7px;color:#a9c1d6;cursor:pointer;flex:none;font-size:1rem}
+.rail-btn:hover{background:rgba(255,255,255,.09);color:#fff}
+.side-busca{padding:4px 12px 12px}
+.side-busca form{display:flex;gap:6px}
+.side-busca input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 10px;font-size:.82rem}
+.side-busca input::placeholder{color:#9db6cc}
+.side-busca button{background:var(--amarelo);border:0;border-radius:8px;color:#17324d;font-weight:700;padding:0 10px;cursor:pointer;font-size:.78rem}
+.nav{overflow-y:auto;padding:2px 10px 22px;flex:1;scrollbar-width:thin}
+.nav a.item{display:flex;align-items:center;gap:10px;color:#c9d8e6;padding:8px 10px;border-radius:8px;font-size:.86rem;margin:1px 0;text-decoration:none}
+.nav a.item:hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+.nav a.item.ativa{background:var(--amarelo);color:#17324d;font-weight:700}
+.nav a.item.ativa svg{stroke:#17324d}
+.nav a.item svg{width:16px;height:16px;flex:none;stroke:#93aec6;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav a.item:hover svg{stroke:#fff}
+.nav .txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav details.grp{margin:8px 0 2px}
+.nav details.grp>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;color:#8fadc6;font-size:.69rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;padding:7px 10px;border-radius:7px}
+.nav details.grp>summary::-webkit-details-marker{display:none}
+.nav details.grp>summary:hover{color:#dbe8f3;background:rgba(255,255,255,.05)}
+.nav details.grp>summary .chev{margin-left:auto;transition:transform .15s;font-size:.7rem}
+.nav details.grp[open]>summary .chev{transform:rotate(90deg)}
+.nav details.grp .filhos{padding-left:2px}
+/* recolhido (desktop) */
+#rail:checked~.side{width:var(--railmin)}
+#rail:checked~.side .lbl,#rail:checked~.side .txt,#rail:checked~.side .side-busca,#rail:checked~.side .chev{display:none}
+#rail:checked~.side .nav details.grp>summary{justify-content:center;padding:9px 0}
+#rail:checked~.side .nav a.item{justify-content:center;padding:10px 0}
+#rail:checked~.side .side-top{justify-content:center;padding:16px 6px 8px}
+#rail:checked~.side .logo{flex:none}
+#rail:checked~.pag,#rail:checked~footer{margin-left:var(--railmin)}
+/* ---------- topbar mobile ---------- */
+.topbar{display:none;position:sticky;top:0;z-index:30;background:var(--navy);color:#fff;padding:10px 14px;align-items:center;gap:10px}
+.topbar label{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1);cursor:pointer;font-size:1.05rem}
+.topbar b{font-size:.95rem}
+.topbar b span{color:var(--amarelo)}
+.scrim{display:none}
+/* ---------- conteúdo ---------- */
+.pag{margin-left:var(--rail);padding:26px 32px 54px;transition:margin-left .15s}
+.wrap{max-width:1040px;margin:0 auto}
+.crumbs{font-size:.78rem;color:var(--mut);margin-bottom:14px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.crumbs a{color:var(--azul)}
+.crumbs i{color:#b9c6d3;font-style:normal}
+h1.pg{color:var(--navy);font-size:1.7rem;line-height:1.25;letter-spacing:-.01em;margin-bottom:6px}
+.lead{color:var(--mut);font-size:.95rem;margin-bottom:18px;max-width:70ch}
+/* hero / home */
+.hero{background:linear-gradient(135deg,#0f3d63,#1b5c94 65%,#1769aa);border-radius:16px;padding:46px 40px 40px;color:#fff;margin-bottom:26px;box-shadow:var(--shadow)}
+.hero h1{font-size:1.9rem;line-height:1.2;margin-bottom:8px;letter-spacing:-.015em}
+.hero p{color:#d3e2ef;max-width:60ch;font-size:.95rem;margin-bottom:20px}
+.busca-hero{display:flex;gap:8px;max-width:640px;background:#fff;padding:7px;border-radius:12px;box-shadow:0 8px 24px rgba(6,25,45,.25)}
+.busca-hero input{flex:1;min-width:0;border:0;padding:11px 12px;font-size:.95rem;border-radius:8px;color:var(--fg)}
+.busca-hero button{background:var(--amarelo);border:0;border-radius:8px;padding:0 20px;font-weight:700;color:#17324d;cursor:pointer;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:14px;margin:12px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 17px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
+.card:hover{transform:translateY(-1px);border-color:#c9d8e8}
+.card .ico{width:34px;height:34px;border-radius:9px;background:#eaf2fa;display:grid;place-items:center;margin-bottom:2px}
+.card .ico svg{width:18px;height:18px;stroke:var(--azul);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{color:var(--navy);font-size:.96rem;font-weight:650;line-height:1.3}
+.card h3 .n{color:var(--mut);font-weight:500;font-size:.82rem}
+.card p{color:var(--mut);font-size:.82rem;flex:1}
+.card .go{color:var(--azul);font-size:.83rem;font-weight:600}
+.sec-t{display:flex;align-items:baseline;gap:10px;margin:30px 0 6px}
+.sec-t h2{color:var(--navy);font-size:1.06rem;font-weight:700}
+.sec-t span{color:var(--mut);font-size:.8rem}
+.lista{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.linha{display:flex;align-items:center;gap:12px;padding:11px 15px;border-top:1px solid var(--line);font-size:.88rem;color:var(--fg);text-decoration:none}
+.linha:first-child{border-top:0}
+.linha:hover{background:#f4f8fd;text-decoration:none}
+.linha .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linha .m{color:var(--mut);font-size:.76rem;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#eef4fa;color:#2a5f8f;border:1px solid #dbe7f2;font-size:.71rem;font-weight:650;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.chip.tipo{background:#e7f0f9;color:#12527e}
+.chip.ok{background:#eaf7ef;color:#1c6b3f;border-color:#d3ebdc}
+.chip.warn{background:#fdf5e3;color:#8a6400;border-color:#f4e6c3}
+/* documento */
+.doc{max-width:var(--read)}
+.doc-head{margin-bottom:18px}
+.doc-head h1{color:var(--navy);font-size:1.95rem;line-height:1.2;letter-spacing:-.02em;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.doc-cols{display:grid;grid-template-columns:1fr;gap:26px;margin-top:6px}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow);align-self:start}
+.toc b{display:block;color:var(--navy);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.toc a{display:block;color:#38556f;font-size:.85rem;padding:4px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-10px}
+.toc a:hover{color:var(--azul);border-left-color:var(--amarelo);text-decoration:none}
+.doc-corpo{font-size:1rem;line-height:1.72;color:#22303d}
+.doc-corpo>*{max-width:100%}
+.doc-corpo h2{color:var(--navy);font-size:1.32rem;line-height:1.28;margin:34px 0 10px;padding-top:6px;letter-spacing:-.01em}
+.doc-corpo h3{color:#14548a;font-size:1.07rem;margin:24px 0 7px;line-height:1.35}
+.doc-corpo h4{color:#14548a;font-size:.98rem;margin:20px 0 6px}
+.doc-corpo p{margin:11px 0}
+.doc-corpo ul,.doc-corpo ol{margin:11px 0 11px 22px}
+.doc-corpo li{margin:5px 0}
+.doc-corpo a{color:var(--azul);text-decoration:underline;text-underline-offset:2px}
+.doc-corpo img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;margin:14px 0;box-shadow:var(--shadow)}
+.doc-corpo table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.88rem}
+.doc-corpo th,.doc-corpo td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+.doc-corpo th{background:#f1f6fb;color:var(--navy);font-weight:650}
+.doc-corpo blockquote{border-left:3px solid var(--amarelo);background:#fffaef;padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;color:#4a4335}
+.doc-corpo .callout{margin:16px 0;padding:13px 16px;border-radius:10px;border:1px solid;font-size:.94rem}
+.doc-corpo .callout.atencao{background:#fff5f5;border-color:#f0cfcf;color:#8a2b2b}
+.doc-corpo .callout.importante{background:#fdf5e3;border-color:#f0e0b5;color:#7d5c00}
+.doc-corpo .callout.dica{background:#eef8f2;border-color:#cfe9da;color:#1d6142}
+.original{margin:30px 0 8px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.original>summary{cursor:pointer;padding:13px 17px;font-weight:650;color:#14548a;font-size:.9rem;display:flex;align-items:center;gap:9px}
+.original>summary::marker{content:''}
+.original>summary::before{content:'▸';color:var(--amarelo);font-size:.85rem}
+.original[open]>summary::before{content:'▾'}
+.original[open]>summary{border-bottom:1px solid var(--line);background:#f8fbfe}
+.original .corpo-original{padding:18px;overflow:auto}
+.rel{margin:34px 0 0}
+.rel h2{color:var(--navy);font-size:1rem;margin-bottom:10px}
+.rel .grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.rel .card{padding:13px 15px}
+.rel .card h3{font-size:.88rem}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 0}
+.pager a{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;box-shadow:var(--shadow);color:var(--navy);font-size:.88rem;font-weight:600}
+.pager a:hover{border-color:#c7d9ea;text-decoration:none}
+.pager a small{display:block;color:var(--mut);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
+.pager a.prox{text-align:right}
+.rast{margin:22px 0 0;font-size:.84rem;color:var(--mut)}
+.rast summary{cursor:pointer;color:#4b6d8a;font-weight:600}
+.rast dl{display:grid;grid-template-columns:190px 1fr;gap:4px 14px;margin-top:10px}
+.rast dt{color:var(--mut)}.rast dd{color:#2c3e4f}
+.rast a{color:var(--azul)}
+.vazio{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:34px;text-align:center;color:var(--mut)}
+.doc-item{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--line);text-decoration:none;color:var(--fg);font-size:.89rem}
+.doc-item:first-child{border-top:0}
+.doc-item:hover{background:#f4f8fd;text-decoration:none}
+.doc-item .titulo{flex:1;min-width:0}
+.doc-item .pasta-meta{color:var(--mut);font-size:.78rem;white-space:nowrap}
+.lista{border-radius:12px}
+.badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef4fa;color:#2a5f8f;white-space:nowrap}
+.badge.pend{background:#fdf5e3;color:#8a6400}
+.badge.indisp{background:#fdecec;color:#a03030}
+.subgrupo h2{color:var(--navy);font-size:1.05rem;margin:26px 0 8px}
+.pasta-meta{color:var(--mut);font-weight:400;font-size:.8rem;white-space:nowrap}
+.sheet-online{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:34px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.sheet-online h2{color:var(--navy);font-size:1.15rem}
+.sheet-online p{color:var(--mut);max-width:66ch;font-size:.92rem}
+.sheet-open{background:var(--azul);color:#fff!important;padding:11px 19px;border-radius:9px;font-weight:700;font-size:.88rem;text-decoration:none}
+.sheet-unavailable{background:#fff5f5;border:1px solid #f0caca;border-radius:12px;padding:26px;color:#8f2525}
+.docv{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px 30px;font-size:.9rem;overflow-x:auto}
+.docv table{border-collapse:collapse;margin:10px 0}
+.docv table.bordered td{border:1px solid #93a2b3}
+.docv table.borderless td{border:0}
+.docv td{padding:4px 8px;vertical-align:top}
+.docv p{margin:7px 0}.docv h2{color:var(--navy);margin:16px 0 6px}.docv h3{color:#14548a;margin:14px 0 5px}
+.docv img{max-width:100%;height:auto;display:block;margin:8px 0}
+.docv hr.pb{border:0;border-top:2px dashed #cfd8e3;margin:16px 0}
+.docv p.sp{margin:2px 0}.docv p.li{margin:4px 0}
+.xl{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tabbar{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--line);background:#eef2f7;overflow-x:auto}
+.tabbar label{padding:9px 15px;font-size:.8rem;font-weight:600;color:var(--mut);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.xlmais{padding:9px 12px;font-size:.72rem;color:var(--mut)}
+.xlwrap{overflow:auto;max-height:70vh}
+.aba{display:none}.aba table{border-collapse:collapse}
+.aba td{border:1px solid #d4dbe4;padding:3px 8px;font-size:.79rem;white-space:nowrap}
+.aba tr.thf td{position:sticky;top:0;background:#e4ebf4;font-weight:700;z-index:2}
+.xlnota{padding:8px 12px;font-size:.75rem;color:var(--mut);border-top:1px solid var(--line);background:#f8fafc}
+.pdfv{width:100%;height:78vh;border:1px solid var(--line);border-radius:10px;background:#525659}
+input.abacb{display:none}
+input.abacb:nth-of-type(1):checked~.tabwrap .tabbar label:nth-of-type(1),input.abacb:nth-of-type(2):checked~.tabwrap .tabbar label:nth-of-type(2),input.abacb:nth-of-type(3):checked~.tabwrap .tabbar label:nth-of-type(3),input.abacb:nth-of-type(4):checked~.tabwrap .tabbar label:nth-of-type(4),input.abacb:nth-of-type(5):checked~.tabwrap .tabbar label:nth-of-type(5),input.abacb:nth-of-type(6):checked~.tabwrap .tabbar label:nth-of-type(6),input.abacb:nth-of-type(7):checked~.tabwrap .tabbar label:nth-of-type(7),input.abacb:nth-of-type(8):checked~.tabwrap .tabbar label:nth-of-type(8),input.abacb:nth-of-type(9):checked~.tabwrap .tabbar label:nth-of-type(9),input.abacb:nth-of-type(10):checked~.tabwrap .tabbar label:nth-of-type(10){color:var(--azul);border-bottom-color:var(--amarelo);background:#fff}
+input.abacb:nth-of-type(1):checked~.tabwrap .aba:nth-of-type(1),input.abacb:nth-of-type(2):checked~.tabwrap .aba:nth-of-type(2),input.abacb:nth-of-type(3):checked~.tabwrap .aba:nth-of-type(3),input.abacb:nth-of-type(4):checked~.tabwrap .aba:nth-of-type(4),input.abacb:nth-of-type(5):checked~.tabwrap .aba:nth-of-type(5),input.abacb:nth-of-type(6):checked~.tabwrap .aba:nth-of-type(6),input.abacb:nth-of-type(7):checked~.tabwrap .aba:nth-of-type(7),input.abacb:nth-of-type(8):checked~.tabwrap .aba:nth-of-type(8),input.abacb:nth-of-type(9):checked~.tabwrap .aba:nth-of-type(9),input.abacb:nth-of-type(10):checked~.tabwrap .aba:nth-of-type(10){display:block}
+footer{margin-left:var(--rail);background:#0c3355;color:#a9c1d6;padding:26px 32px;font-size:.79rem}
+footer .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;max-width:1040px;margin:0 auto}
+footer p{margin:3px 0}footer strong{color:#fff}footer a{color:var(--amarelo)}
+@media(min-width:1240px){.doc-cols{grid-template-columns:minmax(0,var(--read)) 240px;align-items:start}.toc{position:sticky;top:24px}}
+@media(max-width:900px){
+ .topbar{display:flex}
+ .side{transform:translateX(-100%);transition:transform .18s;width:280px;box-shadow:0 0 40px rgba(0,0,0,.35)}
+ #drawer:checked~.side{transform:none}
+ #drawer:checked~.scrim{display:block;position:fixed;inset:0;background:rgba(8,20,32,.45);z-index:35}
+ .pag,footer{margin-left:0}
+ .pag{padding:18px 16px 40px}
+ .hero{padding:30px 22px;border-radius:14px}.hero h1{font-size:1.5rem}
+ .busca-hero{flex-direction:column;background:transparent;box-shadow:none;padding:0;gap:8px}
+ .busca-hero input{width:100%;padding:13px 14px;border-radius:10px}
+ .busca-hero button{padding:13px;border-radius:10px;width:100%}
+ .grid{grid-template-columns:1fr 1fr}
+ .doc-head h1{font-size:1.5rem}
+ .doc-corpo{font-size:.97rem}
+ .doc-corpo h2{font-size:1.18rem}
+ .pager{grid-template-columns:1fr}
+ .rast dl{grid-template-columns:1fr}
+ .toc{position:static}
+ #rail:checked~.pag,#rail:checked~footer{margin-left:0}
+}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.linha .m{display:none}}
+@media print{.side,.topbar,footer,.pager,.rel,.toc{display:none}.pag{margin:0;padding:0}}
+
+/* V9.3 — visualizadores e acesso direto a planilhas online */
+.vhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.badge.tipo{background:#e2ecf6;color:#0f4c81}
+.docv{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:26px 34px;margin:0 auto;max-width:860px;box-shadow:0 1px 4px rgba(15,76,129,.06);font-size:.93rem;overflow-x:auto}
+.dochdr{border-bottom:1px solid #d7dee7;margin-bottom:14px;padding-bottom:9px}.docftr{border-top:1px solid #d7dee7;margin-top:18px;padding-top:9px;color:var(--cinza);font-size:.82rem}.doctextbox{border:1px solid #d7dee7;padding:8px;margin:8px 0}.docv table{border-collapse:collapse;margin:10px 0;max-width:100%}
+.docv table.bordered td{border:1px solid #93a2b3}
+.docv table.borderless td{border:0}
+.docv td{padding:4px 8px;vertical-align:top}
+.docv p{margin:7px 0}
+.docv h2{color:var(--azul);margin:16px 0 6px}
+.docv h3{color:var(--azul2);margin:14px 0 5px}
+.docv img{max-width:100%;height:auto;display:block;margin:8px 0}
+.docv hr.pb{border:0;border-top:2px dashed #cfd8e3;margin:16px 0}
+.docv p.sp{margin:2px 0}
+.docv p.li{margin:4px 0}
+.xl{background:#fff;border:1px solid var(--borda);border-radius:12px;overflow:hidden}
+input.abacb{display:none}
+.tabbar{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--borda);background:#eef2f7;overflow-x:auto}
+.tabbar label{padding:9px 15px;font-size:.8rem;font-weight:600;color:var(--cinza);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.xlmais{padding:9px 12px;font-size:.72rem;color:var(--cinza)}
+.xlwrap{overflow:auto;max-height:78vh}
+.aba{display:none}
+.aba table{border-collapse:collapse}
+.aba td{border:1px solid #d4dbe4;padding:3px 8px;font-size:.79rem;white-space:nowrap;color:#1d2733;background:#fff}
+.aba tr.thf td{position:sticky;top:0;background:#e4ebf4;font-weight:700;z-index:2}
+.xlnota{padding:8px 12px;font-size:.75rem;color:var(--cinza);border-top:1px solid var(--borda);background:#f8fafc}
+.pdfv{width:100%;height:82vh;border:1px solid var(--borda);border-radius:12px;background:#525659}
+input.exp-cb{display:none}
+.exp-lbl{display:inline-block;background:#fff;border:1px solid var(--borda);border-radius:8px;padding:7px 13px;font-size:.8rem;font-weight:600;color:var(--azul2);cursor:pointer}
+input.exp-cb:checked ~ .layout main.pag{max-width:100%}
+input.exp-cb:checked ~ .layout main.pag .xlwrap{max-height:none}
+input.exp-cb:checked ~ .layout main.pag .docv{max-width:1400px}
+input.exp-cb:checked ~ .layout main.pag .pdfv{height:94vh}
+.sheet-online{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:34px;min-height:250px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px}
+.sheet-online h2{color:var(--azul);font-size:1.18rem}.sheet-online p{color:var(--cinza);max-width:680px}.sheet-open{display:inline-flex;align-items:center;justify-content:center;background:var(--azul);color:#fff!important;text-decoration:none;border-radius:8px;padding:12px 20px;font-weight:700}.sheet-open:hover{background:var(--azul2)}
+.sheet-unavailable{background:#fff5f5;border:1px solid #f0caca;border-radius:12px;padding:28px;color:#8f2525}
+details.modo-ler{background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:10px 14px;margin:20px 0}
+details.modo-ler summary{cursor:pointer;color:var(--azul2);font-weight:600}
+input.abacb:nth-of-type(1):checked ~ .tabwrap .tabbar label:nth-of-type(1),
+input.abacb:nth-of-type(2):checked ~ .tabwrap .tabbar label:nth-of-type(2),
+input.abacb:nth-of-type(3):checked ~ .tabwrap .tabbar label:nth-of-type(3),
+input.abacb:nth-of-type(4):checked ~ .tabwrap .tabbar label:nth-of-type(4),
+input.abacb:nth-of-type(5):checked ~ .tabwrap .tabbar label:nth-of-type(5),
+input.abacb:nth-of-type(6):checked ~ .tabwrap .tabbar label:nth-of-type(6),
+input.abacb:nth-of-type(7):checked ~ .tabwrap .tabbar label:nth-of-type(7),
+input.abacb:nth-of-type(8):checked ~ .tabwrap .tabbar label:nth-of-type(8),
+input.abacb:nth-of-type(9):checked ~ .tabwrap .tabbar label:nth-of-type(9),
+input.abacb:nth-of-type(10):checked ~ .tabwrap .tabbar label:nth-of-type(10){color:var(--azul);border-bottom-color:var(--amarelo);background:#fff}
+input.abacb:nth-of-type(1):checked ~ .tabwrap .aba:nth-of-type(1),
+input.abacb:nth-of-type(2):checked ~ .tabwrap .aba:nth-of-type(2),
+input.abacb:nth-of-type(3):checked ~ .tabwrap .aba:nth-of-type(3),
+input.abacb:nth-of-type(4):checked ~ .tabwrap .aba:nth-of-type(4),
+input.abacb:nth-of-type(5):checked ~ .tabwrap .aba:nth-of-type(5),
+input.abacb:nth-of-type(6):checked ~ .tabwrap .aba:nth-of-type(6),
+input.abacb:nth-of-type(7):checked ~ .tabwrap .aba:nth-of-type(7),
+input.abacb:nth-of-type(8):checked ~ .tabwrap .aba:nth-of-type(8),
+input.abacb:nth-of-type(9):checked ~ .tabwrap .aba:nth-of-type(9),
+input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:block}
+
+.doc-cols.sem-toc{grid-template-columns:minmax(0,1fr)}
+.toc a.l3{padding-left:22px;font-size:.81rem;color:#4b6d8a}
+.doc-foot{margin-top:30px;padding-top:4px}
+.chip.lnk{background:#fff}
+.cards-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:10px 0}
+.recent .linha .t strong{font-weight:650}
+.side .nav a.item .txt{display:inline}
+</style></head><body>
+<input type="checkbox" id="drawer" class="sb-toggle">
+<input type="checkbox" id="rail" class="sb-toggle">
+<header class="topbar"><label for="drawer" aria-label="Abrir menu">&#9776;</label><b>Portal da <span>Ouvidoria</span></b></header>
+<aside class="side"><div class="side-top">
+<a class="logo" href="../../index.html"><span class="mark">@</span><span class="lbl">Portal da <b>Ouvidoria</b></span></a>
+<label for="rail" class="rail-btn" title="Recolher ou expandir o menu" aria-label="Recolher menu">&#9776;</label></div>
+<div class="side-busca"><form action="../../busca.html" method="get"><input type="hidden" name="rota" value="busca"><input type="search" name="q" placeholder="Buscar no portal" aria-label="Buscar no portal"><button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg></button></form></div><nav class="nav"><a class="item" href="../../index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg><span class="txt">Início</span></a><details class="grp" open><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Ouvidoria</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item ativa" href="../../cat-procedimentos-do-setor.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5A1.5 1.5 0 0 0 20 18.5z"/></svg><span class="txt">Procedimentos do Setor</span></a><a class="item" href="../../assuntos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 12 22l-9-9 8.6-8.6H20a1 1 0 0 1 1 1z"/><circle cx="16.5" cy="7.5" r="1.3"/></svg><span class="txt">Assuntos e Diagnósticos IXC</span></a><a class="item" href="../../institucional.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 8h.01"/></svg><span class="txt">Sobre a Arroba e a Ouvidoria</span></a><a class="item" href="../../cat-treinamentos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg><span class="txt">Treinamentos</span></a><a class="item" href="../../cat-padrao-de-atendimento.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M4 12h7M4 17h5"/><path d="M14.5 16.5l2.2 2.2 4.3-4.6"/></svg><span class="txt">Padrão de Atendimento</span></a><a class="item" href="../../cat-agenda-e-rotina.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span class="txt">Agenda e Rotina</span></a><a class="item" href="../../cat-missao-do-setor.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/></svg><span class="txt">Missão do Setor</span></a></div></details><details class="grp"><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Outros Setores</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item" href="../../cat-financeiro.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 10v4M18 10v4"/></svg><span class="txt">Financeiro</span></a><a class="item" href="../../cat-noc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><path d="M6.5 6.5a7.8 7.8 0 0 0 0 11M17.5 6.5a7.8 7.8 0 0 1 0 11M3.6 3.6a12 12 0 0 0 0 16.8M20.4 3.6a12 12 0 0 1 0 16.8"/></svg><span class="txt">NOC</span></a><a class="item" href="../../cat-comercial.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2.2l2.4 11h11l2-8H6"/></svg><span class="txt">Comercial</span></a><a class="item" href="../../cat-csc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.5A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.9C19.5 15.4 12 20 12 20z"/></svg><span class="txt">CSC</span></a></div></details><details class="grp"><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Geral</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item" href="../../cat-outros-setores.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span class="txt">Todos os setores</span></a><a class="item" href="../../drives.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3.5h8l4.5 8-4 7h-9l-4-7z"/><path d="M8 3.5 12 11h8.5M12 11l-4.5 7.5"/></svg><span class="txt">Drives e Planilhas</span></a><a class="item" href="../../cat-controles-e-configuracao.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 7.5l2.1 1.2M17.3 15.3l2.1 1.2M4.6 16.5l2.1-1.2M17.3 8.7l2.1-1.2"/></svg><span class="txt">Controles e Configuração</span></a></div></details></nav></aside>
+<label for="drawer" class="scrim" aria-label="Fechar menu"></label>
+<main class="pag"><div class="wrap"><div class="crumbs"><a href="../../index.html">Inicio</a><i>&rsaquo;</i><a href="../../cat-procedimentos-do-setor.html">Procedimentos do Setor</a><i>&rsaquo;</i><a href="../../cat-procedimentos-do-setor-fechamento.html">Fechamento</a><i>&rsaquo;</i>GESTÃO CUSTOMER SUCESS - Hierarquia e Resultados</div><article class="doc"><header class="doc-head"><h1>GESTÃO CUSTOMER SUCESS - Hierarquia e Resultados</h1><div class="chips"><span class="chip tipo">Planilha online</span><span class="chip">Fechamento</span><span class="chip">atualizado 2026-04-28</span></div></header><section class="sheet-online"><span class="chip tipo">PLANILHA ONLINE</span><h2>GESTÃO CUSTOMER SUCESS - Hierarquia e Resultados</h2><p>Esta planilha e consultada na fonte oficial para manter os dados sempre atualizados.</p><a class="sheet-open" href="https://docs.google.com/spreadsheets/d/1ISwHrD3U9H2pu3PRh767szeJt_FoNxBIlw0vKqyyXD8/edit?usp=drivesdk" target="_blank" rel="noopener">Abrir planilha</a></section><section class="rel"><h2>Conteudos relacionados</h2><div class="grid"><a class="card" href="../../doc/fechamento/acompanhamento-fechamento-semanal.html"><h3>ACOMPANHAMENTO - FECHAMENTO SEMANAL</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/fechamento/fechamento-semanal-ouvidoria-desenvolvimento.html"><h3>FECHAMENTO SEMANAL — OUVIDORIA + DESENVOLVIMENTO</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/fechamento/metricas-ouvidoria-como-realizar-fechamento.html"><h3>METRICAS OUVIDORIA - COMO REALIZAR FECHAMENTO</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/fechamento/motivacao.html"><h3>MOTIVAÇÃO</h3><span class="go">Abrir &rsaquo;</span></a></div></section><nav class="pager"><a href="../../doc/fechamento/fechamento-semanal-ouvidoria-desenvolvimento.html"><small>Anterior</small>FECHAMENTO SEMANAL — OUVIDORIA + DESENVOLVIMENTO</a><a class="prox" href="../../doc/fechamento/metricas-ouvidoria-como-realizar-fechamento.html"><small>Proximo</small>METRICAS OUVIDORIA - COMO REALIZAR FECHAMENTO</a></nav><details class="rast"><summary>Fonte e rastreabilidade</summary><dl><dt>ID do conteudo</dt><dd>C042</dd><dt>Documento</dt><dd>GESTÃO CUSTOMER SUCESS - Hierarquia e Resultados</dd><dt>Setor</dt><dd>fechamento</dd><dt>Ultima atualizacao (Drive)</dt><dd>2026-04-28</dd><dt>Origem</dt><dd>Planilha</dd><dt>Documento no Drive</dt><dd><a href="https://docs.google.com/document/d/1ISwHrD3U9H2pu3PRh767szeJt_FoNxBIlw0vKqyyXD8" target="_blank" rel="noopener">abrir no Google Drive</a></dd></dl></details></article></div></main>
+<footer><div class="footer-grid">
+<div><p><strong>Portal da Ouvidoria</strong></p><p>Arroba Banda Larga</p><p>Setor de Ouvidoria</p></div>
+<div><p><strong>Finalidade</strong></p><p>Consulta rapida de treinamentos, instrucoes, procedimentos e documentacoes usadas no dia a dia do setor.</p></div>
+<div><p><strong>Fonte oficial</strong></p><p><a href="https://drive.google.com/drive/folders/1Yxzfd5hW-3q8HxXfU1ZL1v8s2j5K1_QE" target="_blank" rel="noopener">Pasta PORTAL OUVIDORIA no Google Drive</a></p><p>Build: PORTAL DA OUVIDORIA V10</p></div>
+<div><p><strong>Suporte</strong></p><p>Manutencao: Desenvolvimento Arroba</p><p>Uso interno - Arroba Banda Larga</p></div>
+</div></footer></body></html>

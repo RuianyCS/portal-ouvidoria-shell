@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Busca — Portal da Ouvidoria</title>
+<style>
+:root{--azul:#0f3d63;--azul2:#1769aa;--amarelo:#f5b63b;--fundo:#f6f8fb;--texto:#1c2733;--mudo:#5b6b7b;--borda:#e2e8f0}
+*{box-sizing:border-box}
+body{font:15px/1.6 system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--fundo);color:var(--texto);margin:0}
+a{color:var(--azul2)}
+.top{background:var(--azul);padding:14px 20px;color:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.top a.marca{color:#fff;font-weight:700;text-decoration:none}
+.top a.marca span{color:var(--amarelo)}
+form{display:flex;gap:8px;flex:1;min-width:260px}
+input,button,select{padding:10px 12px;border:0;border-radius:8px;font:inherit}
+input{flex:1;min-width:0;border:1px solid var(--borda)}
+select{background:#fff;border:1px solid var(--borda)}
+button{background:var(--amarelo);color:#20303f;font-weight:700;cursor:pointer}
+main{max-width:900px;margin:0 auto;padding:26px 20px 60px}
+h1{font-size:1.5rem;margin:0 0 4px}
+#resumo{color:var(--mudo);margin:0 0 18px}
+.res{display:block;background:#fff;border:1px solid var(--borda);border-radius:12px;padding:14px 16px;margin:10px 0;text-decoration:none;color:inherit;transition:.15s}
+.res:hover{border-color:var(--azul2);box-shadow:0 4px 14px rgba(15,61,99,.08)}
+.res .t{font-weight:650;color:var(--azul);font-size:1.02rem;display:flex;gap:8px;align-items:center}
+.res .meta{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0 5px}
+.chip{font-size:.72rem;letter-spacing:.02em;padding:2px 8px;border-radius:99px;background:#eef3f9;color:#31597f}
+.chip.tipo{background:var(--azul);color:#fff}
+.chip.setor{background:#fff3d6;color:#7a5a07}
+.res .snip{color:#3d4b59;font-size:.92rem;margin:0}
+.res .snip mark{background:#ffe9a8;color:inherit;padding:0 2px;border-radius:3px}
+.ico{width:18px;height:18px;flex:0 0 18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;color:var(--azul2)}
+vazio{display:block;color:var(--mudo);padding:20px 0}
+</style>
+</head>
+<body>
+<div class="top"><a class="marca" href="index.html">Portal da <span>Ouvidoria</span></a>
+<form id="f" action="busca.html" method="get">
+<input name="q" id="q" placeholder="Buscar procedimento, assunto, sistema ou palavra-chave" aria-label="Buscar no portal">
+<select name="setor" id="setor" aria-label="Filtrar por setor"><option value="">Todos os setores</option></select>
+<button type="submit">Buscar</button>
+</form>
+</div>
+<main>
+<h1 id="titulo">Resultados da busca</h1>
+<p id="resumo">Carregando…</p>
+<div id="saida"></div>
+</main>
+<script>
+var norm=function(s){return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();};
+var esc=function(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");};
+var ICON={doc:'<path d="M6 3.5h7l5 5v12H6z"/><path d="M13 3.5v5h5"/><path d="M9 13h6M9 16.5h6"/>',video:'<circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/>',pasta:'<path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/>',area:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 8h.01"/>'};
+var ico=function(t){var p=ICON[t]||ICON.doc;return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';};
+var TIPO={documento:'documento','v\u00eddeo':'v\u00eddeo','pasta drive':'pasta do Drive','subcategoria':'categoria','categoria':'categoria','assunto IXC':'assunto IXC','\u00e1rea':'se\u00e7\u00e3o'};
+var ICONTIPO={documento:'doc','v\u00eddeo':'video','pasta drive':'pasta',subcategoria:'area',categoria:'area','assunto IXC':'doc','\u00e1rea':'area'};
+function expand(q){return norm(q).replace(/segunda via|segunda copia/g,"boleto").replace(/trocar plano/g,"troca de plano").replace(/aumentar plano|melhorar plano/g,"upgrade").replace(/diminuir plano|reduzir plano/g,"downgrade");}
+function snippet(termos,qws){
+ var t=termos||"",pos=-1,w="";
+ for(var i=0;i<qws.length;i++){var p=t.indexOf(qws[i]);if(p>=0){pos=p;w=qws[i];break;}}
+ if(pos<0)return esc(t.slice(0,180))+(t.length>180?"\u2026":"");
+ var ini=Math.max(0,pos-70),fim=Math.min(t.length,pos+130);
+ var frag=(ini>0?"\u2026":"")+t.slice(ini,fim)+(fim<t.length?"\u2026":"");
+ var safe=esc(frag);
+ qws.forEach(function(x){if(x.length>2){safe=safe.replace(new RegExp("("+x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>");}});
+ return safe;
+}
+fetch("search_index.json").then(function(r){return r.json();}).then(function(idx){
+ var par=new URLSearchParams(location.search);
+ var q=par.get("q")||"", filtro=par.get("setor")||"";
+ document.getElementById("q").value=q;
+ var sel=document.getElementById("setor");
+ var setores={};
+ (idx.entradas||[]).forEach(function(e){var s=e.setor||"";if(s)setores[s]=(setores[s]||0)+1;});
+ Object.keys(setores).sort().forEach(function(s){
+  var o=document.createElement("option");o.value=s;o.textContent=s.replace(/-/g," ").replace(/\b\w/g,function(c){return c.toUpperCase();});sel.appendChild(o);});
+ if(filtro)sel.value=filtro;
+ if(!q.trim()){document.getElementById("resumo").textContent="Informe um termo para buscar.";return;}
+ var words=expand(q).split(/\s+/).filter(function(x){return x.length>=2;});
+ if(!words.length){document.getElementById("resumo").textContent="Termo muito curto.";return;}
+ var syn=idx.sinonimos||{},hits=[];
+ (idx.entradas||[]).forEach(function(e){
+  if(filtro&&(e.setor||"")!==filtro)return;
+  var terms=norm(e.termos||""),title=norm(e.t||""),sector=norm((e.setor||"")+" "+(e.grupo||""));
+  var score=0,ok=true;
+  for(var i=0;i<words.length;i++){
+   var w=words[i],targets=[w].concat(syn[w]||[]);
+   var inTerm=targets.some(function(a){return terms.indexOf(a)>=0;});
+   var inSector=sector.indexOf(w)>=0;
+   if(!inTerm&&!inSector){ok=false;break;}
+   score+=inTerm?2:0;if(title.indexOf(w)>=0)score+=3;if(inSector)score+=4;
+  }
+  if(ok)hits.push({e:e,score:score});
+ });
+ hits.sort(function(a,b){return b.score-a.score;});
+ document.getElementById("titulo").textContent="Resultados da busca";
+ document.getElementById("resumo").textContent=hits.length+' resultado(s) para "'+q+'"'+(filtro?' em '+filtro.replace(/-/g," "):"")+'.';
+ document.getElementById("saida").innerHTML=hits.slice(0,40).map(function(h){
+  var e=h.e,tipo=TIPO[e.tipo]||e.tipo||"conte\u00fado";
+  var href=e.rota||"#";
+  var extra=(e.tipo==='v\u00eddeo'||e.tipo==='pasta drive')&&e.url?'<span class="chip">abre no Drive</span>':"";
+  return '<a class="res" href="'+esc(href)+'"'+(e.url&&(e.tipo==='v\u00eddeo'||e.tipo==='pasta drive')?' target="_blank" rel="noopener"':'')+'>'
+   +'<div class="t">'+ico(ICONTIPO[e.tipo]||'doc')+esc(e.t)+'</div>'
+   +'<div class="meta"><span class="chip tipo">'+esc(tipo)+'</span>'
+   +(e.grupo?'<span class="chip">'+esc(e.grupo)+'</span>':'')
+   +(e.setor?'<span class="chip setor">'+esc(e.setor.replace(/-/g," "))+'</span>':'')
+   +extra+'</div>'
+   +'<p class="snip">'+snippet(e.termos||"",words)+'</p></a>';
+ }).join("")||'<vazio>Nenhum resultado para "'+esc(q)+'". Tente outra palavra.</vazio>';
+}).catch(function(){document.getElementById("resumo").textContent="Falha ao carregar o \u00edndice de busca.";});
+</script>
+</body>
+</html>

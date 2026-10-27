@@ -1,0 +1,364 @@
+
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES — Portal da Ouvidoria</title><style>
+:root{--navy:#0f3d63;--azul:#1769aa;--amarelo:#f5b63b;--bg:#f6f8fb;--fg:#1c2733;--mut:#5f6f7f;
+--card:#fff;--line:#e3e9f0;--rail:250px;--railmin:64px;--read:860px;--shadow:0 1px 2px rgba(16,40,64,.06),0 6px 18px rgba(16,40,64,.05)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--azul);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--amarelo);outline-offset:2px;border-radius:4px}
+.sb-toggle{position:absolute;opacity:0;pointer-events:none}
+/* ---------- sidebar ---------- */
+.side{position:fixed;inset:0 auto 0 0;width:var(--rail);background:var(--navy);color:#c9d8e6;display:flex;flex-direction:column;z-index:40;border-right:1px solid rgba(255,255,255,.06)}
+.side-top{display:flex;align-items:center;gap:8px;padding:16px 14px 10px}
+.logo{display:flex;align-items:center;gap:9px;color:#fff;font-size:.95rem;font-weight:600;flex:1;min-width:0;text-decoration:none}
+.logo:hover{text-decoration:none}
+.logo .mark{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--amarelo);color:#17324d;font-weight:800;flex:none}
+.logo b{color:var(--amarelo);font-weight:700}
+.rail-btn{display:grid;place-items:center;width:28px;height:28px;border-radius:7px;color:#a9c1d6;cursor:pointer;flex:none;font-size:1rem}
+.rail-btn:hover{background:rgba(255,255,255,.09);color:#fff}
+.side-busca{padding:4px 12px 12px}
+.side-busca form{display:flex;gap:6px}
+.side-busca input{flex:1;min-width:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:7px 10px;font-size:.82rem}
+.side-busca input::placeholder{color:#9db6cc}
+.side-busca button{background:var(--amarelo);border:0;border-radius:8px;color:#17324d;font-weight:700;padding:0 10px;cursor:pointer;font-size:.78rem}
+.nav{overflow-y:auto;padding:2px 10px 22px;flex:1;scrollbar-width:thin}
+.nav a.item{display:flex;align-items:center;gap:10px;color:#c9d8e6;padding:8px 10px;border-radius:8px;font-size:.86rem;margin:1px 0;text-decoration:none}
+.nav a.item:hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+.nav a.item.ativa{background:var(--amarelo);color:#17324d;font-weight:700}
+.nav a.item.ativa svg{stroke:#17324d}
+.nav a.item svg{width:16px;height:16px;flex:none;stroke:#93aec6;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav a.item:hover svg{stroke:#fff}
+.nav .txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav details.grp{margin:8px 0 2px}
+.nav details.grp>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;color:#8fadc6;font-size:.69rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;padding:7px 10px;border-radius:7px}
+.nav details.grp>summary::-webkit-details-marker{display:none}
+.nav details.grp>summary:hover{color:#dbe8f3;background:rgba(255,255,255,.05)}
+.nav details.grp>summary .chev{margin-left:auto;transition:transform .15s;font-size:.7rem}
+.nav details.grp[open]>summary .chev{transform:rotate(90deg)}
+.nav details.grp .filhos{padding-left:2px}
+/* recolhido (desktop) */
+#rail:checked~.side{width:var(--railmin)}
+#rail:checked~.side .lbl,#rail:checked~.side .txt,#rail:checked~.side .side-busca,#rail:checked~.side .chev{display:none}
+#rail:checked~.side .nav details.grp>summary{justify-content:center;padding:9px 0}
+#rail:checked~.side .nav a.item{justify-content:center;padding:10px 0}
+#rail:checked~.side .side-top{justify-content:center;padding:16px 6px 8px}
+#rail:checked~.side .logo{flex:none}
+#rail:checked~.pag,#rail:checked~footer{margin-left:var(--railmin)}
+/* ---------- topbar mobile ---------- */
+.topbar{display:none;position:sticky;top:0;z-index:30;background:var(--navy);color:#fff;padding:10px 14px;align-items:center;gap:10px}
+.topbar label{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1);cursor:pointer;font-size:1.05rem}
+.topbar b{font-size:.95rem}
+.topbar b span{color:var(--amarelo)}
+.scrim{display:none}
+/* ---------- conteúdo ---------- */
+.pag{margin-left:var(--rail);padding:26px 32px 54px;transition:margin-left .15s}
+.wrap{max-width:1040px;margin:0 auto}
+.crumbs{font-size:.78rem;color:var(--mut);margin-bottom:14px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.crumbs a{color:var(--azul)}
+.crumbs i{color:#b9c6d3;font-style:normal}
+h1.pg{color:var(--navy);font-size:1.7rem;line-height:1.25;letter-spacing:-.01em;margin-bottom:6px}
+.lead{color:var(--mut);font-size:.95rem;margin-bottom:18px;max-width:70ch}
+/* hero / home */
+.hero{background:linear-gradient(135deg,#0f3d63,#1b5c94 65%,#1769aa);border-radius:16px;padding:46px 40px 40px;color:#fff;margin-bottom:26px;box-shadow:var(--shadow)}
+.hero h1{font-size:1.9rem;line-height:1.2;margin-bottom:8px;letter-spacing:-.015em}
+.hero p{color:#d3e2ef;max-width:60ch;font-size:.95rem;margin-bottom:20px}
+.busca-hero{display:flex;gap:8px;max-width:640px;background:#fff;padding:7px;border-radius:12px;box-shadow:0 8px 24px rgba(6,25,45,.25)}
+.busca-hero input{flex:1;min-width:0;border:0;padding:11px 12px;font-size:.95rem;border-radius:8px;color:var(--fg)}
+.busca-hero button{background:var(--amarelo);border:0;border-radius:8px;padding:0 20px;font-weight:700;color:#17324d;cursor:pointer;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:14px;margin:12px 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 17px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow);transition:transform .12s,border-color .12s}
+.card:hover{transform:translateY(-1px);border-color:#c9d8e8}
+.card .ico{width:34px;height:34px;border-radius:9px;background:#eaf2fa;display:grid;place-items:center;margin-bottom:2px}
+.card .ico svg{width:18px;height:18px;stroke:var(--azul);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h3{color:var(--navy);font-size:.96rem;font-weight:650;line-height:1.3}
+.card h3 .n{color:var(--mut);font-weight:500;font-size:.82rem}
+.card p{color:var(--mut);font-size:.82rem;flex:1}
+.card .go{color:var(--azul);font-size:.83rem;font-weight:600}
+.sec-t{display:flex;align-items:baseline;gap:10px;margin:30px 0 6px}
+.sec-t h2{color:var(--navy);font-size:1.06rem;font-weight:700}
+.sec-t span{color:var(--mut);font-size:.8rem}
+.lista{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.linha{display:flex;align-items:center;gap:12px;padding:11px 15px;border-top:1px solid var(--line);font-size:.88rem;color:var(--fg);text-decoration:none}
+.linha:first-child{border-top:0}
+.linha:hover{background:#f4f8fd;text-decoration:none}
+.linha .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linha .m{color:var(--mut);font-size:.76rem;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#eef4fa;color:#2a5f8f;border:1px solid #dbe7f2;font-size:.71rem;font-weight:650;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.chip.tipo{background:#e7f0f9;color:#12527e}
+.chip.ok{background:#eaf7ef;color:#1c6b3f;border-color:#d3ebdc}
+.chip.warn{background:#fdf5e3;color:#8a6400;border-color:#f4e6c3}
+/* documento */
+.doc{max-width:var(--read)}
+.doc-head{margin-bottom:18px}
+.doc-head h1{color:var(--navy);font-size:1.95rem;line-height:1.2;letter-spacing:-.02em;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.doc-cols{display:grid;grid-template-columns:1fr;gap:26px;margin-top:6px}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow);align-self:start}
+.toc b{display:block;color:var(--navy);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px}
+.toc a{display:block;color:#38556f;font-size:.85rem;padding:4px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-10px}
+.toc a:hover{color:var(--azul);border-left-color:var(--amarelo);text-decoration:none}
+.doc-corpo{font-size:1rem;line-height:1.72;color:#22303d}
+.doc-corpo>*{max-width:100%}
+.doc-corpo h2{color:var(--navy);font-size:1.32rem;line-height:1.28;margin:34px 0 10px;padding-top:6px;letter-spacing:-.01em}
+.doc-corpo h3{color:#14548a;font-size:1.07rem;margin:24px 0 7px;line-height:1.35}
+.doc-corpo h4{color:#14548a;font-size:.98rem;margin:20px 0 6px}
+.doc-corpo p{margin:11px 0}
+.doc-corpo ul,.doc-corpo ol{margin:11px 0 11px 22px}
+.doc-corpo li{margin:5px 0}
+.doc-corpo a{color:var(--azul);text-decoration:underline;text-underline-offset:2px}
+.doc-corpo img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;margin:14px 0;box-shadow:var(--shadow)}
+.doc-corpo table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.88rem}
+.doc-corpo th,.doc-corpo td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+.doc-corpo th{background:#f1f6fb;color:var(--navy);font-weight:650}
+.doc-corpo blockquote{border-left:3px solid var(--amarelo);background:#fffaef;padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;color:#4a4335}
+.doc-corpo .callout{margin:16px 0;padding:13px 16px;border-radius:10px;border:1px solid;font-size:.94rem}
+.doc-corpo .callout.atencao{background:#fff5f5;border-color:#f0cfcf;color:#8a2b2b}
+.doc-corpo .callout.importante{background:#fdf5e3;border-color:#f0e0b5;color:#7d5c00}
+.doc-corpo .callout.dica{background:#eef8f2;border-color:#cfe9da;color:#1d6142}
+.original{margin:30px 0 8px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.original>summary{cursor:pointer;padding:13px 17px;font-weight:650;color:#14548a;font-size:.9rem;display:flex;align-items:center;gap:9px}
+.original>summary::marker{content:''}
+.original>summary::before{content:'▸';color:var(--amarelo);font-size:.85rem}
+.original[open]>summary::before{content:'▾'}
+.original[open]>summary{border-bottom:1px solid var(--line);background:#f8fbfe}
+.original .corpo-original{padding:18px;overflow:auto}
+.rel{margin:34px 0 0}
+.rel h2{color:var(--navy);font-size:1rem;margin-bottom:10px}
+.rel .grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.rel .card{padding:13px 15px}
+.rel .card h3{font-size:.88rem}
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:26px 0 0}
+.pager a{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;box-shadow:var(--shadow);color:var(--navy);font-size:.88rem;font-weight:600}
+.pager a:hover{border-color:#c7d9ea;text-decoration:none}
+.pager a small{display:block;color:var(--mut);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;font-weight:700}
+.pager a.prox{text-align:right}
+.rast{margin:22px 0 0;font-size:.84rem;color:var(--mut)}
+.rast summary{cursor:pointer;color:#4b6d8a;font-weight:600}
+.rast dl{display:grid;grid-template-columns:190px 1fr;gap:4px 14px;margin-top:10px}
+.rast dt{color:var(--mut)}.rast dd{color:#2c3e4f}
+.rast a{color:var(--azul)}
+.vazio{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:34px;text-align:center;color:var(--mut)}
+.doc-item{display:flex;align-items:center;gap:10px;padding:11px 15px;border-top:1px solid var(--line);text-decoration:none;color:var(--fg);font-size:.89rem}
+.doc-item:first-child{border-top:0}
+.doc-item:hover{background:#f4f8fd;text-decoration:none}
+.doc-item .titulo{flex:1;min-width:0}
+.doc-item .pasta-meta{color:var(--mut);font-size:.78rem;white-space:nowrap}
+.lista{border-radius:12px}
+.badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:999px;background:#eef4fa;color:#2a5f8f;white-space:nowrap}
+.badge.pend{background:#fdf5e3;color:#8a6400}
+.badge.indisp{background:#fdecec;color:#a03030}
+.subgrupo h2{color:var(--navy);font-size:1.05rem;margin:26px 0 8px}
+.pasta-meta{color:var(--mut);font-weight:400;font-size:.8rem;white-space:nowrap}
+.sheet-online{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:34px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.sheet-online h2{color:var(--navy);font-size:1.15rem}
+.sheet-online p{color:var(--mut);max-width:66ch;font-size:.92rem}
+.sheet-open{background:var(--azul);color:#fff!important;padding:11px 19px;border-radius:9px;font-weight:700;font-size:.88rem;text-decoration:none}
+.sheet-unavailable{background:#fff5f5;border:1px solid #f0caca;border-radius:12px;padding:26px;color:#8f2525}
+.docv{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px 30px;font-size:.9rem;overflow-x:auto}
+.docv table{border-collapse:collapse;margin:10px 0}
+.docv table.bordered td{border:1px solid #93a2b3}
+.docv table.borderless td{border:0}
+.docv td{padding:4px 8px;vertical-align:top}
+.docv p{margin:7px 0}.docv h2{color:var(--navy);margin:16px 0 6px}.docv h3{color:#14548a;margin:14px 0 5px}
+.docv img{max-width:100%;height:auto;display:block;margin:8px 0}
+.docv hr.pb{border:0;border-top:2px dashed #cfd8e3;margin:16px 0}
+.docv p.sp{margin:2px 0}.docv p.li{margin:4px 0}
+.xl{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.tabbar{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--line);background:#eef2f7;overflow-x:auto}
+.tabbar label{padding:9px 15px;font-size:.8rem;font-weight:600;color:var(--mut);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.xlmais{padding:9px 12px;font-size:.72rem;color:var(--mut)}
+.xlwrap{overflow:auto;max-height:70vh}
+.aba{display:none}.aba table{border-collapse:collapse}
+.aba td{border:1px solid #d4dbe4;padding:3px 8px;font-size:.79rem;white-space:nowrap}
+.aba tr.thf td{position:sticky;top:0;background:#e4ebf4;font-weight:700;z-index:2}
+.xlnota{padding:8px 12px;font-size:.75rem;color:var(--mut);border-top:1px solid var(--line);background:#f8fafc}
+.pdfv{width:100%;height:78vh;border:1px solid var(--line);border-radius:10px;background:#525659}
+input.abacb{display:none}
+input.abacb:nth-of-type(1):checked~.tabwrap .tabbar label:nth-of-type(1),input.abacb:nth-of-type(2):checked~.tabwrap .tabbar label:nth-of-type(2),input.abacb:nth-of-type(3):checked~.tabwrap .tabbar label:nth-of-type(3),input.abacb:nth-of-type(4):checked~.tabwrap .tabbar label:nth-of-type(4),input.abacb:nth-of-type(5):checked~.tabwrap .tabbar label:nth-of-type(5),input.abacb:nth-of-type(6):checked~.tabwrap .tabbar label:nth-of-type(6),input.abacb:nth-of-type(7):checked~.tabwrap .tabbar label:nth-of-type(7),input.abacb:nth-of-type(8):checked~.tabwrap .tabbar label:nth-of-type(8),input.abacb:nth-of-type(9):checked~.tabwrap .tabbar label:nth-of-type(9),input.abacb:nth-of-type(10):checked~.tabwrap .tabbar label:nth-of-type(10){color:var(--azul);border-bottom-color:var(--amarelo);background:#fff}
+input.abacb:nth-of-type(1):checked~.tabwrap .aba:nth-of-type(1),input.abacb:nth-of-type(2):checked~.tabwrap .aba:nth-of-type(2),input.abacb:nth-of-type(3):checked~.tabwrap .aba:nth-of-type(3),input.abacb:nth-of-type(4):checked~.tabwrap .aba:nth-of-type(4),input.abacb:nth-of-type(5):checked~.tabwrap .aba:nth-of-type(5),input.abacb:nth-of-type(6):checked~.tabwrap .aba:nth-of-type(6),input.abacb:nth-of-type(7):checked~.tabwrap .aba:nth-of-type(7),input.abacb:nth-of-type(8):checked~.tabwrap .aba:nth-of-type(8),input.abacb:nth-of-type(9):checked~.tabwrap .aba:nth-of-type(9),input.abacb:nth-of-type(10):checked~.tabwrap .aba:nth-of-type(10){display:block}
+footer{margin-left:var(--rail);background:#0c3355;color:#a9c1d6;padding:26px 32px;font-size:.79rem}
+footer .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;max-width:1040px;margin:0 auto}
+footer p{margin:3px 0}footer strong{color:#fff}footer a{color:var(--amarelo)}
+@media(min-width:1240px){.doc-cols{grid-template-columns:minmax(0,var(--read)) 240px;align-items:start}.toc{position:sticky;top:24px}}
+@media(max-width:900px){
+ .topbar{display:flex}
+ .side{transform:translateX(-100%);transition:transform .18s;width:280px;box-shadow:0 0 40px rgba(0,0,0,.35)}
+ #drawer:checked~.side{transform:none}
+ #drawer:checked~.scrim{display:block;position:fixed;inset:0;background:rgba(8,20,32,.45);z-index:35}
+ .pag,footer{margin-left:0}
+ .pag{padding:18px 16px 40px}
+ .hero{padding:30px 22px;border-radius:14px}.hero h1{font-size:1.5rem}
+ .busca-hero{flex-direction:column;background:transparent;box-shadow:none;padding:0;gap:8px}
+ .busca-hero input{width:100%;padding:13px 14px;border-radius:10px}
+ .busca-hero button{padding:13px;border-radius:10px;width:100%}
+ .grid{grid-template-columns:1fr 1fr}
+ .doc-head h1{font-size:1.5rem}
+ .doc-corpo{font-size:.97rem}
+ .doc-corpo h2{font-size:1.18rem}
+ .pager{grid-template-columns:1fr}
+ .rast dl{grid-template-columns:1fr}
+ .toc{position:static}
+ #rail:checked~.pag,#rail:checked~footer{margin-left:0}
+}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.linha .m{display:none}}
+@media print{.side,.topbar,footer,.pager,.rel,.toc{display:none}.pag{margin:0;padding:0}}
+
+/* V9.3 — visualizadores e acesso direto a planilhas online */
+.vhead{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.badge.tipo{background:#e2ecf6;color:#0f4c81}
+.docv{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:26px 34px;margin:0 auto;max-width:860px;box-shadow:0 1px 4px rgba(15,76,129,.06);font-size:.93rem;overflow-x:auto}
+.dochdr{border-bottom:1px solid #d7dee7;margin-bottom:14px;padding-bottom:9px}.docftr{border-top:1px solid #d7dee7;margin-top:18px;padding-top:9px;color:var(--cinza);font-size:.82rem}.doctextbox{border:1px solid #d7dee7;padding:8px;margin:8px 0}.docv table{border-collapse:collapse;margin:10px 0;max-width:100%}
+.docv table.bordered td{border:1px solid #93a2b3}
+.docv table.borderless td{border:0}
+.docv td{padding:4px 8px;vertical-align:top}
+.docv p{margin:7px 0}
+.docv h2{color:var(--azul);margin:16px 0 6px}
+.docv h3{color:var(--azul2);margin:14px 0 5px}
+.docv img{max-width:100%;height:auto;display:block;margin:8px 0}
+.docv hr.pb{border:0;border-top:2px dashed #cfd8e3;margin:16px 0}
+.docv p.sp{margin:2px 0}
+.docv p.li{margin:4px 0}
+.xl{background:#fff;border:1px solid var(--borda);border-radius:12px;overflow:hidden}
+input.abacb{display:none}
+.tabbar{display:flex;gap:2px;flex-wrap:wrap;border-bottom:1px solid var(--borda);background:#eef2f7;overflow-x:auto}
+.tabbar label{padding:9px 15px;font-size:.8rem;font-weight:600;color:var(--cinza);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.xlmais{padding:9px 12px;font-size:.72rem;color:var(--cinza)}
+.xlwrap{overflow:auto;max-height:78vh}
+.aba{display:none}
+.aba table{border-collapse:collapse}
+.aba td{border:1px solid #d4dbe4;padding:3px 8px;font-size:.79rem;white-space:nowrap;color:#1d2733;background:#fff}
+.aba tr.thf td{position:sticky;top:0;background:#e4ebf4;font-weight:700;z-index:2}
+.xlnota{padding:8px 12px;font-size:.75rem;color:var(--cinza);border-top:1px solid var(--borda);background:#f8fafc}
+.pdfv{width:100%;height:82vh;border:1px solid var(--borda);border-radius:12px;background:#525659}
+input.exp-cb{display:none}
+.exp-lbl{display:inline-block;background:#fff;border:1px solid var(--borda);border-radius:8px;padding:7px 13px;font-size:.8rem;font-weight:600;color:var(--azul2);cursor:pointer}
+input.exp-cb:checked ~ .layout main.pag{max-width:100%}
+input.exp-cb:checked ~ .layout main.pag .xlwrap{max-height:none}
+input.exp-cb:checked ~ .layout main.pag .docv{max-width:1400px}
+input.exp-cb:checked ~ .layout main.pag .pdfv{height:94vh}
+.sheet-online{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:34px;min-height:250px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px}
+.sheet-online h2{color:var(--azul);font-size:1.18rem}.sheet-online p{color:var(--cinza);max-width:680px}.sheet-open{display:inline-flex;align-items:center;justify-content:center;background:var(--azul);color:#fff!important;text-decoration:none;border-radius:8px;padding:12px 20px;font-weight:700}.sheet-open:hover{background:var(--azul2)}
+.sheet-unavailable{background:#fff5f5;border:1px solid #f0caca;border-radius:12px;padding:28px;color:#8f2525}
+details.modo-ler{background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:10px 14px;margin:20px 0}
+details.modo-ler summary{cursor:pointer;color:var(--azul2);font-weight:600}
+input.abacb:nth-of-type(1):checked ~ .tabwrap .tabbar label:nth-of-type(1),
+input.abacb:nth-of-type(2):checked ~ .tabwrap .tabbar label:nth-of-type(2),
+input.abacb:nth-of-type(3):checked ~ .tabwrap .tabbar label:nth-of-type(3),
+input.abacb:nth-of-type(4):checked ~ .tabwrap .tabbar label:nth-of-type(4),
+input.abacb:nth-of-type(5):checked ~ .tabwrap .tabbar label:nth-of-type(5),
+input.abacb:nth-of-type(6):checked ~ .tabwrap .tabbar label:nth-of-type(6),
+input.abacb:nth-of-type(7):checked ~ .tabwrap .tabbar label:nth-of-type(7),
+input.abacb:nth-of-type(8):checked ~ .tabwrap .tabbar label:nth-of-type(8),
+input.abacb:nth-of-type(9):checked ~ .tabwrap .tabbar label:nth-of-type(9),
+input.abacb:nth-of-type(10):checked ~ .tabwrap .tabbar label:nth-of-type(10){color:var(--azul);border-bottom-color:var(--amarelo);background:#fff}
+input.abacb:nth-of-type(1):checked ~ .tabwrap .aba:nth-of-type(1),
+input.abacb:nth-of-type(2):checked ~ .tabwrap .aba:nth-of-type(2),
+input.abacb:nth-of-type(3):checked ~ .tabwrap .aba:nth-of-type(3),
+input.abacb:nth-of-type(4):checked ~ .tabwrap .aba:nth-of-type(4),
+input.abacb:nth-of-type(5):checked ~ .tabwrap .aba:nth-of-type(5),
+input.abacb:nth-of-type(6):checked ~ .tabwrap .aba:nth-of-type(6),
+input.abacb:nth-of-type(7):checked ~ .tabwrap .aba:nth-of-type(7),
+input.abacb:nth-of-type(8):checked ~ .tabwrap .aba:nth-of-type(8),
+input.abacb:nth-of-type(9):checked ~ .tabwrap .aba:nth-of-type(9),
+input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:block}
+
+.doc-cols.sem-toc{grid-template-columns:minmax(0,1fr)}
+.toc a.l3{padding-left:22px;font-size:.81rem;color:#4b6d8a}
+.doc-foot{margin-top:30px;padding-top:4px}
+.chip.lnk{background:#fff}
+.cards-mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:10px 0}
+.recent .linha .t strong{font-weight:650}
+.side .nav a.item .txt{display:inline}
+</style></head><body>
+<input type="checkbox" id="drawer" class="sb-toggle">
+<input type="checkbox" id="rail" class="sb-toggle">
+<header class="topbar"><label for="drawer" aria-label="Abrir menu">&#9776;</label><b>Portal da <span>Ouvidoria</span></b></header>
+<aside class="side"><div class="side-top">
+<a class="logo" href="../../index.html"><span class="mark">@</span><span class="lbl">Portal da <b>Ouvidoria</b></span></a>
+<label for="rail" class="rail-btn" title="Recolher ou expandir o menu" aria-label="Recolher menu">&#9776;</label></div>
+<div class="side-busca"><form action="../../busca.html" method="get"><input type="hidden" name="rota" value="busca"><input type="search" name="q" placeholder="Buscar no portal" aria-label="Buscar no portal"><button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg></button></form></div><nav class="nav"><a class="item" href="../../index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg><span class="txt">Início</span></a><details class="grp" open><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Ouvidoria</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item" href="../../cat-procedimentos-do-setor.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5A1.5 1.5 0 0 0 20 18.5z"/></svg><span class="txt">Procedimentos do Setor</span></a><a class="item" href="../../assuntos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 12 22l-9-9 8.6-8.6H20a1 1 0 0 1 1 1z"/><circle cx="16.5" cy="7.5" r="1.3"/></svg><span class="txt">Assuntos e Diagnósticos IXC</span></a><a class="item" href="../../institucional.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 8h.01"/></svg><span class="txt">Sobre a Arroba e a Ouvidoria</span></a><a class="item" href="../../cat-treinamentos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg><span class="txt">Treinamentos</span></a><a class="item ativa" href="../../cat-padrao-de-atendimento.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M4 12h7M4 17h5"/><path d="M14.5 16.5l2.2 2.2 4.3-4.6"/></svg><span class="txt">Padrão de Atendimento</span></a><a class="item" href="../../cat-agenda-e-rotina.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg><span class="txt">Agenda e Rotina</span></a><a class="item" href="../../cat-missao-do-setor.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.6 9.7l5.8-.8z"/></svg><span class="txt">Missão do Setor</span></a></div></details><details class="grp"><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Outros Setores</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item" href="../../cat-financeiro.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 10v4M18 10v4"/></svg><span class="txt">Financeiro</span></a><a class="item" href="../../cat-noc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><path d="M6.5 6.5a7.8 7.8 0 0 0 0 11M17.5 6.5a7.8 7.8 0 0 1 0 11M3.6 3.6a12 12 0 0 0 0 16.8M20.4 3.6a12 12 0 0 1 0 16.8"/></svg><span class="txt">NOC</span></a><a class="item" href="../../cat-comercial.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2.2l2.4 11h11l2-8H6"/></svg><span class="txt">Comercial</span></a><a class="item" href="../../cat-csc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.5A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.9C19.5 15.4 12 20 12 20z"/></svg><span class="txt">CSC</span></a></div></details><details class="grp"><summary><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Geral</span><span class="chev">&#8250;</span></summary><div class="filhos"><a class="item" href="../../cat-outros-setores.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span class="txt">Todos os setores</span></a><a class="item" href="../../drives.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3.5h8l4.5 8-4 7h-9l-4-7z"/><path d="M8 3.5 12 11h8.5M12 11l-4.5 7.5"/></svg><span class="txt">Drives e Planilhas</span></a><a class="item" href="../../cat-controles-e-configuracao.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M4.6 7.5l2.1 1.2M17.3 15.3l2.1 1.2M4.6 16.5l2.1-1.2M17.3 8.7l2.1-1.2"/></svg><span class="txt">Controles e Configuração</span></a></div></details></nav></aside>
+<label for="drawer" class="scrim" aria-label="Fechar menu"></label>
+<main class="pag"><div class="wrap"><div class="crumbs"><a href="../../index.html">Inicio</a><i>&rsaquo;</i><a href="../../cat-padrao-de-atendimento.html">Padrão de Atendimento</a><i>&rsaquo;</i><a href="../../cat-padrao-de-atendimento-geral.html">Geral</a><i>&rsaquo;</i>PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES</div><article class="doc"><header class="doc-head"><h1>PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES</h1><div class="chips"><span class="chip tipo">Documento Word</span><span class="chip">Geral</span><span class="chip">atualizado 2025-12-26</span></div></header><div class="doc-cols sem-toc"><div class="doc-corpo"><p>O atendimento ao cliente via WhatsApp é uma parte muito importante da comunicação hoje em dia. Para garantir um bom padrão de atendimento, é importante seguir algumas diretrizes e boas práticas. Aqui estão algumas regras e dicas para manter um padrão de atendimento eficaz pelo WhatsApp:</p>
+<p>Equipes de atendimento – sucesso da experiência do cliente (Whatsapp)</p>
+<p>Rapidez na resposta:  Responda às mensagens dos clientes o mais rápido possível. O WhatsApp é conhecido pela sua comunicação em tempo real, por isso, manter os tempos de resposta curtos é fundamental.</p>
+<p>Saudação amigável:  Inicie a conversa sempre com uma saudação amigável, a mensagem de saudação a ser utilizada já se encontra pré definida em nossa plataforma.</p>
+<p>Empatia:  Ouça atentamente as preocupações do cliente e mostre empatia em relação aos seus problemas ou perguntas.</p>
+<p>Verificação:  É dever sempre verificar a solicitação do cliente ou analisar o histórico de atendimento e não perguntar novamente aquilo que o cliente já informou. Ex: O cliente já informou o que deseja, precisa ser enviado a saudação correspondente que já estará sendo verificado e não perguntar novamente “no que posso ajudar?” isso torna o atendimento cansativo e repetitivo para o cliente, visto que ele já relatou o que queria no ínicio do atendimento.</p>
+<p>Uso de emojis:  Faça utilização de emojis, eles podem adicionar um toque de simpatia e clareza à comunicação. Use-os de forma adequada para a situação.</p>
+<p>Linguagem apropriada:  Use uma linguagem profissional, apropriada e personalizada. Evite gírias, abreviações e linguagem inadequada, verifique a ortografia da escrita. É nosso dever fornecer um atendimento personalizado e pessoal e não robotizado, porém deve se ter cuidado nas digitações para que tenha coerência o que está sendo escrito.</p>
+<p>Comunicação personalizada: Cada cliente possui suas particularidade e adquar sua comunicação via texto ou voz fará total diferença na experiência do atendimento. Evite o uso excessivo de senhor(a), utilize o nome do cliente, isso trará pessoalidade e sensação de exclusividade para o atendimento.</p>
+<p>Segurança: Esteja seguro das informações que está passando ao cliente, uma informação incorreta pode gerar transtornos para o cliente e empresa.</p>
+<p>Nenhuma informação interna deverá ser passada durante um atendimento. Certifique-se de encontrar uma comunicação alinhada que não revele nenhuma informação interna que não tenha relevância para o cliente.</p>
+<p>Exemplos a serem pontuados:</p>
+<p>“O setor X não pode lhe atender por está em reunião.” troque para “No momento a pessoa responsável pela sua solicitação está em atendimento, assim que finalizar pedirei que lhe retorne o mais breve possível”.</p>
+<p>“Esse setor só têm uma pessoa e está ocupada”. troque para “Infelizmente no momento todos os atendentes do setor responsável pela sua solicitação estão em atendimento, mas registrei seu atendimento com prioridade e estarão lhe retornando o mais rápido possível.</p>
+<p>“Só tenho um técnico para fazer isso”, troque para “Temos um técnico especialista que vai está resolvendo essa situação”.</p>
+<p>PRÁTICAS A SEREM SEGUIDAS:</p>
+<p>Caso o cliente já tenha relatado o que deseja e pare de responder, se for uma solicitação que já pode ser realizada e resolvida realizar e retornar o contato por telefone informando, caso não atenda informar no chamado do whatsapp sobre.</p>
+<p>Após 15 minutos sem resposta, é obrigatório enviar a mensagem pré-definida de pré - encerramento aguardar 5 minutos e após enviar o cliente para o fluxo de inatividade.</p>
+<p>Exceção: Atendimentos onde o cliente entrou em contato fora do horário de atendimento (antes das 08:00h) só poderá ser finalizado como sem contato a partir das 09:00h.</p>
+<p>Exceção 2: Caso o cliente tenha tido um tempo de espera maior que 5 minutos para ser atendido deverá ser aguardado 30 minutos antes de finaliza-ló como sem contato.</p>
+<p>Alguns casos não poderão ser finalizados por falta de contato e possuem algumas observações, verificar abaixo os respectivos de cada setor.</p>
+<p>VENDAS - Clientes que não respondem, não podem ser transferidos para fila de sem contato, precisa colocar no pendente e tentar por ligação, e caso de leads que não foi gerado será gerado para funil. E todo cliente que não responde mais, precisa ser feito a tentativa por ligação.</p>
+<p>Setor de vendas possui a saudação específica, então em caso de fila de vendas                deve usar essa, a padrão é somente quando ja é cliente.</p>
+<p>Ao enviar a mensagem de forma ativa e aparecer duas opções livre e HSM escolha o livre. Use o HSM somente quando não tiver opção.</p>
+<p>FINANCEIRO - Assuntos importantes que o cliente não responde no whatsapp precisa ser feito tentativas por ligação: Renovação, Pagamento errado, Solicitação de cancelamento, Troca de data, Negociação, Dúvidas de proporcional, Dúvidas de boletos que gerados errados.</p>
+<p>SUPORTE - Assuntos importantes que o cliente não responde pelo whatsapp e precisa ser feito tentativas por ligação e não finalizado: Sem conexão, Reicidentes com o mesmo problema, Insatisfação de qualquer tipo e setor, clientes instalados com -30 dias.</p>
+<p>Atenção ao cadastramento e tempo das pausas, utilizando sempre a pausa correta para a sua solicitação.</p>
+<p>O cliente que caiu para você é sua responsabilidade e só deverá ser transferido em casos realmente necessários. Evite transferências desnecessárias que aumentam o tempo de atendimento do cliente e do novo colaborador que assumiu.</p>
+<p>O Histórico do cliente deverá sempre ser consultado em caso de atendimentos transferidos ou sem informações.</p>
+<p>Antes de realizar a transferência de um atendimento para o whatsapp, (mesmo sendo para o mesmo setor) deverá ser enviado a mensagem de transferência específica para o cliente o avisando previamente.</p>
+<p>Em casos de massivas de grande quantidade de atendimento deverá ser enviado a saudação após o informativo do ocorrido e em seguida deverá ser aguardado até 10 minutos o retorno do cliente, podendo colocar o mesmo em pendente para não impedir a entrada dos novos.</p>
+<p>Não é permitido envio de mensagens para o cliente com letras maiúsculas.</p>
+<p>Em caso de ida para pausas o atendimento deverá ser transferido para outro atendente disponível do horário, para que o cliente não fique sem resposta. O atendimento deverá ter registro no ixc e relato do que já foi tratado com o cliente caso tenha tido interação. Assim otimizando para o colaborador que assumiu e para o cliente não ter que repetir.</p>
+<p>Clientes que fizeram contato ativo e não responderam a janela do HSM precisa ser finalizado, não deve ser transferido para a fila de sem contato, pois ele não receberá as mensagens.</p>
+<p>Cliente que é atendido no whatsapp e transferido para o outro setor precisa transferir o atendimento no IXC também (em caso do cliente que foi atendido e depois precise de outro atendimento para outro departamento, deve finalizar o que foi feito com ele, e abrir outro para o departamento que foi solicitado).</p>
+<p>Cliente que já foi atendido, ao finalizar precisa colocar as classificações correspondentes, não pode deixar a que já está, precisa ser editada para as do padrão em cada caso (consultar tabela já criada.)</p>
+<p>Ao chamar o cliente no ativo e aparecer que o mesmo já se encontra em outro atendimento, precisa ver o histórico e analisar se não está com algum atendente, no caso de estiver com o automático, solicitar à equipe de desenvolvimento para transferir.</p>
+<p>Ao transferir o cliente precisa transferir para a fila do setor, em casos de transferir para algum atendente específico verifique se o mesmo está disponível antes.</p>
+<p>Ao finalizar o expediente precisa que seja finalizado todo o atendimento, não pode desligar e deixar o cliente sem atendimento.</p>
+<p>Sempre finalizar o login (deslogar da plataforma) sem está em pausa, antes de finalizar o login precisa tirar da pausa.</p>
+<p>Ao finalizar os atendimentos, enviar antes a mensagem de encerramento.</p>
+<p>Utilizar as mensagens pré-definidas dos assuntos que já estão criados.</p>
+<p>Qualquer erro é normalizado do fluxo, ao cair atendimento de solicitações que não é do departamento solicitado informe a Ruiany para análise, enviando o protocolo do atendimento.</p>
+<p>Antes de terminar o expediente, analisar os clientes que estão no pendentes para que seja finalizado ou registrado atendimento para os necessários.</p>
+<p>Em caso de dúvidas de como fazer os procedimentos do whatsapp, consultem a pasta de arquivos de tutoriais do grupo geral de atendimento.</p>
+<p>Clientes que não respondem no HSM (mensagens ativas), coloquem em pendência dando uma duração maior para que eles respondem. Não pode finalizar em 15 Min.</p>
+<p>Clientes de disparo de campanha, caso entrem em contato informando que receberam tal mensagem e gostariam de saber mais informações, devem enviar para a fila de campanha.</p>
+<p>Ao criar um novo contato precisa sempre colocar o código 55.</p>
+<p>Toda vez que for enviar mensagem para os clientes(abrir atendimento) precisa utilizar a fila ativa correspondente do seu setor.</p>
+<p>Atendimentos que aparecem erro (alerta vermelho embaixo na mensagem enviada) precisa analisar se o contato está certo Código do pais 55 + DDD e o numero, se possui conta no whatsapp, caso tenha whatsapp e o contato correto com ok , favor informar a Ruiany o protocolo para análise.</p>
+<p>Ao transferir o cliente para atendimento do automático, ou fila do contato sempre transferir para o fluxo que aparece ''17541- ARROBA BANDA LARGA- IXC –“.</p>
+<p>Ao transferir o cliente para o financeiro analisar o assunto e transferir para a fila de acordo. Ex: cliente querendo renovar ou duvidas de renovação deve ser transferido para a fila de renovação.</p>
+<p>Cliente do fluxo de atualização de dados, precisa ser feito o contato por telefone para confirmação de dados CPF e RG do titular.</p>
+<p>*Caso você dispare campanhas: Envio de disparo de HSM sempre analisar se a data e a hora de agendamento esta correta, e se está com o flow correspondente(em caso de utilização de flow).*</p>
+<p>TABELA DE CLASSIFICAÇÕES</p>
+<p>Símbolos dos Tipos de Canais de Atendimento da Plataforma</p>
+<p>Whatsapp</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAAtCAIAAACBAbTRAAADbklEQVR4Xu2W20tUQRzHvy/9Dz15Sde85LJZKl6iIhR6KAryqSCieggJrMAygogIQ4TUsqzMrSxN1ExNs9bL6kYqqBUmkqF28ZJmFla75z7NqLh1enE8i/lwPgyH2Tkzs5/9zcz+BmRlA33DCsP0M4bpZwwf+AmC4HF7BI8gSZL+nWGW7ifLsqZqOoisSaLEKj5iKX6qqhJl3qD+R8uZTzkHB88ee59552vlFPnKWiXNV7Hk9lMUZU4ub8SO9mS0RqMtBq5YVmjdlbivP8NN3DSEoijqB/PD56cRGhiFVrZ1p6LBiqZoOBPRuslbnAl4ZkNr0oAwxNbacBT5/GRJps/dXSfwKBz16+FIQEMMntIS+1epjYRj6wz5KblFg3uRw49tO0mrGXOgNAQV4atcez+4R9P6slAeiuoofSkL2d15nI6i51o/EQ8cfnOLhfpduBOM+6HOz53046eZcVRsQEk4HkT+VUojcD9iVJpQf7GQLxkOP01QJ8Qp2ENht+D22p6JPiIRySOhOhm3gnA3TF8KAnIHiolnudaXCFrj53Zc8UehBfkB53ryaVvWq0Jcnm35t+T5p7hO0lH6eXjg8RO16g9NyPFDQRDyA1FkHZkaG5gcgt2GXD9cD8bVAFbJ90dBMOtzyS+p8egyxk/UuqZ7aeRwMxiFIaxSm0JU8nqiHyXx1AYlsYc6zqM4CgWBrEOe/5GOC3SUfh4eOPxUURGJhGIbiizzO+xG4GZnKnsnaendOS0jHbQ67f5uaTyAwiBcD6wbcy7f+rLMQcie9nTcDvKeU3qWHSnd02/+7GlrO4yiNaiMp4dKdC/X/wtFEeRxzyQex6PK6v2rKw/HQ+vq5/uvDN8rG62P70xF5TqUWuzDFSyFyIZSCJ8fXWL6hHM76mx4stGbMGgWqbWiJnL+WRW27+Vp2lPyGE3BHH4sUyla3bdm1IaxPNu6BY71aI5ldZqF6bMljrU8jTrWn0lmk6GmqfpZOOHwk2UWvIvvrmUMZY+TyRny49RwNjp30jsL2uLgSsCL5B29aT0C24uarLJ8aBguv/lM5b2NzvKFTL0lgx/JyMJbZfaX+ITF+tFvpfmXHmFqOXeQydyNQfXq0uu0qvgmbAss1u9/YfoZw/QzhulnDNPPGKafMUw/Y5h+xsDgygbulY3pZ4zfJDw2ORKSuiAAAAAASUVORK5CYII=" alt="Print 1 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 1</figcaption></figure>
+<p>Chat Site (quando o cliente abandona o chat a conversa é finalizada)</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAApCAIAAADmhd0NAAACUklEQVR4Xu2WT0gUURzHH0h08SBZXoIKIoK6VBB1CI+e6mCCeIiwQ4foVJdOQVSHoKhDUESHlPXPLovbH3e3XbV1QFcCM91SoVzdjRCcLQJX3M1t168zOyHub0x487YnC+/D9/SY9+Uzb968GZapQBgdqASUtCyUtCyUdCaTXUytJrwYvQ6tGYONGG7F5IM/+hi9ToyySWcXdXy8hmANok2IP0ey28ycC7GbiJyGdqzwLUDnOKU80vn5EYTroJ1BogNz7Zsk0YnQHoxdpTMdUQbpnD6BwA5M36Oi9oQOYvQKnc+PuPQyQofx/hL1+1desvy8Rjs4EZUuJIMYYNRsi0w/wruztIUTUWl8uIHgPtPG2M3my+emliTJLvQcoC2cCEvH3Ygch28nAsx49Agy+Bm0huLRYTO2pL17aQsnQtIrP7/gzSF4GVwMbRvSzRBmmG2jxkZit/G2nhZxIiSNyHn0MrwoNbbSXlx1u3TIuBkPLeLEuXR26Qfcteiy6a7H2DAzz0qMh1oQOUWL+BGQTqfg3oVOm+t6fAxfn5ZI+1j++yAt4se5tAEGzplmm24PS9o6T2ae/P1S+vfn9M+0hR8h6Zw+Dk81Omy6ruIZEm5A7A766jF8Ab016D+CQO32r7QBXp8w/XqK62rlFYOnCtGL2fRCZnnJusz8nZp6iP6jGL9VWuAEIenf6QV4dqPvJKYeY+IuhloRvYzJ+1v8i+ZSn4wvPx3lREh65Ve8kPTT0f+PkPR2oaRloaRloaRloaRloaRloaRloaRlUZnSsxXIGhSi64KYZiwtAAAAAElFTkSuQmCC" alt="Print 2 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 2</figcaption></figure>
+<p>Chat - App Arroba Suporte (quando o cliente abandona o chat a conversa é finalizada)</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAAvCAIAAADMyRXaAAADaUlEQVR4Xu2XSyjlURzHb5H3vd7vy3jdcc2MxwrZYMFClh4RS2UhC2sr+2E1iZ23jCIRCzsJRUmRx9xQipVR5Bnm0z1dcczkHP/Sbfp/Fv+O8z/3dz7/7zn/B8uld2ORO7wM088Ypp8xTD9j/Kd+V1dX8/PzXV1dnZ2d3/8G/Zydm5tjpPxjHd7jt7y8XF9fn5eX9/UtGFNXV7e4uCiXUEbbb3V1taSkxOFwMP23t2AMI4uLi5eWluRCauj5sVjV1dUZGRlM/MWN0+nMzMykgQ1H2vSIUwKhWFVVJddSQ89vZWUlNzeX+ZDgiE1BQUFbW9vAwMDU1FRfX19rays9n904PdBmoeVaauj5jY6OCrO0tLTs7GyE6Hx8yfn5eXd3N7Glp6c73JA36cq11NDzGxkZIYyUlBQsFxYWJLPnzM7OMpLLwJIjCy3XUkPPb3h4mPnsdntLS4vw2NraGh8f/+lhYmLi4uJCnGpsbExISPjkhp0g11JD2y81NTUpKWlmZkZI3N3d/fKwt7fncrnu7+/FKXYkt0ViYiLXwyrLtdTQ8xsaGkpOTo6NjeXZKyQQ+vGM3t7eS8+O7Ojo4LFSUVERHR3NEsu11NDzGxwcJI/IyEj239nZGRLX19e/XyLyOzw8LC0tpTE9PR0TE8OWlWupoe0XHx8fFRUVFhZWVFR0fHwsopLY2NgoLy8/OTmhzZaIiIhgS8i11ND2Y3GZjwhtNhsPjrW1NeH08PBwdHTEq6ynp4eXr7hLyJIUrVYrqcu11NDzY/+xmQgvPDycI5b7+/t48F5pb2/v7+8ns9vbW2HMrdPQ0MBlhIaGciPLtdTQ9mNxyYMpg4KC+Eo4PT0dGxvLycnhbiBCYQZkmZ+fHxwcbHMTFxcn11JD24/FDQkJsbrhrcDG4s+AgAAS4p0xOTkpLFn3p2E0SF2upYae3/r6Oh6BgYFiYrRIUbRp+Pn5kWttbe3BwcHNzU1lZSUDOMV4HoFyLTX0/KCmpgYP4fQaovL39+eBUlhYWFZWxvrSyfgP+n6BnZ0dPkaYUoT3GpwIzNfX18fHhwa6fElsbm7KhdTQ9oPd3d3m5uasrCw2n/3fcJYxTU1N29vbcgll3uP3kZh+xjD9jGH6GcP0M4bpZwzTzximnzEsLu/G8vQfl3fi7X5/AIUWl9fJ9YscAAAAAElFTkSuQmCC" alt="Print 3 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 3</figcaption></figure>
+<p>Telegram</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAAyCAIAAABnFJp+AAADf0lEQVR4Xu2Xy08TURTGLxiJkYVAYtC4ckNiXLBzodEVCRHiwr/DhQQTNOjCBQtj4saVO6EE6INXBSkWKISoC0xbDK92ptPXtFBnqNMX06HTomdmKpRREzMMybWZLydN25x7cn+935l7iviqEFJ/8X/KwMBJ1YJBVYXQj6qQgYGTDAycZGDgJAMDJ+mAwe0XHTu5x172jjN6ZZw6ayHrrWTLu9D95fjLze9eTuCLB+o1euukGLtCcSCYanfFGkcCtSYfqogak6/JEuhw0QOhVFIoqVfqqhNhxHjxiZe9ZA3UDPqlrcOrKky+2kE/JDxdZeO8qF6vn7RjwDkAQ5OFrPkjQEVAwkUr8WyVhSXqKjpJIwb0wwCVks5BsdBvWz8WssGareTbYEo8nTbRiDGzk2ubpys7AQ370DiJpoPIGUZzYfQ+KH0cPkoAd91zxZnTORCNGN1u5sIIIe3PSqCpAOy4d435wuYyQqFUKkJk9wveJN+3wSJ7AE2SaIyE5MYRci6RU9fSQxoxbn2I1A7KP/NkoP0jPRTkcgURtn9wUDYNvCmVSvlC0U5nbi9HpFOSrfXQwxyvpI80YjTbqHJL2KmxCMeLIpHOr+zyK8l8RfBbaYEXgSSFpkPIJDXJDWdYXUsPacQ4ozhKxljjBMd2RjIPOGcicBTQG3bSEuG2MkIZY9B/fpRU19JDGjHOmWUM2VTrnND5iX7g3un4HC+zyU+nm8t092qiZTHiTwNGWMGon6DUtfSQRoyrk7KpIMZIbzL/hkheW4wiRxjZSDQqh41AM0FgeLHJACeyS70hmWoWJ1N1LsXKN8aQ79FXhkznp+mMKZiCueMw4KM9mibT/PN1Fg2Xb48uL6uupYc0YvStf5ceuMrDyuy/vhR95UvOb2c3uDydFeJZAZrblci9JpJgLWTxowEpE678+W976lp6SCOGmxPaFugyhhJw04GRJgNoipICOh6sBYfwK0e+/mgmj9P1B7M3DCPNykB12NZ/C9lOl61UfyiN1zACYoVij+dfR0NI68VwNFRE7xV6PAzMfEfWOn4IipcgAWbhGJ6DuiJWEPupVNtCrMFMlseTCiM1mIm7Lro/mE7uY/y3SZFYOtjOi7OJvS430+oI1dmIOhvZ6gh3eRhnIrfDFyBBvUZv6YCBgwwMnGRg4CQDAycZGDjJwMBJBgZOMjBw0k9Z+MICoy4aQgAAAABJRU5ErkJggg==" alt="Print 4 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 4</figcaption></figure>
+<p>Messenger</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAAtCAIAAACF9GTsAAACtElEQVR4Xu2U3UsUURiHX/v6CyK6iLox6Kqii66DMoqgi+imf6GbLgLJLE0xS9RN8yMwcVXKVdss08DCSt21bAXBCs1UELwIBD8Kcm125/w671nMdcB0zwxDC/Pw43D2zDuzz7znMLScDpB14b+EptMBQjrgWTqHZ+kcnqVzeJbO4ZjlL4HBKDoWEV4Wcu4sdi2FgH8epyexZxS7hrFtiEc5z5pCwzyEaa3Xw5Zl6AeOjoPGQJ9AEdAH0Hs1RtTKGI6MY+Cn9S4N9C1b57B9GDQC6t84I1zTMme9N1U0LcNLIiMMkukFvdk4vVyTMYiBJVtHVcdyxcTBsGDFnq0lhMwQoqa+qI5l06yQf0xd6/MC9FSNyYvPV1dC8M9an7N1dCzPDIJeK6dEOkBPeDz8eW1O7aCAOpqyl0HQK5wNu9hLIcT+LpM9WlfTAmqGb4avls2AmkAN3MWaWZwbVVcD/DKZ3fqfpZQtF3+bu9tFwozTCHqIO9NrBTkTOBVBTKDwG6heSTez676gi71ciYu9jwXLSYM6UA1Kp+QiToZQNLFWlis/otX8AlxWzy9zIOBiLyXH2kzyg2pZ8dIwaibAP8tAFaie5ILSr6B7fJUeqLJaPgPHg+5aXguZfPJ8ajfbQHeVYiWoHHQfWe945HlFUhqQPeCu5fSCubPc5G6VgG6DSpMijQvVmLzoww6fObXgrqWkoC9OVUqxaLPImirk98Wtj0gFTUvJxVaDe5b/zxTw1l8IGNabU0TfUn44zz+K8/5eF5QLjpz8zQ219YW43BkzTf29TqBvKSl+K+iW8rsJylvXxYyc2Im62Msxu11MYMsyu1tQMQ6VGP6PscaIcbUzduUZj3VDxpfvtg6iBVuWlf1mXo8RNexu6KbYsnQNz9I5PEvn8Cydw7N0Ds/SOTxL5/gDDRdruBAdzWEAAAAASUVORK5CYII=" alt="Print 5 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 5</figcaption></figure>
+<p>Instagram</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADsAAAAyCAIAAABtSDQsAAAE20lEQVR4Xu3ZbUwTBxzHcWKyd0tMdLqBk8Gc4gMiKk5EnucTlZjJfEANG5AYJhgdD2NuQmRsVhGhUEFQYThX55Sn8qAWtOKoJQKjCNRAH4CWpwJCbaFQ2tL7rS4uWe5dr+scST8vr/f/55vLJXe52mGusSMf+N+bg8Xdc43d9FxjK7Y+W7H12Yqtz1ZsfZYW9w2qqx8q8m/0MvMlOUzRtayu65mdrPTnZZmdNbkiQblsrF9FnrGMRcVFBZLwsOajR56eONRwaj/v+711aXu4TNqDKzseFAXU3vTj3PbmFG+pbaK3kSctQL04Pbo5cffj73ZxUwM52UGcAtp9Fq26eGdlxTb2vUA2x59d61XG2VBa48Gu2VRVf7COPE8VxWJ+iTTVn5PmW5Xrx1b1TZDfr/42JVY2eN3mu995sr5UlNFK3kIJxeKLgewc/5JCv1tGvXG4WV7pm1fjebnOg1m/kcl3ZzasvdTgml2/jjEpHDJ1t6z6uXXtTYFXKXkLJVSK5e1DV/xu/+J1Q5jXNKuZqXVj8N2zmtcxBK7pbcvp7R/ShSvOdTjS9TKl0CtHKxlRFgg6V10XurLUajV5l/moFIu4ot+2Xq/0yJ+WK2V5vzetSWtbc77D/szL3Ed60bChS6FmPhQvOmXU6ft356hvPNU+6ZU6XpasLBxu7CHvMh+l4qqOe5vzH7llzM7o+5LLnq9IES35VlffRegNyvNlyrRy051g4Ivlb8UOLk3S5HANzwblizPky/OH7grJu8xHpVha3srbmNW86kcYieFElmxZwotQhqly0O3rcYe4cYdYhfNXIAil7w+jSxK1DI5ROKhYSFc4ZyvKnpF3mY9Ksay0sX1zinhjnClLnZw3vj7MwKo2toomHA5rnKM09jETi6Ixo59JKHr5zkkdo9ooHBh998yo08WREgF5l/moFCsqeP07Yka3hREEoaNf1AfsJhg50EzNum4nNuwzrj6sW/I59Abt3nNTC2JmM6sIYb9y4emxZfSR4j/Iu8xHpXiMw1WFhE7vpWHWgGw6QrZimxt0M+DVIyAQPjTUN5luEr1z1MyCL4nsSqJDrpqfqHJKfcF+Q8XKxw91EUEI94ZaCVYGwtcgwg1RvtBOv35y6PXwDcHKg7OLInH1Pholk/Pj1U5nFLVv6D5WtTxBzBYcXwsBF+IWHHsPxx1x7ANEOiFqCyJ8ELwBn/jhYxqWhoArQEWjdnHChGPSsFhG3mU+KsXKYQW+ccNpF5zzfnVFr32BWDvE2SFmHiLnIfRtfGaPXS7wcMcp+qsrvues1iF+8qMkjUZD3mU+KsUmE1fDcWE1Ml1Qd+GvFwglFF0Y6IC8Hb3t6BFCJoZa9eqns7mGhZE6+7gR//PkLZRQLB7q6USBJ371wR1/3AlCQxparqHlJzQWgleA2jyUZuFSMoID4BlMrIyYfP+EXPovPPCmKRebiNv4uHsAj0JRdxh1R8A9BM4BlH8KVhAu+yPVEzGbsM8L22nTm8Mk93jkeaqoF5sMDAwM8rIMDfFoikXjSfCjwT2K6jDc2o/cYKTsNEQHyZOTTKeRJy1gUbHJ1NTU2NhYX19fd3e35B+kUqnp4Pj4uOkE8oxlLC3+79mKrc9WbH22YuuzFVufrdj6bMXWZyu2vjn4T/rrLwxzx5+sVv8HErzLhAAAAABJRU5ErkJggg==" alt="Print 6 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 6</figcaption></figure>
+<p>Reclame aqui</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADcAAAAlCAIAAABpp+aBAAACT0lEQVR4XmP4PxQAA7rAoASjrqQeGO6uXHQlvuOEWfdJKzCy6D5hueBS7MnnS//++wuU9d7Sx9AfCUHoOkkHZLry19/vvaccmo8ZNB8zBKKWoyASiNqOmyy6HLn32X7RSckMnQFgFIiumXRApiuff7kOcRaaK4Go/bhB6WEThl4/ho4giEPRNZMOyHTl+VfrkR134NHUmRdC4Q6dckaPYb4rQ0vwAIfllnstTVA3GfSddgSK3Hp3CO7Kyaf1GOa5MrSHMfeGM3QMXFjOvRQFTpQgtPRqBlDk0JNZECe2HQdFOsMEH+OlNeoLChk6/NE1kw7IceXPP187T1jDQs5g8526q693dJ6wAjnxmOGss7oMa+wYWkMmXNytM79wwMISmHVakbIOBDUdMwAGYdcJfYZVdgxtQVwToh9/+yQ5PXXAXHnp1UY0JzaDs3bZYWOGiT4MLSFAlyXunA5UyT8pbsBifOe9DkhJCQy/7lN2vafsgdzWYwYtwOQ40ZehHVgABdYeX7vlwQWO/qgBc+XiKymQ8Gs5arD6RuHKazkQR08BZu1lTgwtoUBXglBX4ICVRF9+vp54xgNe6xx/umD/o8kQbt9J/dBd5gxtkGISjgbCledermk7bgpPjo8/nr36ejs0aI8DSQOmyX5x22bk7F8QtmUiJFDRjSAdkOzK9bcq4NENJD/+fPH44zkwFyTYd1JPam0UROXzH18ZukDhimoAOYBkVw4IGHUl9cCoK6kHRl1JPTDqSuqBUVdSD4y6knpg1JXUA6OupB4YGq4EAL36fo57XnZUAAAAAElFTkSuQmCC" alt="Print 7 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 7</figcaption></figure>
+<p>E-mail</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAIAAAAzED4bAAACuklEQVR4XmP4PygBA7rA4ACjziIFjDqLFDDqLFLAqLNIAeQ469+/f3+B4A+x6N9foI5/6KbgBeQ469fnr2+PnH22YhuR6PWuo7/efkQ3BS8g2Vk/Pn7++ODZs6Wbj8k67+NSJ4gOi5je75r75f6T31+/o5uFG5DsrE/X7l6vm/hy0757lZMPCKnvYuDFg/bwyN5IrX2z/+Ttuonf7z1FNws3IN1Zl26dcU89oerzZM4akMuEtTBdA3UTl8y11LqXa3ed90w/pe/3/fY9dLNwA5Kd9fHizTNOSXuYxI6rerxYv+thx/xDUoa7mQRQ3MTIv09A6WZ+59uDp897Z+xhljuua//t9n10s3ADkp0FCi2npF0MQHcIHZN3ebJw/YO6GYekjJCdtV9A+XZe26sdh8+7p+9llgeK0NNZIBcclrQCuuxR54IDwjrwuLtV0PV655FTFpG7GUUhgvR21iFJrccTl3299/hezdT9otr7BRSvp9Z/ufPw1ab9R5XtgLE5AM46Im/8qHvh4zlrLkWVPJ6x6tGUpQ+75gMLqitJ1fc65zxbtvWknsceZmF6OAuS5HczCR1VtXg+d9OzFVuPyXruYZY8Ju9wu6r/btfsUybhe1nkDwoa3e+c83rzgZPGvruZhWnuLEhoHVW1edy/9PHsNYfFXXcxiEBiajeD7B4GVTh3H5fWneqJz+atP2Xse0LfmcbOunrnWm7zs8WbHs1dc0jIGuICXGgfr8ad6glvth68Fl3+7fYDdLNwA5Kd9evT10837wNL+ePq/nu4pPZwSeBHwMrn0ZQln6/e+fXhM7pZuAHJzvoPrqrf7Dn2uHf+o97ZxKDnK7b/ePUW3RS8gBxngZopf/78/f2bSARUDGwJoZuCF5DjLDqAUWeRAkadRQoYdRYpYNRZpIBRZ5ECRp1FChikzgIAQd/IMO5fD7gAAAAASUVORK5CYII=" alt="Print 8 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 8</figcaption></figure>
+<p>Google Avaliações</p>
+<figure class="print"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAAArCAIAAABes/e2AAAC1UlEQVR4Xu2VX0hTURjAD66oFyGMLF8zevFfPRRRL/UaPgRJUGYPQdlLEIEERi9BGkIQSVKsLBINHRlCNK2ZTQ2RRjrb0ummZm5LzNx2zr07W87TOWc5uqOHc3ZN9nB/XO6+851zuD++79xdQLIPkJ7IAgwnMYAv+wBq9mE4iWE4iWE4iWE4iZGpk4JURdFmFJZcDzJyWnt21OOOfXgfG7LjmSntCl3IO/HyxAbekfMnyKFCUlbArsN7yeVzsdGP6YszQtKJV2jlWRMp2UXKdpKSfCZUWsCGNK44pqJ1aJ+MExeKddlIMa1NPjmwO1FfG++1YtvrRM0lUn5Edbv4Ku05k0fGiUMe7icH88i+Pbj/rWYiEtEMdSDsxIsUD9rJgIk8AKuPrrIkDMMI8vrhuB9NLEQn/cgVUKcW0nZKI+4E6W1ltplYAekFeNGaTLsCyva7aPNtuLUBbmlAoA4VNik/w5qtssg5JWYfk25AenJWAj3JtNOvgDoI6vnFg4J78HtIs1UWcSfWOxy0kTfAa93RNtZMh0ihj1danLB5BFrcqMhMtVCxmdnrQdjpDxF733FgqdjWWT0UHP97wjGNc+8gWqcLr9h7l/YnL4WEE+SlavEOgvZK0HE67+XFus+d9oC7d951w9mWa+4Ct36Z6pHjG1u8QU4U+kmj99rR56D9DNWil8lSmdNRyYaWk8B8v3E4qrKepm+UQs4pRauvv8haY7KcTcpt6qgq7b72Yq5fZd56kXViH/9ktegBp417MtX31Ns3GPii8M7ylum1knXaCOSc8LIHLzl5MJEM1B8j6tIY/Y0vOnB4hgfDOBLQbJNE2Im3hnhukk+nWOC6QsaqWTBaRSaus8BRvjrdyILho4m51tSWDBB24uDIfDTkY0H4Kw7P0iAWmqZJGkRDXgyDbGp5Mgp1ffPknNZInWK9x/mfZOb0fzGcxDCcxDCcxDCcxPgNA706CBuXNNUAAAAASUVORK5CYII=" alt="Print 9 do documento PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx"><figcaption>Print 9</figcaption></figure></div></div><section class="rel"><h2>Conteudos relacionados</h2><div class="grid"><a class="card" href="../../doc/padrao-de-atendimento-arroba/normas-do-arroba.html"><h3>Normas do Arroba</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/padrao-de-atendimento-arroba/padrao-de-qualidade-de-atendimento-ixc-setores.html"><h3>PADRÃO DE QUALIDADE DE ATENDIMENTO - IXC SETORES</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/padrao-de-atendimento-arroba/padrao-de-qualidade-telefonia-setores-docx.html"><h3>PADRÃO DE QUALIDADE TELEFONIA (SETORES)</h3><span class="go">Abrir &rsaquo;</span></a><a class="card" href="../../doc/padrao-de-atendimento-arroba/protocolo-filas-de-atendimentos-docx.html"><h3>PROTOCOLO - FILAS DE ATENDIMENTOS</h3><span class="go">Abrir &rsaquo;</span></a></div></section><nav class="pager"><a href="../../doc/padrao-de-atendimento-arroba/normas-do-arroba.html"><small>Anterior</small>Normas do Arroba</a><a class="prox" href="../../doc/padrao-de-atendimento-arroba/padrao-de-qualidade-de-atendimento-ixc-setores.html"><small>Proximo</small>PADRÃO DE QUALIDADE DE ATENDIMENTO - IXC SETORES</a></nav><details class="rast"><summary>Fonte e rastreabilidade</summary><dl><dt>ID do conteudo</dt><dd>C023</dd><dt>Documento</dt><dd>PADRÃO DE ATENDIMENTO AO CLIENTE - WHATSAPP SETORES.docx</dd><dt>Setor</dt><dd>padrao-de-atendimento-arroba</dd><dt>Ultima atualizacao (Drive)</dt><dd>2025-12-26</dd><dt>Origem</dt><dd>DOCX (Drive)</dd><dt>Documento no Drive</dt><dd><a href="https://docs.google.com/document/d/14fkH4TaExnxZD_CN_rMhaqOP8uvb74c4" target="_blank" rel="noopener">abrir no Google Drive</a></dd></dl></details></article></div></main>
+<footer><div class="footer-grid">
+<div><p><strong>Portal da Ouvidoria</strong></p><p>Arroba Banda Larga</p><p>Setor de Ouvidoria</p></div>
+<div><p><strong>Finalidade</strong></p><p>Consulta rapida de treinamentos, instrucoes, procedimentos e documentacoes usadas no dia a dia do setor.</p></div>
+<div><p><strong>Fonte oficial</strong></p><p><a href="https://drive.google.com/drive/folders/1Yxzfd5hW-3q8HxXfU1ZL1v8s2j5K1_QE" target="_blank" rel="noopener">Pasta PORTAL OUVIDORIA no Google Drive</a></p><p>Build: PORTAL DA OUVIDORIA V10</p></div>
+<div><p><strong>Suporte</strong></p><p>Manutencao: Desenvolvimento Arroba</p><p>Uso interno - Arroba Banda Larga</p></div>
+</div></footer></body></html>
