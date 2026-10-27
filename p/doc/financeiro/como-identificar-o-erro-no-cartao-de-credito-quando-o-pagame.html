@@ -522,7 +522,10 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
  }
  b.addEventListener('input',run);
  document.querySelectorAll('[data-toggle=ixc-full]').forEach(function(bt){bt.addEventListener('click',function(){var d=bt.nextElementSibling;var ab=d.hasAttribute('hidden');if(ab){d.removeAttribute('hidden')}else{d.setAttribute('hidden','')}bt.textContent=ab?'Ocultar explicação':'Ver explicação completa'})});
- (function(){[['f-trein','c-trein','.tgrp'],['f-drives','c-drives','.pdir']].forEach(function(c){
+ var f=document.getElementById('form-ixc');if(f)f.addEventListener('submit',function(e){e.preventDefault();run()});
+})();
+</script>
+<script>(function(){[['f-trein','c-trein','.tgrp'],['f-drives','c-drives','.pdir']].forEach(function(c){
  var i=document.getElementById(c[0]);if(!i)return;var ct=document.getElementById(c[1]);
  function nz(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
  function ap(){var q=nz(i.value.trim()),n=0,tot=document.querySelectorAll(c[2]).length;
@@ -531,8 +534,4 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
     var ok=!q||t.indexOf(q)>-1;el.hidden=!ok;if(ok)n++;if(q&&ok)el.open=true;if(!q)el.open=false;});
   if(ct)ct.textContent=(q?n+' de ':'')+tot+(c[0]==='f-trein'?' pastas':' pastas');}
  i.addEventListener('input',ap);})})();
-
- var f=document.getElementById('form-ixc');if(f)f.addEventListener('submit',function(e){e.preventDefault();run()});
-})();
-</script>
-</body></html>
+</script></body></html>
