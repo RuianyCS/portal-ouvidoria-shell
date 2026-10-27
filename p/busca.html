@@ -94,7 +94,8 @@ fetch("search_index.json").then(function(r){return r.json();}).then(function(idx
   }
   if(ok)hits.push({e:e,score:score});
  });
- hits.forEach(function(h){if(h.e&&h.e.destaque)h.score+=50;});
+ var _qixc=/ixc|assunt|diagnostic|motiv/.test(norm(q));
+ hits.forEach(function(h){if(h.e&&h.e.destaque&&_qixc)h.score+=50;});
  hits.sort(function(a,b){return b.score-a.score;});
  document.getElementById("titulo").textContent="Resultados da busca";
  document.getElementById("resumo").textContent=hits.length+' resultado(s) para "'+q+'"'+(filtro?' em '+filtro.replace(/-/g," "):"")+'.';
