@@ -212,6 +212,33 @@ footer p{margin:3px 0}footer strong{color:#fff}footer a{color:var(--amarelo)}
 }
 @media(max-width:520px){.grid{grid-template-columns:1fr}.linha .m{display:none}}
 /* ===== DESIGN SYSTEM v2026-10-27e ===== */
+/* biblioteca de treinamento + arvore de drives */
+.cat-bar{display:flex;gap:12px;align-items:center;margin:18px 0 20px;flex-wrap:wrap}
+.cat-bar input{flex:1;min-width:240px;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r2);font-size:.94rem;background:#fff;color:var(--fg)}
+.cat-bar input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(26,111,181,.12)}
+.cont{font-size:.8rem;color:var(--mut);font-weight:600}
+.trein-lib,.drv-tree{display:flex;flex-direction:column;gap:8px}
+.tgrp,.pdir{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.tgrp>summary,.pdir>summary{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;list-style:none}
+.tgrp>summary::-webkit-details-marker,.pdir>summary::-webkit-details-marker{display:none}
+.tgrp>summary:hover,.pdir>summary:hover{background:#f8fafc}
+.fic{width:22px;height:16px;border-radius:4px;background:#f6c445;position:relative;flex:0 0 auto;margin-top:3px}
+.fic:before{content:"";position:absolute;top:-4px;left:0;width:11px;height:5px;border-radius:3px 3px 0 0;background:#f2b134}
+.fname{font-weight:600;color:var(--navy);font-size:.95rem;flex:1;min-width:0;overflow-wrap:anywhere}
+.fmeta{font-size:.78rem;color:var(--mut);white-space:nowrap}
+.fx{font-size:.74rem;color:var(--azul);font-weight:600}
+.tlist,.plist{list-style:none;margin:0;padding:6px 10px 12px;border-top:1px solid var(--line2)}
+.trein,.pitem{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;color:var(--fg);text-decoration:none;min-width:0}
+.trein:hover,.pitem:hover{background:#f5f9fd}
+.play{width:26px;height:26px;border-radius:50%;background:#eaf2fa;color:var(--azul);display:grid;place-items:center;font-size:.62rem;flex:0 0 auto}
+.trein .tt,.pitem .tt{flex:1;min-width:0;font-size:.92rem;overflow-wrap:anywhere}
+.badge.v{background:#eef3f8;color:#4a5c6d}
+.pdir .pin{padding:2px 12px 12px;border-top:1px solid var(--line2)}
+.pbc{font-size:.74rem;color:var(--mut);padding:8px 4px 2px}
+.pdir .n1,.pdir .n2,.pdir .n3,.pdir .n4{margin:8px 0 6px 12px}
+.pdir .n1{border-left:2px solid #e8eef4;padding-left:6px}
+[hidden]{display:none!important}
+
 :root{
  --navy:#123c5e;--navy2:#0d3050;--azul:#1a6fb5;--azul2:#155c96;--amarelo:#f2b134;
  --bg:#f7f9fb;--card:#fff;--line:#e4eaf0;--line2:#eef2f6;--fg:#1d2b36;--mut:#647585;
