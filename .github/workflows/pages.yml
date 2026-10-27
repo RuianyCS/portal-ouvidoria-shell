@@ -1,4 +1,4 @@
-name: Shell → GitHub Pages (build + gate + commit automático)
+name: Portal público → GitHub Pages (bootstrap + gate)
 on:
   push: {branches: [main]}
   workflow_dispatch: {}
@@ -7,20 +7,17 @@ concurrency: {group: shell-pages, cancel-in-progress: false}
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: {node-version: '20'}
-      - name: Build
-        run: cd src && npm ci --no-fund --no-audit && node build.mjs
-      - name: Gate anti-secret
+      - name: Garantir bootstrap público na raiz (portal em /p/)
         run: |
-          cp src/dist/index.html src/dist/app.js . 2>/dev/null || { echo 'build não gerou artefatos'; exit 1; }
-          python3 scripts/gate_check.py
-      - name: Publicar artefatos na raiz (Pages serve main)
+          cp scripts/public_redirect/index.html index.html
+          cp scripts/public_redirect/app.js app.js
+      - name: Gate anti-secret
+        run: python3 scripts/gate_check.py
+      - name: Commitar se mudou
         run: |
           git config user.name "portal-shell-ci" && git config user.email "ci@users.noreply.github.com"
           git add index.html app.js
-          git diff --cached --quiet && echo "sem mudanças" || (git commit -m "deploy: shell compilado [skip ci]" && git push)
-          echo "PAGES_URL=https://ruianycs.github.io/portal-ouvidoria-shell/" >> $GITHUB_STEP_SUMMARY
+          git diff --cached --quiet && echo "sem mudanças" || (git commit -m "deploy: bootstrap publico [skip ci]" && git push)
