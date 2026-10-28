@@ -1,27 +1,27 @@
 {
- "ts": "2026-10-27T20:06:54+00:00",
+ "ts": "2026-10-28T00:32:12+00:00",
  "status": "OK",
  "ref": "mxjdefwvaluwuqordfnt",
- "latencia_ms": 3924,
+ "latencia_ms": 3040,
  "checks": {
   "auth": {
    "http": 200,
-   "ms": 890,
+   "ms": 804,
    "ok": true
   },
   "edge_function": {
    "http": 401,
-   "ms": 1354,
+   "ms": 872,
    "ok": true
   },
   "rest": {
    "http": 401,
-   "ms": 952,
+   "ms": 950,
    "ok": true
   },
   "storage": {
    "http": 400,
-   "ms": 728,
+   "ms": 414,
    "ok": true
   }
  }
