@@ -1926,32 +1926,7 @@
    "tipo": "institucional",
    "termos": "historia arroba net 2007 lan house campos goytacazes radio cabo fibra optica trajetoria evolucao provedor proposito",
    "url": "",
-   "data": "",
-   "aliases": [
-    "nossa historia",
-    "historia",
-    "historia do arroba",
-    "arroba net",
-    "lan house",
-    "2007",
-    "origem",
-    "fundacao",
-    "trajetoria",
-    "linha do tempo",
-    "radio",
-    "cabo",
-    "fibra optica",
-    "campos dos goytacazes",
-    "comeco",
-    "evolucao"
-   ],
-   "headings": [
-    "tudo comecou como arroba net",
-    "de lan house a provedor de internet",
-    "melhorar a experiencia dos clientes",
-    "referencia na regiao"
-   ],
-   "peso": 1
+   "data": ""
   },
   {
    "t": "Cultura e valores",
@@ -1960,30 +1935,7 @@
    "tipo": "institucional",
    "termos": "cultura valores empatia transparencia relacionamento aprendizado ideologia jeito arroba pessoas proposito visao",
    "url": "",
-   "data": "",
-   "aliases": [
-    "cultura",
-    "cultura e valores",
-    "valores",
-    "empatia",
-    "transparencia",
-    "relacionamento",
-    "aprendizado",
-    "ideologia",
-    "jeito arroba",
-    "proposito"
-   ],
-   "headings": [
-    "quatro valores que guiam o dia a dia",
-    "empatia",
-    "transparencia",
-    "relacionamento",
-    "aprendizado",
-    "pessoas sao o motivo de tudo existir",
-    "conectar pessoas com qualidade",
-    "para onde caminhamos"
-   ],
-   "peso": 1
+   "data": ""
   },
   {
    "t": "Missão e visão",
@@ -1992,32 +1944,7 @@
    "tipo": "institucional",
    "termos": "missao visao ouvidoria 2026 pilares proteger expandir perpetuar metas satisfacao pesquisa churn customer success",
    "url": "",
-   "data": "",
-   "aliases": [
-    "missao",
-    "missao e visao",
-    "visao",
-    "metas",
-    "pilares",
-    "proteger",
-    "expandir",
-    "perpetuar",
-    "churn",
-    "missao da ouvidoria",
-    "missao do cs"
-   ],
-   "headings": [
-    "missao da ouvidoria",
-    "proteger, expandir e perpetuar",
-    "proteger",
-    "expandir",
-    "perpetuar",
-    "onde a ouvidoria concentra esforcos",
-    "metas de pesquisa e satisfacao",
-    "como enxergamos o futuro",
-    "da reacao a prevencao"
-   ],
-   "peso": 1
+   "data": ""
   },
   {
    "t": "Nossa Ouvidoria",
@@ -2026,21 +1953,7 @@
    "tipo": "institucional",
    "termos": "ouvidoria quem somos canal confianca orgao estrategico ultima instancia voz do cliente responsabilidades",
    "url": "",
-   "data": "",
-   "aliases": [
-    "nossa ouvidoria",
-    "ouvidoria",
-    "quem somos",
-    "canal de confianca",
-    "ultima instancia",
-    "voz do cliente"
-   ],
-   "headings": [
-    "o canal de confianca entre cliente e empresa",
-    "orgao estrategico de ultima instancia",
-    "o que cabe a ouvidoria"
-   ],
-   "peso": 1
+   "data": ""
   },
   {
    "t": "Nosso papel",
@@ -2049,50 +1962,7 @@
    "tipo": "institucional",
    "termos": "papel responsabilidades principios imparcialidade transparencia empatia etica agilidade causa raiz confidencialidade melhoria continua escuta ativa customer success cs",
    "url": "",
-   "data": "",
-   "aliases": [
-    "nosso papel",
-    "papel",
-    "responsabilidades",
-    "responsabilidade",
-    "principios",
-    "principio",
-    "como atuamos"
-   ],
-   "headings": [
-    "voz do cliente dentro da empresa",
-    "quatro frentes de atuacao",
-    "oito principios que orientam cada caso",
-    "imparcialidade",
-    "transparencia",
-    "empatia",
-    "etica",
-    "agilidade",
-    "resolucao com causa raiz",
-    "confidencialidade",
-    "compromisso com a melhoria continua",
-    "praticas do dia a dia",
-    "escuta ativa",
-    "imparcialidade",
-    "agilidade e transparencia",
-    "resolucao com causa raiz",
-    "inteligencia estrategica",
-    "como a ouvidoria se conecta ao cs",
-    "as cinco frentes do cs",
-    "atendimento",
-    "desenvolvimento",
-    "ouvidoria",
-    "criativo",
-    "pos-venda",
-    "o lugar da ouvidoria dentro do cs",
-    "canal de ultima instancia",
-    "defesa do cliente",
-    "analise estrategica",
-    "integracao com o cs",
-    "cultura de melhoria continua",
-    "a ouvidoria e responsavel por"
-   ],
-   "peso": 1
+   "data": ""
   },
   {
    "t": "Institucional",
@@ -2101,12 +1971,25 @@
    "tipo": "institucional",
    "termos": "institucional quem somos empresa identidade historia cultura missao valores ouvidoria",
    "url": "",
+   "data": ""
+  },
+  {
+   "t": "Termos e siglas",
+   "rota": "glossario.html",
+   "setor": "institucional",
+   "tipo": "institucional",
+   "url": "",
    "data": "",
-   "aliases": [
-    "institucional"
-   ],
-   "headings": [],
-   "peso": 1
+   "termos": "termos siglas glossario cs csat nps sla churn causa raiz feedback sac ouvidoria customer success satisfacao participacao indicador vocabulario dicionario sigla"
+  },
+  {
+   "t": "Rotinas e fluxos do setor",
+   "rota": "rotinas.html",
+   "setor": "institucional",
+   "tipo": "institucional",
+   "url": "",
+   "data": "",
+   "termos": "rotina rotinas fluxo fluxos tarefas operacionais fechamento fechamento semanal mensal motivacional tatico indicadores metas whatsapp teams incicle registro manifestacao analise intersetorial encerramento relatorio comunicacao interna etica lgpd"
   }
  ],
  "sinonimos": {
