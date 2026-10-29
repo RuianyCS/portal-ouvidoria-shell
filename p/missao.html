@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Miss&amp;atilde;o — Portal da Ouvidoria</title><style>
+<title>Missão — Missão do Setor — Portal da Ouvidoria</title><style>
 :root{--navy:#0f3d63;--azul:#1769aa;--amarelo:#f5b63b;--bg:#f6f8fb;--fg:#1c2733;--mut:#5f6f7f;
 --card:#fff;--line:#e3e9f0;--rail:250px;--railmin:64px;--read:860px;--shadow:0 1px 2px rgba(16,40,64,.06),0 6px 18px rgba(16,40,64,.05)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -499,6 +499,32 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
 .recent .linha .t strong{font-weight:650}
 .side .nav a.item .txt{display:inline}
 
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
 
 /* institucional */
 .inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
@@ -526,7 +552,150 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
 .src a{color:var(--azul)}
 .pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
 @media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
-</style></head><body>
+
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
+
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
+
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
+
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
+
+:root{--inst-fs:17px;--inst-lh:1.68;--inst-w:820px}
+main.pag{max-width:1120px}
+.inst{font-family:Inter,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.inst h1.pg{font-size:clamp(30px,3.6vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:6px 0 10px}
+.inst .lead{font-size:19px;line-height:1.6;color:#3d4b5a;max-width:760px;margin:0 0 6px}
+.inst .corpo{max-width:var(--inst-w)}
+.inst .corpo p{font-size:var(--inst-fs);line-height:var(--inst-lh);color:#25313d;margin:0 0 18px}
+.inst h2{font-size:clamp(22px,2.4vw,29px);font-weight:750;color:#16324f;margin:38px 0 12px;letter-spacing:-.01em}
+.inst h3{font-size:20px;font-weight:700;color:#16324f;margin:26px 0 8px}
+.inst .duo{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;margin:34px 0}
+.inst .duo.inv .fig{order:2}
+.inst .fig{margin:0}
+.inst .fig img{width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 10px 28px rgba(16,42,67,.13);object-fit:cover}
+.inst .fig figcaption{font-size:13.5px;color:#64748b;margin-top:8px;line-height:1.45}
+.inst .destaque{border-left:4px solid #ffb954;background:#fffaf1;padding:16px 20px;border-radius:0 12px 12px 0;margin:26px 0;font-size:17px;line-height:1.6;color:#3a2c14}
+.inst .tl{list-style:none;padding:0;margin:22px 0}
+.inst .tl li{position:relative;padding:0 0 24px 34px;border-left:2px solid #e3e9f0}
+.inst .tl li:last-child{border-left-color:transparent}
+.inst .tl li:before{content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:#ffb954;box-shadow:0 0 0 3px #fff4e0}
+.inst .tl b{display:block;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:#b9761a;margin-bottom:4px}
+.inst .tl .tt{font-weight:700;color:#16324f;font-size:18px;display:block;margin-bottom:4px}
+.inst .tl p{margin:0;font-size:16px;line-height:1.6;color:#33414f}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:20px 0}
+.val{background:#fff;border:1px solid #e6ecf2;border-radius:14px;padding:20px 22px;box-shadow:0 6px 18px rgba(16,42,67,.06)}
+.val b{display:block;font-size:17px;color:#16324f;margin-bottom:6px}
+.val p{margin:0;font-size:15.5px;line-height:1.6;color:#3d4b5a}
+.princ{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:18px 0}
+.princ div{background:#f8fbfe;border:1px solid #e6eef6;border-radius:12px;padding:14px 16px}
+.princ b{color:#16324f;font-size:15.5px}
+.princ p{margin:4px 0 0;font-size:15px;line-height:1.55;color:#40505f}
+.inst .fonte{margin-top:34px;padding-top:14px;border-top:1px solid #e6ecf2;font-size:13px;color:#6b7a89}
+.inst .fonte a{color:#1a6fb5}
+@media(max-width:760px){.inst .duo{grid-template-columns:1fr;gap:18px}.inst .duo.inv .fig{order:0}main.pag{max-width:100%}}
+</style>
+</head><body>
 <input type="checkbox" id="drawer" class="sb-toggle">
 <input type="checkbox" id="rail" class="sb-toggle">
 <header class="topbar"><label for="drawer" aria-label="Abrir menu">&#9776;</label><b>Portal da <span>Ouvidoria</span></b></header>
@@ -535,13 +704,15 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
 <label for="rail" class="rail-btn" title="Recolher ou expandir o menu" aria-label="Recolher menu">&#9776;</label></div>
 <div class="side-busca"><form action="busca.html" method="get"><input type="hidden" name="rota" value="busca"><input type="search" name="q" placeholder="Buscar no portal" aria-label="Buscar no portal"><button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg></button></form></div><nav class="nav"><a class="item" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/></svg><span class="txt">Início</span></a><a class="item" href="cat-procedimentos-do-setor.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4l2 2.5h7A1.5 1.5 0 0 1 19 10v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 3 18z"/></svg><span class="txt">Procedimentos</span></a><a class="item" href="assuntos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 12 22l-9-9 8.6-8.6H20a1 1 0 0 1 1 1z"/><circle cx="16.5" cy="7.5" r="1.3"/></svg><span class="txt">Assuntos IXC</span></a><a class="item" href="cat-financeiro.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 10v4M18 10v4"/></svg><span class="txt">Financeiro</span></a><a class="item" href="cat-noc.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><path d="M6.5 6.5a7.8 7.8 0 0 0 0 11M17.5 6.5a7.8 7.8 0 0 1 0 11M3.6 3.6a12 12 0 0 0 0 16.8M20.4 3.6a12 12 0 0 1 0 16.8"/></svg><span class="txt">NOC</span></a><a class="item" href="cat-comercial.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2.2l2.4 11h11l2-8H6"/></svg><span class="txt">Comercial</span></a><a class="item ext"  href="https://sites.google.com/arrobabandalarga.com.br/portal-interno-cs/in%C3%ADcio?authuser=2" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-9.5A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.5 2.9C19.5 15.4 12 20 12 20z"/></svg><span class="txt">CSC</span></a><a class="item" href="cat-treinamentos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg><span class="txt">Treinamentos</span></a><a class="item" href="drives.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3.5h8l4.5 8-4 7h-9l-4-7z"/><path d="M8 3.5 12 11h8.5M12 11l-4.5 7.5"/></svg><span class="txt">Drives</span></a><a class="item" href="cat-outros-setores.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span class="txt">Outros</span></a></nav></aside>
 <label for="drawer" class="scrim" aria-label="Fechar menu"></label>
-<main class="pag"><div class="wrap"><div class="crumbs"><div class="crumbs"><a href="index.html">In&iacute;cio</a><i>&rsaquo;</i><a href="institucional.html">Institucional</a><i>&rsaquo;</i><span>Miss&atilde;o</span></div></div><h1 class="pg">Miss&atilde;o da Arroba</h1><p class="lead">O compromisso atual com o cliente, na vers&atilde;o vigente de 2026.</p><div class="sec-t"><h2>Miss&atilde;o do CS 2026</h2></div><div class="quote">Garantir a saúde do ciclo de vida e financeiro do cliente, protegendo a base e a receita, expandindo o valor gerado por cliente e perpetuando o relacionamento para sustentar o futuro da empresa</div><div class="sec-t"><h2>Metas do setor</h2></div><div class="val-grid"><div class="val"><b>Participa&ccedil;&atilde;o geral</b><p>70%</p></div><div class="val"><b>Participa&ccedil;&atilde;o individual</b><p>50%</p></div><div class="val"><b>Satisfa&ccedil;&atilde;o geral</b><p>80%</p></div><div class="val"><b>Satisfa&ccedil;&atilde;o individual</b><p>80%</p></div></div><div class="sec-t"><h2>Vis&atilde;o da empresa</h2></div><p class="lead">Ser reconhecida como a empresa que oferece a melhor experiência ao cliente em toda a sua jornada, construindo relacionamentos sustentáveis com inovação, dedicação e a proatividade do nosso time. Queremos mais que confiança: buscamos conexão duradoura</p><div class="src">Fonte: Drive &rsaquo; Miss&atilde;o do setor &rsaquo; Miss&atilde;o / Metas (atualizado 14/08/2026) e Manual da Ouvidoria (vis&atilde;o).</div></div></main>
+<main class="pag">
+<div class="inst"><div class="crumbs"><a href="index.html">In&iacute;cio</a><i>&rsaquo;</i><a href="institucional.html">Institucional</a><i>&rsaquo;</i><span>Missão</span></div><h1 class="pg">Miss&atilde;o</h1><p class="lead">A miss&atilde;o vigente vem dos documentos atuais do Drive. A vers&atilde;o hist&oacute;rica do Manual &eacute; preservada como refer&ecirc;ncia de trajet&oacute;ria.</p><h2>Miss&atilde;o do CS 2026 (Drive)</h2><p>Garantir a saúde do ciclo de vida e financeiro do cliente, protegendo a base e a receita, expandindo o valor gerado por cliente e perpetuando o relacionamento para sustentar o futuro da empresa</p><h2>Metas que traduzem a miss&atilde;o</h2><div class="princ"><div><b>70%</b></div><div><b>50%</b></div><div><b>80%</b></div><div><b>80%</b></div></div><h2>Miss&atilde;o da Ouvidoria</h2><p>Missão: Atuar como guardiã da experiência e da confiança do cliente, solucionando não conformidades com profundidade, prevenindo reincidências e transformando falhas em aprendizado, garantindo proteção da base, redução de riscos financeiros e fortalecimento do relacionamento de longo prazo</p><h3>Formula&ccedil;&atilde;o anterior (Manual antigo)</h3><div class="destaque">ser o canal de confiança entre o cliente e a empresa, com imparcialidade, escuta ativa e transparência</div><p class="fonte">Fontes: Drive atual &rsaquo; pasta Miss&atilde;o do setor (documentos MISS&Atilde;O, Miss&atilde;o do Departamento e METAS) e Manual da Ouvidoria (vers&atilde;o hist&oacute;rica). A vers&atilde;o atual prevalece; a hist&oacute;rica fica preservada.</p></div>
+</main>
 <footer><div class="footer-grid">
 <div><p><strong>Portal da Ouvidoria</strong></p><p>Arroba Banda Larga</p><p>Setor de Ouvidoria</p></div>
 <div><p><strong>Finalidade</strong></p><p>Consulta rapida de treinamentos, instrucoes, procedimentos e documentacoes usadas no dia a dia do setor.</p></div>
 <div><p><strong>Fonte oficial</strong></p><p><a href="https://drive.google.com/drive/folders/1Yxzfd5hW-3q8HxXfU1ZL1v8s2j5K1_QE" target="_blank" rel="noopener">Pasta PORTAL OUVIDORIA no Google Drive</a></p><p>Build: PORTAL DA OUVIDORIA V10</p></div>
 <div><p><strong>Suporte</strong></p><p class="ver" data-v="2026-10-27b">Acesso livre por link · build 27/10/2026 (v2026-10-27b)</p><p>Manutencao: Desenvolvimento Arroba</p><p>Uso interno - Arroba Banda Larga</p></div>
-</div><span class="versao">v2026-10-29i</span></footer><script>
+</div><span class="versao">v2026-10-29j</span></footer><script>
 (function(){var b=document.getElementById('ixc-f');if(!b)return;
  var itens=[].slice.call(document.querySelectorAll('details.assunto'));
  var c=document.getElementById('ixc-c');
