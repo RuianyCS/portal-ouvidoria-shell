@@ -51,22 +51,38 @@ fetch("search_index.json").then(function(r){return r.json();}).then(function(idx
  var words=expand(q).split(/\s+/).filter(function(x){return x.length>=2;});
  if(!words.length){document.getElementById("resumo").textContent="Termo muito curto.";return;}
  var syn=idx.sinonimos||{},hits=[];
+ // --- ranking institucional (hierarquia: titulo > heading > conteudo > Drive) ---
+ var OPER=/(boleto|segunda via|senha|microsip|ramal|fila|ixc|diagnostico|procedimento|planilha|contrato|renovacao|troca de plano|upgrade|downgrade|fatura|pagamento|protocolo|whatsapp|telefonia|matrix|pliq|chamado|ordem de servico|termo|equipamento|estoque|treinamento|video|cadastro|sistema|codigo|acesso)/;
+ var QN=norm(q), isOper=OPER.test(QN);
+ var bonusInst=function(e,words){
+   var ali=(e.aliases||[]).map(norm), hds=(e.headings||[]).map(norm), forte=0, medio=0;
+   if(ali.length&&ali.indexOf(QN)>=0)forte+=1;                    // consulta inteira == alias/titulo
+   words.forEach(function(w){
+     if(ali.some(function(a){return a===w||a.split(/\s+/).indexOf(w)>=0;}))forte+=1;
+     else if(hds.some(function(h){return h.indexOf(w)>=0;}))medio+=1;
+   });
+   var b=forte>=2?32:(forte===1?26:(medio>0?12:0));
+   if(isOper)b=Math.round(b*0.10);                                 // consulta operacional: Drive na frente
+   return b;
+ };
  (idx.entradas||[]).forEach(function(e){
   if(filtro&&(e.setor||"")!==filtro)return;
   var terms=norm(e.termos||""),title=norm(e.t||""),sector=norm((e.setor||"")+" "+(e.grupo||""));
   var score=0,ok=true;
   for(var i=0;i<words.length;i++){
    var w=words[i],targets=[w].concat(syn[w]||[]);
-   var inTerm=targets.some(function(a){return terms.indexOf(a)>=0;});
+   var extra=((e.aliases||[]).concat(e.headings||[])).join(" ");
+   var inTerm=targets.some(function(a){return terms.indexOf(a)>=0||extra.indexOf(a)>=0;});
    var inSector=sector.indexOf(w)>=0;
    if(!inTerm&&!inSector){ok=false;break;}
    score+=inTerm?2:0;if(title.indexOf(w)>=0)score+=3;if(inSector)score+=4;
   }
+  if(ok&&((e.setor||"")==="institucional"||(e.peso||0)>0))score+=bonusInst(e,words);
   if(ok)hits.push({e:e,score:score});
  });
  var _qixc=/ixc|assunt|diagnostic|motiv/.test(norm(q));
  hits.forEach(function(h){if(h.e&&h.e.destaque&&_qixc)h.score+=50;});
- hits.sort(function(a,b){return b.score-a.score;});
+ hits.sort(function(a,b){return (b.score-a.score)||((a.e.t||"").length-(b.e.t||"").length);});
  document.getElementById("titulo").textContent="Resultados da busca";
  document.getElementById("resumo").textContent=hits.length+' resultado(s) para "'+q+'"'+(filtro?' em '+filtro.replace(/-/g," "):"")+'.';
  document.getElementById("saida").innerHTML=hits.slice(0,40).map(function(h){
