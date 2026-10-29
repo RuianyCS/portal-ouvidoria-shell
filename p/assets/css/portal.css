@@ -508,3 +508,8 @@ input.abacb:nth-of-type(10):checked ~ .tabwrap .aba:nth-of-type(10){display:bloc
 details.fl>summary{cursor:pointer;list-style:none}
 details.fl>summary::-webkit-details-marker{display:none}
 @media(max-width:600px){.cat-bar,.ixc-bar{flex-wrap:wrap;gap:8px}}
+
+/* mobile: titulo de linha pode ocupar 2 linhas (evita corte do nome do documento) */
+@media(max-width:520px){
+  .linha .t{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+}
