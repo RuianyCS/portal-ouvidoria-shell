@@ -16,10 +16,37 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 h2{font-size:.95rem;color:#123c5e;margin:24px 0 8px}
 ul{font-size:.86rem;color:#3a4b5c}
 a{color:#1a6fb5}
+
+/* institucional */
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.inst-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;text-decoration:none;color:var(--fg);display:flex;flex-direction:column;gap:6px}
+.inst-card:hover{border-color:#cfe0ef;background:#f8fbff}
+.inst-card b{color:var(--navy);font-size:.98rem}
+.inst-card span{color:var(--mut);font-size:.87rem;line-height:1.55}
+.inst-card em{font-style:normal;color:var(--azul);font-size:.8rem;font-weight:600;margin-top:4px}
+.inst-hero{background:linear-gradient(135deg,#123c5e,#1a6fb5);color:#fff;border-radius:var(--r);padding:28px 30px;margin-bottom:22px}
+.inst-hero h1{color:#fff;font-size:1.5rem;margin:0 0 8px}
+.inst-hero p{color:#dbe9f6;font-size:.95rem;margin:0;max-width:70ch}
+.tl{list-style:none;margin:8px 0 0;padding:0 0 0 20px;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 20px 18px}
+.tl li:before{content:"";position:absolute;left:-27px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 3px #fff}
+.tl .ano{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;color:var(--azul);text-transform:uppercase;margin-bottom:3px}
+.tl b{display:block;color:var(--navy);font-size:.96rem;margin-bottom:3px}
+.tl p{margin:0;color:var(--mut);font-size:.9rem;line-height:1.6}
+.val-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.val{background:#fff;border:1px solid var(--line);border-left:3px solid var(--amarelo);border-radius:var(--r2);padding:16px}
+.val b{display:block;color:var(--navy);font-size:.95rem;margin-bottom:5px}
+.val p{margin:0;color:#42525f;font-size:.89rem;line-height:1.62}
+.quote{background:#f4f8fc;border:1px solid #e2ecf5;border-radius:var(--r2);padding:18px 20px;color:#28435c;font-size:.94rem;line-height:1.7}
+.quote b{display:block;color:var(--navy);margin-bottom:6px}
+.src{font-size:.76rem;color:var(--mut);margin-top:10px}
+.src a{color:var(--azul)}
+.pill{display:inline-block;background:#eef3f8;color:#4a5c6d;font-size:.72rem;font-weight:600;border-radius:6px;padding:3px 8px;margin-right:6px}
+@media(max-width:600px){.inst-grid,.val-grid{grid-template-columns:1fr}.inst-hero{padding:22px}}
 </style></head><body><div class="wrap">
 <h1>Conferência do Portal</h1>
 <p class="sub">Drive (fonte oficial) x Portal publicado. Página de verificação, sem conteúdo interno. <a href="index.html">voltar ao portal</a></p>
-<div class="grid"><div class="t"><span>Itens no Drive</span><b>359</b></div><div class="t"><span>Pastas</span><b>40</b></div><div class="t"><span>Atalhos</span><b>62</b></div><div class="t"><span>Documentos (Drive)</span><b>53</b></div><div class="t"><span>Publicados</span><b>89</b></div><div class="t"><span>Restritos</span><b>3</b></div><div class="t"><span>Faltando</span><b>1</b></div><div class="t"><span>Páginas no Portal</span><b>88</b></div><div class="t"><span>Órfãs (sem link)</span><b>0</b></div><div class="t"><span>Entradas de busca</span><b>217</b></div></div>
+<div class="grid"><div class="t"><span>Itens no Drive</span><b>359</b></div><div class="t"><span>Pastas</span><b>40</b></div><div class="t"><span>Atalhos</span><b>62</b></div><div class="t"><span>Documentos (Drive)</span><b>53</b></div><div class="t"><span>Publicados</span><b>89</b></div><div class="t"><span>Restritos</span><b>3</b></div><div class="t"><span>Faltando</span><b>1</b></div><div class="t"><span>Páginas no Portal</span><b>88</b></div><div class="t"><span>Órfãs (sem link)</span><b>0</b></div><div class="t"><span>Entradas de busca</span><b>223</b></div></div>
 <h2>Por pasta</h2>
 <table><thead><tr><th>Pasta</th><th>Docs restritos+publicados</th><th>Publicados</th><th>Situação</th></tr></thead>
 <tbody><tr><td>Setor Financeiro</td><td class="n">21</td><td class="n">21</td><td>ok</td></tr><tr><td>Manual do Setor</td><td class="n">8</td><td class="n">8</td><td>ok</td></tr><tr><td>APP DE TVS</td><td class="n">6</td><td class="n">6</td><td>ok</td></tr><tr><td>Atendimento - Padrão Arroba</td><td class="n">5</td><td class="n">5</td><td>ok</td></tr><tr><td>NÃO CONFORMIDADE - LIDERANÇA</td><td class="n">4</td><td class="n">4</td><td>ok</td></tr><tr><td>PLANILHAS DE FECHAMENTO</td><td class="n">4</td><td class="n">4</td><td>ok</td></tr><tr><td>Procedimento IXC</td><td class="n">4</td><td class="n">4</td><td>ok</td></tr><tr><td>Treinamento Recepção</td><td class="n">4</td><td class="n">4</td><td>ok</td></tr><tr><td>VOZ QUE MOVE</td><td class="n">4</td><td class="n">4</td><td>ok</td></tr><tr><td>Missão do setor</td><td class="n">3</td><td class="n">3</td><td>ok</td></tr><tr><td>NPS</td><td class="n">3</td><td class="n">3</td><td>ok</td></tr><tr><td>Planilhas</td><td class="n">3</td><td class="n">3</td><td>ok</td></tr><tr><td>Regras do Callcenter</td><td class="n">3</td><td class="n">2</td><td>verificar</td></tr><tr><td>Cópia de PROCEDIMENTOS-NÃO CONFORMIDADES/OPERACIONAL</td><td class="n">2</td><td class="n">2</td><td>ok</td></tr><tr><td>DOCUMENTAÇÃO DE CAMPANHAS</td><td class="n">2</td><td class="n">2</td><td>ok</td></tr><tr><td>DOCUMENTAÇÃO DE FECHAMENTO</td><td class="n">2</td><td class="n">2</td><td>ok</td></tr><tr><td>Projeto</td><td class="n">2</td><td class="n">2</td><td>ok</td></tr><tr><td>Agenda e Rotina</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>ELOGIO QUE CONECTA</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>LIGAÇÃO WHATSAPP</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>MICROSIP</td><td class="n">1</td><td class="n">0</td><td>verificar</td></tr><tr><td>MIDIAS</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>Não conformidades</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>PORTAL OUVIDORIA</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>Pliq</td><td class="n">1</td><td class="n">0</td><td>verificar</td></tr><tr><td>RANKING GERAL</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>Setor Comercial</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>Setor NOC</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr><tr><td>Treinamento Instalação e Manutenção</td><td class="n">1</td><td class="n">1</td><td>ok</td></tr></tbody></table>
@@ -30,4 +57,4 @@ a{color:#1a6fb5}
 <li>Uma pasta vazia na origem aparece vazia no portal: não é falha de sync.</li>
 <li>Relatório gerado a partir da varredura da raiz oficial 1Yxzfd5hW-3q8HxXfU1ZL1v8s2j5K1_QE.</li>
 </ul>
-</div><h2>Pastas: invent&aacute;rio &times; interface</h2><table><tr><th>M&eacute;trica</th><th>Valor</th></tr><tr><td>Pastas no invent&aacute;rio do Drive</td><td>53</td></tr><tr><td>Pastas exibidas na p&aacute;gina Drives</td><td>53</td></tr><tr><td>Pastas n&atilde;o exibidas</td><td>0</td></tr><tr><td>Documentos ligados na &aacute;rvore</td><td>51</td></tr><tr><td>V&iacute;deos na biblioteca de Treinamentos</td><td>56</td></tr><tr><td>P&aacute;ginas de documento publicadas</td><td>88</td></tr><tr><td>Entradas de busca</td><td>217</td></tr></table></body></html>
+</div><h2>Pastas: invent&aacute;rio &times; interface</h2><table><tr><th>M&eacute;trica</th><th>Valor</th></tr><tr><td>Pastas no invent&aacute;rio do Drive</td><td>53</td></tr><tr><td>Pastas exibidas na p&aacute;gina Drives</td><td>53</td></tr><tr><td>Pastas n&atilde;o exibidas</td><td>0</td></tr><tr><td>Documentos ligados na &aacute;rvore</td><td>51</td></tr><tr><td>V&iacute;deos na biblioteca de Treinamentos</td><td>56</td></tr><tr><td>P&aacute;ginas de documento publicadas</td><td>88</td></tr><tr><td>Entradas de busca</td><td>223</td></tr></table></body></html>
