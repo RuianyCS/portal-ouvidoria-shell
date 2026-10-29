@@ -1920,11 +1920,11 @@
    "data": ""
   },
   {
-   "t": "Nossa hist&oacute;ria do Arroba",
+   "t": "Nossa história",
    "rota": "historia.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "historia arroba net 2007 lan house campos goytacazes radio cabo fibra optica trajetoria empresa proposito",
+   "termos": "historia arroba net 2007 lan house campos goytacazes radio cabo fibra optica trajetoria evolucao provedor proposito",
    "url": "",
    "data": ""
   },
@@ -1933,16 +1933,16 @@
    "rota": "cultura.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "cultura valores empatia transparencia relacionamento aprendizado ideologia jeito arroba visao",
+   "termos": "cultura valores empatia transparencia relacionamento aprendizado ideologia jeito arroba pessoas proposito visao",
    "url": "",
    "data": ""
   },
   {
-   "t": "Miss&atilde;o e vis&atilde;o",
+   "t": "Missão e visão",
    "rota": "missao.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "missao visao metas 2026 cs setor experiencia cliente",
+   "termos": "missao visao ouvidoria 2026 pilares proteger expandir perpetuar metas satisfacao pesquisa churn customer success",
    "url": "",
    "data": ""
   },
@@ -1951,7 +1951,7 @@
    "rota": "nossa-ouvidoria.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "ouvidoria papel institucional canal confianca estrategico ultima instancia",
+   "termos": "ouvidoria quem somos canal confianca orgao estrategico ultima instancia voz do cliente responsabilidades",
    "url": "",
    "data": ""
   },
@@ -1960,7 +1960,7 @@
    "rota": "nosso-papel.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "responsabilidades principios imparcialidade etica agilidade confidencialidade causa raiz",
+   "termos": "papel responsabilidades principios imparcialidade transparencia empatia etica agilidade causa raiz confidencialidade melhoria continua escuta ativa customer success cs",
    "url": "",
    "data": ""
   },
@@ -1969,7 +1969,7 @@
    "rota": "institucional.html",
    "setor": "institucional",
    "tipo": "institucional",
-   "termos": "institucional quem somos empresa identidade setores",
+   "termos": "institucional quem somos empresa identidade historia cultura missao valores ouvidoria",
    "url": "",
    "data": ""
   }
