@@ -128,4 +128,4 @@
 .material-atual .check-list{gap:4px}
 .material-atual .check-list li{font-size:.92rem;padding-left:20px}
 .editorial-section[id]{scroll-margin-top:16px}
-@media(max-width:430px){.trein-grid{grid-template-columns:1fr}}
+@media(max-width:340px){.trein-grid{grid-template-columns:1fr}}
