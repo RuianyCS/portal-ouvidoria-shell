@@ -211,6 +211,24 @@ footer p{margin:3px 0}footer strong{color:#fff}footer a{color:var(--amarelo)}
  #rail:checked~.pag,#rail:checked~footer{margin-left:0}
 }
 @media(max-width:520px){.grid{grid-template-columns:1fr}.linha .m{display:none}}
+
+/* arvore de pastas (treinamentos e setores) */
+.fcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.fcard{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);text-decoration:none;color:var(--fg)}
+.fcard:hover{border-color:#cfe0ef;background:#f8fbff}
+.fc-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.fc-t b{font-size:.94rem;color:var(--navy);font-weight:600}
+.fc-t em{font-style:normal;font-size:.76rem;color:var(--mut);margin-top:2px}
+.fc-go{font-size:.75rem;color:var(--azul);font-weight:600;white-space:nowrap}
+.flist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.fl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--fg);text-decoration:none;font-size:.92rem}
+.fl:hover{background:#f5f9fd}
+.fl-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.fl-t small{color:var(--mut);font-size:.74rem;margin-top:2px}
+.ficon{width:20px;height:20px;border-radius:5px;background:#eef3f8;flex:0 0 auto}
+.ficon.vid{background:#e8f1fb}.ficon.pdf{background:#fdeceb}.ficon.plan{background:#e9f6ee}.ficon.dir{background:#fff3d9}
+.fl.restrito{opacity:.75}
+@media(max-width:600px){.fcards{grid-template-columns:1fr}.fc-go{display:none}}
 /* ===== DESIGN SYSTEM v2026-10-27e ===== */
 /* biblioteca de treinamento + arvore de drives */
 .cat-bar{display:flex;gap:12px;align-items:center;margin:18px 0 20px;flex-wrap:wrap}
