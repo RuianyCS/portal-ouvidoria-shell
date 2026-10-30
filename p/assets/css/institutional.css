@@ -129,3 +129,16 @@
 .material-atual .check-list li{font-size:.92rem;padding-left:20px}
 .editorial-section[id]{scroll-margin-top:16px}
 @media(max-width:340px){.trein-grid{grid-template-columns:1fr}}
+
+/* arte de assunto: capa de secao do acervo do manual, contida e nunca esticada */
+.editorial-artefato{margin:0 0 26px;max-width:440px}
+.editorial-artefato img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--c-line);box-shadow:0 4px 14px rgba(15,60,102,.08)}
+@media(max-width:640px){.editorial-artefato{max-width:100%}}
+
+/* botao discreto "Voltar" (paginas internas) */
+.voltar-linha{margin:0 0 10px}
+.btn-voltar{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--c-line);
+  background:transparent;color:var(--c-muted);border-radius:999px;font:inherit;font-size:.83rem;
+  font-weight:600;cursor:pointer;line-height:1;transition:color .15s,border-color .15s}
+.btn-voltar:hover{color:var(--c-ink);border-color:var(--c-ink)}
+.btn-voltar:focus-visible{outline:2px solid var(--c-ink);outline-offset:2px}
