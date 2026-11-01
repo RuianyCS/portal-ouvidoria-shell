@@ -1,23 +1,23 @@
 {
- "ts": "2026-10-31T19:19:51+00:00",
+ "ts": "2026-11-01T00:09:10+00:00",
  "resultado": "OK",
  "status_supabase": "NAO_UTILIZADO",
  "alvo": "https://solan-7174f681.base44.app/functions/ouvidoria",
- "latencia_ms": 1067,
+ "latencia_ms": 770,
  "checks": {
   "url_neutra": {
    "http": 200,
-   "ms": 444,
+   "ms": 542,
    "ok": true
   },
   "home": {
    "http": 200,
-   "ms": 457,
+   "ms": 153,
    "ok": true
   },
   "busca": {
    "http": 200,
-   "ms": 166,
+   "ms": 75,
    "ok": true,
    "entradas": 238
   }
