@@ -567,3 +567,7 @@ main.curta{display:flex;flex-direction:column}
 .nav .nav-grp{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:14px}
 .nav .nav-grp:first-of-type{border-top:0;padding-top:0;margin-top:8px}
 .nav .item{border-radius:9px}
+main.curta{justify-content:center}
+.nav-grp-link{display:block;text-decoration:none;color:rgba(255,255,255,.62)}
+.nav-grp-link:hover{color:#fff}
+.nav-grp-link.ativa{color:var(--amarelo)}
