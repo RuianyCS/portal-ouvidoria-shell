@@ -524,3 +524,26 @@ details.fl>summary::-webkit-details-marker{display:none}
 .hero h1{line-height:1.16}
 .hero p{max-width:62ch}
 @media(max-width:520px){.hero{padding:22px 18px 20px}.tile{min-height:0}}
+
+/* ---------- menu em blocos (jornada do colaborador novo) ---------- */
+.nav-grp{margin:16px 0 6px;padding:0 14px;font-size:.66rem;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:rgba(255,255,255,.52)}
+.nav-grp:first-of-type{margin-top:10px}
+.nav .item.atual,.nav .item.ativa{background:var(--amarelo);color:#0b2a47}
+@media(max-width:900px){.nav-grp{padding:0 10px}}
+
+/* ---------- Comece por aqui (jornada de 4 passos) ---------- */
+.comece{margin:26px 0 30px}
+.passos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.passo{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column}
+.passo-n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;
+  background:#eef4fb;color:#0b5aa2;font-weight:800;font-size:.82rem;margin-bottom:8px}
+.passo h3{margin:0 0 6px;font-size:.98rem;line-height:1.25;color:var(--navy)}
+.passo p{margin:0 0 10px;font-size:.83rem;line-height:1.45;color:var(--mut)}
+.passo-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.passo-link{font-size:.76rem;font-weight:650;color:#0b5aa2;background:#f2f7fd;border:1px solid #dbe8f6;
+  border-radius:999px;padding:4px 9px;text-decoration:none}
+.passo-link:hover{background:#e6f0fb}
+@media(max-width:900px){.passos{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.passos{grid-template-columns:1fr}}
