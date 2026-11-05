@@ -901,3 +901,8 @@ main.curta{justify-content:center}
 .sec-fechamentos{max-width:1120px}
 .sec-fechamentos .fx-wrap{margin-bottom:48px}
 @media(max-width:760px){.sec-fechamentos .fx-wrap{margin-bottom:44px}}
+
+/* Procedimentos: subtitulos do bloco de scripts e fluxos */
+.sub-h{font-family:Manrope,sans-serif;font-size:1.02rem;font-weight:800;color:#0f2c4a;margin:26px 0 8px}
+.link-inline{color:#0f4c81;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.link-inline:hover{color:#1769aa}
