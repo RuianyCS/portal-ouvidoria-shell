@@ -906,3 +906,9 @@ main.curta{justify-content:center}
 .sub-h{font-family:Manrope,sans-serif;font-size:1.02rem;font-weight:800;color:#0f2c4a;margin:26px 0 8px}
 .link-inline{color:#0f4c81;font-weight:700;text-decoration:underline;text-underline-offset:2px}
 .link-inline:hover{color:#1769aa}
+
+/* Financeiro: linha que abre o arquivo original no Drive (financeiro_drive.py) */
+.linha.linha-drv{cursor:pointer}
+.linha .chip-drv{background:#fdf5e3;color:#8a6400;border-color:#f4e6c3}
+.linha .chip-drv i{font-style:normal;font-size:.9em;line-height:1}
+.linha.linha-drv:hover .t{color:#12527e}
