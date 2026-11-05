@@ -733,3 +733,38 @@ main.curta{justify-content:center}
 .nav details.grp[open]>summary{color:#dbe8f3}
 .nav details.grp .filhos{padding:2px 0 4px 2px}
 #rail:checked~.side .nav details.grp>summary .grp-abrir{display:none}
+/* Treinamentos: plataformas em accordion (restaurado do Manual) */
+.trg-lista{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.trg{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.trg[open]{border-color:#f2b134;box-shadow:0 6px 18px rgba(15,60,102,.09)}
+.trg>summary.trg-sum{display:flex;align-items:center;gap:12px;padding:13px 15px;cursor:pointer;list-style:none}
+.trg>summary::-webkit-details-marker{display:none}
+.trg>summary:focus-visible{outline:2px solid #1769aa;outline-offset:-2px}
+.trg-ico{width:34px;height:34px;border-radius:9px;background:#eef4fb;color:#0f4c81;display:grid;place-items:center;flex:none}
+.trg-ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.trg-tt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.trg-tt b{font-family:var(--font-heading);font-size:.98rem;color:var(--navy);line-height:1.25}
+.trg-tt small{font-size:.8rem;color:#5b6d7e;line-height:1.4}
+.trg-chev{margin-left:auto;color:#8aa2b6;font-size:1.1rem;transition:transform .16s}
+.trg[open] .trg-chev{transform:rotate(90deg);color:#0f4c81}
+.trg-corpo{padding:2px 15px 15px;border-top:1px solid #eef2f6}
+.trg-bloco{margin-top:12px}
+.trg-bloco h4{margin:0 0 5px;font-family:var(--font-heading);font-size:.72rem;letter-spacing:.09em;
+  text-transform:uppercase;color:#6b7c8b;font-weight:700}
+.trg-bloco p,.trg-bloco li{font-size:.9rem;line-height:1.6;color:#33475b}
+.trg-bloco ul{margin:0;padding-left:18px}
+.trg-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.trg-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e3ebf2;border-radius:9px;
+  text-decoration:none;color:var(--navy);background:#fbfdff}
+.trg-link:hover{text-decoration:none;border-color:#f2b134;background:#fffdf6}
+.trg-link span{display:flex;flex-direction:column;gap:1px;min-width:0}
+.trg-link b{font-size:.85rem;font-weight:650}
+.trg-link small{font-size:.75rem;color:#6b7c8b;line-height:1.35}
+.trg-link i{margin-left:auto;font-style:normal;color:#0f4c81;font-weight:800}
+.trg-link-solo{max-width:420px}
+@media(max-width:560px){.trg-links{grid-template-columns:1fr}.trg-tt small{display:none}}
+.trg-login{display:flex;flex-direction:column;gap:2px;margin:10px 0 4px;padding:10px 12px;border-radius:9px;
+  background:#f4f8fc;border:1px solid #dce7f1}
+.trg-login span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#6b7c8b;font-weight:700}
+.trg-login b{font-size:.9rem;color:var(--navy);word-break:break-all}
+.trg-login small{font-size:.76rem;color:#6b7c8b;line-height:1.4}
