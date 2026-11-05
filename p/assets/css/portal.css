@@ -788,3 +788,10 @@ main.curta{justify-content:center}
   .out-card{flex-wrap:wrap;gap:14px;padding:16px}
   .out-btn{width:100%;justify-content:center}
 }
+/* Drives: nome da pasta abre a pasta real no Google Drive */
+.pdir .fname-link{color:var(--navy);text-decoration:none;border-bottom:1px dashed rgba(15,76,129,.35)}
+.pdir .fname-link:hover,.pdir .fname-link:focus-visible{color:#0f4c81;border-bottom-color:#f2b134;text-decoration:none}
+.pdir .fdrv{flex:0 0 auto;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:#0f4c81;background:#eef4fb;border:1px solid #d7e4f1;border-radius:999px;padding:2px 8px}
+.pdir>summary:hover .fdrv{background:#e3eef9}
+@media(max-width:560px){.pdir .fdrv{display:none}}
