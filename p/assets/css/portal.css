@@ -855,3 +855,33 @@ main.curta{justify-content:center}
   .fx-body{padding:18px 16px 20px}
   .fx-grid{grid-template-columns:1fr;gap:16px}
 }
+
+/* Padrão de Atendimento — documentos oficiais (link direto no Drive) */
+.drvdocs{margin-top:22px;max-width:1120px}
+.drvdocs-head h2{margin:0 0 6px;font-size:1.06rem;color:var(--navy);letter-spacing:-.01em}
+.drvdocs-head p{margin:0 0 16px;font-size:.86rem;color:#5c7183;line-height:1.5;max-width:70ch}
+.drvdocs-list{display:flex;flex-direction:column;gap:10px}
+.drvcard{display:flex;align-items:stretch;gap:0;background:#fff;border:1px solid var(--line);
+  border-radius:12px;box-shadow:0 1px 2px rgba(16,40,64,.05);overflow:hidden}
+.drvcard:hover{border-color:#c9dcee;box-shadow:0 6px 18px rgba(15,60,102,.08)}
+.drvcard-main{flex:1;display:flex;align-items:center;gap:14px;padding:16px 18px;text-decoration:none;
+  color:inherit;min-width:0}
+.drvcard-ico{flex:none;width:38px;height:38px;border-radius:10px;background:#eef4fb;display:grid;place-items:center}
+.drvcard-ico svg{width:19px;height:19px;stroke:#0f4c81;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.drvcard-txt{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.drvcard-txt b{font-size:.96rem;color:var(--navy);line-height:1.3}
+.drvcard-txt small{font-size:.83rem;color:#5c7183;line-height:1.4}
+.drvcard-txt em{font-style:normal;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;
+  color:#8a9cab;font-weight:700;margin-top:2px}
+.drvcard-go{flex:none;display:inline-flex;align-items:center;gap:6px;margin-left:12px;
+  background:var(--amarelo);color:#17324d;font-weight:700;font-size:.8rem;border-radius:9px;padding:9px 13px}
+.drvcard-go svg{width:14px;height:14px;stroke:#17324d;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.drvcard-ler{flex:none;display:flex;align-items:center;justify-content:center;padding:0 16px;
+  font-size:.78rem;color:#5c7183;text-decoration:none;border-left:1px solid #eef3f8;background:#fbfdff}
+.drvcard-ler:hover{background:#f2f8fd;color:var(--azul);text-decoration:none}
+@media(max-width:760px){
+  .drvcard{flex-wrap:wrap}
+  .drvcard-main{flex-direction:column;align-items:flex-start;gap:10px;padding:14px 14px 10px;width:100%}
+  .drvcard-go{margin-left:0;width:100%;justify-content:center}
+  .drvcard-ler{width:100%;border-left:0;border-top:1px solid #eef3f8;padding:10px;justify-content:center}
+}
