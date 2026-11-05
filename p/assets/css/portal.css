@@ -636,3 +636,37 @@ main.curta{justify-content:center}
 .acesso-txt small{font-size:.76rem;color:#6b7c8b;line-height:1.35}
 .acesso-seta{margin-left:auto;color:#0f4c81;font-weight:800;font-size:1rem;flex:none}
 @media(max-width:560px){.acessos{grid-template-columns:1fr}}
+
+/* ---------- Fechamentos em accordion ---------- */
+.fx-wrap{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.fx{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.fx[open]{border-color:#d7e3ee;box-shadow:0 6px 22px rgba(15,60,102,.09)}
+.fx summary{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;list-style:none}
+.fx summary::-webkit-details-marker{display:none}
+.fx summary:hover{background:#f8fbfe}
+.fx-n{flex:none;width:34px;height:34px;border-radius:10px;background:#eef4fb;color:#0f4c81;display:grid;
+  place-items:center;font-weight:800;font-size:.8rem}
+.fx-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.fx-t b{font-size:.98rem;color:var(--navy);font-weight:700;line-height:1.25}
+.fx-t small{font-size:.8rem;color:#657788;line-height:1.35}
+.fx-i{margin-left:auto;flex:none;width:24px;height:24px;position:relative}
+.fx-i::before,.fx-i::after{content:"";position:absolute;top:50%;left:50%;background:#0f4c81;border-radius:2px;
+  transform:translate(-50%,-50%)}
+.fx-i::before{width:12px;height:2px}
+.fx-i::after{width:2px;height:12px;transition:opacity .18s}
+.fx[open] .fx-i::after{opacity:0}
+.fx-body{padding:2px 18px 18px}
+.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;padding-top:6px;
+  border-top:1px solid var(--line);margin-top:6px}
+.fx-wide{grid-column:1/-1}
+.fx-bloco h4{margin:0 0 5px;font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#647585}
+.fx-bloco p{margin:0;font-size:.88rem;line-height:1.55;color:#374a5a}
+.fx-list{margin:0;padding-left:18px;font-size:.88rem;line-height:1.55;color:#374a5a}
+.fx-list li{margin-bottom:4px}
+.fx .material-atual{margin-top:18px}
+@media(max-width:760px){
+  .fx-grid{grid-template-columns:1fr;gap:14px}
+  .fx summary{padding:14px 14px;gap:10px}
+  .fx-t b{font-size:.92rem}
+  .fx-body{padding:2px 14px 16px}
+}
