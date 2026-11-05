@@ -682,3 +682,6 @@ main.curta{justify-content:center}
 .doc-link-sec{background:#eef4fb;color:#0f4c81}
 .doc-link-sec:hover{background:#e2edf9;color:#0f4c81}
 @media(max-width:820px){.tr-grid{grid-template-columns:1fr}}
+.tr-grid-1{grid-template-columns:1fr}
+.tr-sub{margin:2px 0 0;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#647585}
+.tr-card .fx-list{margin:0 0 4px}
