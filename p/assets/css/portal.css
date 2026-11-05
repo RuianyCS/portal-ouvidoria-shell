@@ -917,3 +917,39 @@ main.curta{justify-content:center}
 .logo .mark-img{width:38px;height:38px;flex:none;display:block;object-fit:contain}
 #rail:checked~.side .logo .mark-img{width:30px;height:30px}
 .topbar .mark-img{width:22px;height:22px;flex:none;object-fit:contain;vertical-align:-5px;margin-right:7px}
+
+/* leitura confortavel: escala tipografica +1 ponto, mantendo a hierarquia */
+html{font-size:17px}
+.logo{font-size:1rem}
+.side-busca input{font-size:.88rem}
+.nav a.item{font-size:.93rem;padding:9px 10px}
+.nav details.grp>summary{font-size:.75rem}
+.topbar b{font-size:1rem}
+.crumbs{font-size:.83rem}
+h1.pg{font-size:1.82rem}
+.lead{font-size:1.03rem}
+.sec-t h2{font-size:1.14rem}
+.linha{font-size:.95rem;padding:12px 15px}
+.linha .m{font-size:.83rem}
+.chip{font-size:.77rem;padding:4px 11px}
+.card h3{font-size:1rem}
+.card h3 .n{font-size:.87rem}
+.card p{font-size:.89rem}
+.card .go{font-size:.89rem}
+.tile .tt{font-size:1rem}
+.tile .q{font-size:.83rem}
+footer{font-size:.87rem;line-height:1.5}
+.doc-head h1{font-size:2.02rem}
+.doc-corpo{font-size:1.06rem}
+.doc-corpo h2{font-size:1.4rem}
+.doc-corpo h3{font-size:1.13rem}
+.doc-corpo table{font-size:.93rem}
+.toc a{font-size:.9rem}
+.rel .card h3{font-size:.94rem}
+.original>summary{font-size:.95rem}
+@media (max-width:760px){
+  html{font-size:17px}
+  h1.pg{font-size:1.55rem}
+  .lead{font-size:1rem}
+  footer{font-size:.84rem}
+}
