@@ -885,3 +885,14 @@ main.curta{justify-content:center}
   .drvcard-go{margin-left:0;width:100%;justify-content:center}
   .drvcard-ler{width:100%;border-left:0;border-top:1px solid #eef3f8;padding:10px;justify-content:center}
 }
+
+/* Materiais oficiais: acesso secundario a pasta no Drive + cabecalho da lista */
+.mat-pasta{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:9px 14px;border-radius:9px;
+  border:1px solid #d7e3ee;background:#f4f9fe;color:#0f4c81;font-size:.82rem;font-weight:700;text-decoration:none}
+.mat-pasta:hover{background:#e8f2fb;text-decoration:none;border-color:#bcd6ea}
+.mat-pasta i{font-style:normal;font-size:.9em}
+.drvdocs-head{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.drvdocs-txt{flex:1;min-width:240px}
+.drvdocs-pasta{flex:none;display:inline-flex;align-items:center;gap:6px;margin-top:2px;padding:9px 14px;
+  border-radius:9px;background:#0f4c81;color:#fff;font-size:.8rem;font-weight:700;text-decoration:none}
+.drvdocs-pasta:hover{background:#1769aa;text-decoration:none}
