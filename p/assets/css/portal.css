@@ -670,3 +670,15 @@ main.curta{justify-content:center}
   .fx-t b{font-size:.92rem}
   .fx-body{padding:2px 14px 16px}
 }
+
+/* ---------- Treinamentos objetivos ---------- */
+.tr-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.tr-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;gap:8px}
+.tr-card h3{margin:0;font-size:1rem;color:var(--navy);font-weight:700}
+.tr-card p{margin:0;font-size:.86rem;line-height:1.5;color:#54677a}
+.tr-login{font-size:.8rem;color:#41586b;background:#f2f7fb;border:1px solid #e2ebf3;border-radius:8px;padding:7px 10px}
+.tr-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
+.doc-link-sec{background:#eef4fb;color:#0f4c81}
+.doc-link-sec:hover{background:#e2edf9;color:#0f4c81}
+@media(max-width:820px){.tr-grid{grid-template-columns:1fr}}
