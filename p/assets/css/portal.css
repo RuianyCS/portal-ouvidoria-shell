@@ -571,3 +571,39 @@ main.curta{justify-content:center}
 .nav-grp-link{display:block;text-decoration:none;color:rgba(255,255,255,.62)}
 .nav-grp-link:hover{color:#fff}
 .nav-grp-link.ativa{color:var(--amarelo)}
+
+/* ============ CORREÇÃO ESTRUTURAL: conteúdo não pode ficar sob a sidebar ============ */
+@media(min-width:901px){
+  main{margin-left:var(--rail);transition:margin-left .15s}
+  footer{margin-left:var(--rail);transition:margin-left .15s}
+  #rail:checked~main,#rail:checked~footer{margin-left:var(--railmin)}
+  .wrap{max-width:980px}
+}
+@media(max-width:900px){
+  main,footer{margin-left:0}
+}
+/* sidebar: deixa claro que há mais blocos abaixo (scroll) */
+.side nav{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.28) transparent}
+.side nav::-webkit-scrollbar{width:8px}
+.side nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:4px}
+.side::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;pointer-events:none;
+  background:linear-gradient(to top,rgba(9,29,46,.92),rgba(9,29,46,0))}
+
+/* ---------- refinamento da Home (hierarquia e respiro) ---------- */
+.hero{padding:30px 32px 26px;border-radius:16px}
+.hero h1{font-size:clamp(23px,2.1vw,29px);letter-spacing:-.015em;margin:0 0 6px}
+.hero p{font-size:.94rem;line-height:1.5;color:#dbe8f4;max-width:70ch;margin:0 0 16px}
+.busca-hero{gap:8px;max-width:720px}
+.busca-hero input{height:44px;font-size:.9rem}
+.busca-hero button{height:44px;padding:0 22px;font-weight:750}
+.sec-t{margin:34px 0 14px}
+.sec-t h2{font-size:.8rem;letter-spacing:.09em}
+.passos{gap:14px}
+.passo{padding:18px 18px 16px;border-radius:14px}
+.passo h3{font-size:1rem;margin-bottom:7px}
+.passo p{font-size:.84rem;color:#5b6d7e;margin-bottom:12px}
+.passo-link{font-size:.75rem;padding:5px 10px}
+.tiles{gap:14px}
+.tile{min-height:104px;padding:16px 16px 14px}
+.tile .tt{font-size:.95rem}
+.tile .q{font-size:.75rem;color:#7b8b99}
