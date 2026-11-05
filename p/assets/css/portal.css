@@ -607,3 +607,17 @@ main.curta{justify-content:center}
 .tile{min-height:104px;padding:16px 16px 14px}
 .tile .tt{font-size:.95rem}
 .tile .q{font-size:.75rem;color:#7b8b99}
+
+/* ---------- metas em cards ---------- */
+.meta-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.meta-cards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.meta-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.meta-num{display:block;font-family:"Manrope",'Segoe UI',sans-serif;font-size:2rem;font-weight:800;color:#0f4c81;
+  line-height:1;margin-bottom:8px;letter-spacing:-.02em}
+.meta-card h3{margin:0 0 6px;font-size:.95rem;font-weight:700;color:var(--navy)}
+.meta-card p{margin:0;font-size:.86rem;line-height:1.5;color:#5b6d7e}
+.doc-cta{margin:16px 0 0}
+.doc-link{display:inline-flex;align-items:center;gap:8px;background:#0f4c81;color:#fff;font-weight:650;
+  font-size:.88rem;border-radius:10px;padding:11px 18px;text-decoration:none}
+.doc-link:hover{background:#0d416f;color:#fff;text-decoration:none}
+@media(max-width:900px){.meta-cards,.meta-cards-2{grid-template-columns:1fr}}
