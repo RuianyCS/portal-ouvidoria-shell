@@ -621,3 +621,18 @@ main.curta{justify-content:center}
   font-size:.88rem;border-radius:10px;padding:11px 18px;text-decoration:none}
 .doc-link:hover{background:#0d416f;color:#fff;text-decoration:none}
 @media(max-width:900px){.meta-cards,.meta-cards-2{grid-template-columns:1fr}}
+
+/* ---------- Material atual: acessos com peso visual ---------- */
+.material-atual{margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
+.material-atual-t{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#647585;margin:0 0 12px}
+.acessos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.acesso{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;text-decoration:none;box-shadow:var(--shadow);transition:border-color .14s,box-shadow .14s,transform .14s}
+.acesso:hover{border-color:#f2b134;box-shadow:0 4px 16px rgba(15,60,102,.12);transform:translateY(-1px);text-decoration:none}
+.acesso-ico{width:36px;height:36px;border-radius:10px;background:#eef4fb;color:#0f4c81;display:grid;place-items:center;flex:none}
+.acesso-ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.acesso-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.acesso-txt b{font-size:.92rem;font-weight:650;color:var(--navy);line-height:1.25}
+.acesso-txt small{font-size:.76rem;color:#6b7c8b;line-height:1.35}
+.acesso-seta{margin-left:auto;color:#0f4c81;font-weight:800;font-size:1rem;flex:none}
+@media(max-width:560px){.acessos{grid-template-columns:1fr}}
