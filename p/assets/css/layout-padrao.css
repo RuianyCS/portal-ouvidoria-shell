@@ -1,0 +1,133 @@
+/* ==========================================================================
+   layout-padrao.css — eixo unico de leitura do Portal da Ouvidoria
+   Carregado DEPOIS de portal.css e dos estilos das paginas.
+   Regra: conteudo alinhado ao inicio da area util (nunca flutuando no centro),
+   largura equilibrada, margens laterais consistentes e rodape sempre no fim.
+   ========================================================================== */
+:root{
+  --cont-max: 1560px;   /* largura maxima do conteudo em telas grandes */
+  --pg-pad-l: 40px;     /* margem lateral esquerda (desktop) */
+  --pg-pad-r: 40px;
+}
+
+/* 1. Area principal: sempre a mesma caixa, alinhada a esquerda ------------ */
+main.pag,
+main.curta{
+  margin-left: var(--rail) !important;
+  padding: 28px var(--pg-pad-r) 64px var(--pg-pad-l) !important;
+  display: block !important;            /* desliga o main.curta em flex */
+  justify-content: initial !important;  /* desliga a centralizacao vertical */
+  width: auto !important;
+  max-width: none !important;
+  min-height: calc(100vh - 124px);
+  box-sizing: border-box;
+}
+
+/* 2. Container do conteudo: largura equilibrada, eixo a esquerda ---------- */
+main.pag > .wrap,
+main.curta > .wrap,
+main.pag > .institutional-shell,
+main.curta > .institutional-shell,
+main > .instwrap{
+  width: 100% !important;
+  max-width: var(--cont-max) !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* 3. Rodape: largura do eixo e sempre no fim ------------------------------ */
+footer .footer-grid,
+footer .rodape-grid{
+  max-width: var(--cont-max) !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* 4. Leitura: texto corrido com medida confortavel dentro do eixo --------- */
+.wrap > .lead,
+.wrap .lead,
+.editorial-lead,
+.editorial-copy p,
+.docv p,
+.doc-corpo p,
+main .prosa p{
+  max-width: 82ch;
+}
+
+/* 5. Grids e cards: ocupam o eixo, sem sobrar vazio nem esticar demais ---- */
+.acessos{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.mat-grid{grid-template-columns:1fr 1fr}
+.meta-cards{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.dash-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.tr-grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.fx-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.out-lista{max-width:100%}
+
+/* 6. Documento (visualizador): largura de leitura, alinhado ao eixo -------- */
+.docv{max-width:1040px !important;margin-left:0 !important;margin-right:auto !important}
+.docv p,.docv li,.docv td{max-width:82ch}
+
+/* 7. Tabelas e blocos largos podem usar todo o eixo ----------------------- */
+table{max-width:100%}
+
+/* 8. Mobile --------------------------------------------------------------- */
+@media(max-width:900px){
+  main.pag,
+  main.curta{
+    margin-left:0 !important;          /* mobile usa drawer, sem rail fixo */
+    width:100% !important;
+    padding:20px 18px 48px 18px !important;
+    min-height:calc(100vh - 100px);
+  }
+  footer{margin-left:0 !important}
+  .mat-grid,.dash-grid,.tr-grid,.fx-grid,.meta-cards,.acessos{grid-template-columns:1fr}
+}
+
+/* 9. Cards: largura maxima proporcional, sempre alinhados ao eixo --------- */
+.acessos,.mat-grid,.dash-grid,.meta-cards,.tr-grid,.fcards,.grid,.fx-grid,.out-lista{
+  max-width:1120px;
+}
+.acesso,.mat-card,.dash-card,.meta-card,.tr-card,.fcards .fc,.fx-card{
+  max-width:100%;
+}
+
+/* 10. Paginas sem <main> (ex.: conferencia) herdam o mesmo eixo ---------- */
+body > .wrap{
+  margin-left:0;
+  padding:28px 40px 64px;
+  max-width:var(--cont-max);
+  box-sizing:border-box;
+}
+@media(max-width:900px){
+  body > .wrap{padding:18px 16px 40px}
+}
+
+/* 11. Documentos e grades de conferencia: nunca estourar o eixo -------- */
+.doc-cols{grid-template-columns:minmax(0,1fr) !important;min-width:0}
+.doc,.docv,.doc-corpo{min-width:0;max-width:100%}
+.doc-corpo{overflow-wrap:anywhere}
+.doc-corpo img,.doc-corpo table,.doc-corpo pre{max-width:100%}
+.grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr)) !important;min-width:0}
+body > .wrap{max-width:100% !important;min-width:0}
+.wrap,.institutional-shell{min-width:0}
+
+/* 12. Titulos de listas e itens: podem quebrar linha no mobile ---------- */
+.fl,.fl-t,.doc-item,.doc-item .titulo,.acesso-txt b,.mat-txt b{
+  white-space:normal !important;
+  overflow-wrap:anywhere;
+}
+@media(max-width:900px){
+  body > .wrap{overflow-x:auto}
+}
+
+/* 13. Titulos de pagina: quebra segura, sem empurrar a largura ---------- */
+main h1,h1.pg,.institutional-title,.hero h1{overflow-wrap:anywhere;word-break:break-word;max-width:100%}
+
+/* Fechamentos: respiro antes do rodape */
+.fx-wrap{margin-bottom:12px}
+
+/* 14. Rodape sempre no fim: body em coluna, footer empurrado ------------ */
+body{display:flex;flex-direction:column;min-height:100vh}
+main.pag,main.curta{flex:1 1 auto;min-height:0}
+footer{margin-top:auto}

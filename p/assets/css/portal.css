@@ -819,3 +819,39 @@ main.curta{justify-content:center}
   .mat-card{flex-wrap:wrap;gap:12px}
   .mat-go{width:100%;justify-content:center}
 }
+
+/* Fechamentos — cards do accordion (v2: titulo unico, respiro e mesma altura) */
+.fx-wrap{display:flex;flex-direction:column;gap:14px;margin:20px 0 8px;max-width:1120px}
+.fx{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(16,40,64,.05);
+  overflow:hidden;font-size:1rem;font-weight:400;color:inherit}
+.fx summary{display:flex;align-items:center;gap:16px;min-height:88px;padding:20px 24px;cursor:pointer;
+  list-style:none;transition:background .15s ease}
+.fx summary::-webkit-details-marker{display:none}
+.fx summary:hover{background:#f7fbff}
+.fx summary:focus-visible{outline:2px solid #1769aa;outline-offset:-2px}
+.fx-t{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.fx-t b{font-size:1.04rem;color:var(--navy);font-weight:700;line-height:1.3;letter-spacing:-.005em}
+.fx-t small{font-size:.86rem;color:#5c7183;line-height:1.45}
+.fx-i{margin-left:auto;flex:none;width:34px;height:34px;border-radius:50%;border:1px solid #d7e3ee;
+  background:#f2f8fd;position:relative}
+.fx-i::before,.fx-i::after{content:"";position:absolute;top:50%;left:50%;background:#0f4c81;border-radius:2px;
+  transform:translate(-50%,-50%)}
+.fx-i::before{width:13px;height:2px}
+.fx-i::after{width:2px;height:13px;transition:opacity .18s ease}
+.fx[open] .fx-i::after{opacity:0}
+.fx[open] summary{border-bottom:1px solid #eef3f8}
+.fx-body{padding:22px 24px 26px}
+.fx-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px}
+.fx-wide{grid-column:1/-1}
+.fx-bloco h4{margin:0 0 7px;font-size:.72rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#647585}
+.fx-bloco p{margin:0;font-size:.9rem;line-height:1.6;color:#374a5a}
+.fx-list{margin:0;padding-left:18px;font-size:.9rem;line-height:1.6;color:#374a5a}
+.fx-list li{margin-bottom:5px}
+.fx .material-atual{margin-top:22px}
+@media(max-width:900px){
+  .fx summary{min-height:0;padding:16px 16px;gap:12px}
+  .fx-t b{font-size:.96rem}
+  .fx-i{width:30px;height:30px}
+  .fx-body{padding:18px 16px 20px}
+  .fx-grid{grid-template-columns:1fr;gap:16px}
+}
