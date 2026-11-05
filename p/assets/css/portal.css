@@ -896,3 +896,8 @@ main.curta{justify-content:center}
 .drvdocs-pasta{flex:none;display:inline-flex;align-items:center;gap:6px;margin-top:2px;padding:9px 14px;
   border-radius:9px;background:#0f4c81;color:#fff;font-size:.8rem;font-weight:700;text-decoration:none}
 .drvdocs-pasta:hover{background:#1769aa;text-decoration:none}
+
+/* Fechamentos: respiro do rodapé em qualquer estado do accordion (4 seções) */
+.sec-fechamentos{max-width:1120px}
+.sec-fechamentos .fx-wrap{margin-bottom:48px}
+@media(max-width:760px){.sec-fechamentos .fx-wrap{margin-bottom:44px}}
