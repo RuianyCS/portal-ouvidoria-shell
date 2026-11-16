@@ -953,3 +953,8 @@ footer{font-size:.87rem;line-height:1.5}
   .lead{font-size:1rem}
   footer{font-size:.84rem}
 }
+
+/* Comercial: card de vídeo do YouTube (comercial_video.py) */
+.fic.fic-yt{background:none;border-radius:0;width:28px;height:20px;margin-top:0;display:block}
+.fic.fic-yt:before{display:none}
+.fic.fic-yt svg{width:28px;height:20px;display:block}
