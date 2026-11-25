@@ -7,7 +7,7 @@ function encerraPorTempo(){try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e
 function clear(message=''){session=null;generation++;frame.srcdoc='';$('internal').hidden=true;$('login').hidden=false;$('error').textContent=message;}
 async function resource(path){
  const r=await fetch(SUPABASE_URL+'/functions/v1/portal-content',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,apikey:SUPABASE_PUBLIC_KEY,'Content-Type':'application/json'},body:JSON.stringify({path})});
- if(r.status===401||r.status===403){clear('Sessão ausente, expirada ou acesso não autorizado.');throw Error('login_required');}
+ if(r.status===401||r.status===403){clear('Acesso não liberado para este e-mail. Fale com o Desenvolvimento.');throw Error('login_required');}
  if(!r.ok)throw Error('Conteúdo temporariamente indisponível ('+r.status+').');
  const result=await r.json();return {mime:result.mime,text:new TextDecoder().decode(Uint8Array.from(atob(result.body),c=>c.charCodeAt(0)))};
 }
@@ -22,7 +22,7 @@ async function navigate(page,q='',hash='',push=true){
  }catch(e){if(session)$('status').textContent=e.message;}
 }
 window.addEventListener('message',async e=>{if(e.source!==frame.contentWindow||e.data?.channel!==channel||!session)return;const d=e.data,active=channel;if(d.type==='navigate')navigate(d.path,d.q,d.hash);else if(d.type==='resource'){try{const r=await resource(d.path);if(active===channel&&session)frame.contentWindow.postMessage({channel:active,id:d.id,...r},'*');}catch(err){if(active===channel&&session)frame.contentWindow.postMessage({channel:active,id:d.id,error:err.message},'*');}}});
-$('enter').onclick=async()=>{const redirect=new URL(location.href);redirect.search='';redirect.hash='';const {error}=await auth.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{hd:'arrobabandalarga.com.br',prompt:'select_account'}}});if(error)$('error').textContent=error.message;};
+$('enter').onclick=async()=>{const redirect=new URL(location.href);redirect.search='';redirect.hash='';const {error}=await auth.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{prompt:'select_account'}}});if(error)$('error').textContent=error.message;};
 $('exit').onclick=async()=>{try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}clear();await auth.auth.signOut({scope:'global'});};
 auth.auth.onAuthStateChange((event,s)=>{if(!s){clear();return;}if(!localStorage.getItem(PORTAL_LOGIN_AT)){localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));}if(!dentroDaJanela()){encerraPorTempo();return;}session=s;if(event!=='TOKEN_REFRESHED'){const r=route();setTimeout(()=>navigate(r.page,r.q,r.hash,false),0);}});
 window.addEventListener('popstate',()=>{const r=route();navigate(r.page,r.q,r.hash,false);});
