@@ -9,8 +9,14 @@ function grava(k,v){return abre().then(db=>new Promise((ok,no)=>{const t=db.tran
 const PREFIX=new URL('./__portal/',self.registration.scope).pathname;
 const SUPA='__SUPABASE_URL__', ANON='__SUPABASE_ANON__';
 
+const CACHE='portal-assets-v1';
+const CACHEAVEL=/\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|pdf)(\?.*)?$/i;
 self.addEventListener('install',()=>self.skipWaiting());
-self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{
+  const nomes=await caches.keys();
+  await Promise.all(nomes.filter(n=>n!==CACHE).map(n=>caches.delete(n)));
+  await self.clients.claim();
+})()));
 self.addEventListener('message',e=>{
   const d=e.data||{};
   if(d.type==='portal-token'&&d.token)e.waitUntil(grava(KEYNAME,d.token));
@@ -21,7 +27,7 @@ self.addEventListener('fetch',event=>{
   if(!url.pathname.startsWith(PREFIX))return;
   let path=url.pathname.slice(PREFIX.length);
   if(!path)path='index.html';
-  event.respondWith(serve(path));
+  event.respondWith(serve(path,event.request));
 });
 
 function paginaErro(codigo,titulo,texto){
@@ -33,8 +39,11 @@ function paginaErro(codigo,titulo,texto){
   return new Response(html,{status:codigo,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
 }
 
-async function serve(path){
+async function serve(path,req){
  try{
+  if(CACHEAVEL.test(path)){
+    try{const c=await caches.open(CACHE);const hit=await c.match(req,{ignoreSearch:true});if(hit)return hit}catch(e){}
+  }
   let token=null;
   try{token=await pega(KEYNAME)}catch(e){}
   if(!token)return paginaErro(401,'Sessao necessaria','Entre com uma conta autorizada.');
@@ -51,7 +60,11 @@ async function serve(path){
   const j=await r.json();
   const bin=atob(j.body),bytes=new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
-  return new Response(bytes,{headers:{'content-type':j.mime||'application/octet-stream','cache-control':'no-store'}});
+  const resp=new Response(bytes,{headers:{'content-type':j.mime||'application/octet-stream','cache-control':'no-store'}});
+  if(CACHEAVEL.test(path)){
+    try{const c=await caches.open(CACHE);await c.put(new Request(new URL(req.url).origin+'/__portal/'+path),resp.clone())}catch(e){}
+  }
+  return resp;
  }catch(err){
   return new Response('sw-erro: '+(err&&err.message?err.message:String(err)),{status:500,headers:{'content-type':'text/plain; charset=utf-8'}});
  }

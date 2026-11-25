@@ -3,6 +3,7 @@ const auth=createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:t
 const $=id=>document.getElementById(id),frame=$('view');
 const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000,PREFIX='./__portal/';
 let session=null,sw=null,carregado='',tentativas=0,entrando=false;
+const emIframe=(()=>{try{return window.top!==window.self}catch(e){return true}})();
 
 function dentroDaJanela(){const t=Number(localStorage.getItem(PORTAL_LOGIN_AT)||0);if(!t)return true;return Date.now()-t<SESSAO_MAX_MS;}
 function rota(){const q=new URLSearchParams(location.search);return {page:q.get('page')||'index.html',q:q.get('q')||''};}
@@ -84,7 +85,16 @@ function encerraPorTempo(){
 
 $('enter').onclick=async()=>{
   const redirect=new URL(location.href);redirect.search='';redirect.hash='';
-  const {error}=await auth.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{prompt:'select_account'}}});
+  const opcoes={redirectTo:redirect.href,queryParams:{prompt:'select_account'}};
+  if(emIframe){
+    opcoes.skipBrowserRedirect=true;
+    const {data,error}=await auth.auth.signInWithOAuth({provider:'google',options:opcoes});
+    if(error){$('error').textContent=error.message;return;}
+    const pop=window.open(data.url,'portal-login','width=520,height=700');
+    if(!pop)$('error').textContent='Permita janelas pop-up para entrar.';
+    return;
+  }
+  const {error}=await auth.auth.signInWithOAuth({provider:'google',options:opcoes});
   if(error)$('error').textContent=error.message;
 };
 $('exit').onclick=async()=>{
@@ -126,7 +136,19 @@ auth.auth.onAuthStateChange((ev,s)=>{
 });
 
 consomeHash().then(ok=>{
+  if(ok&&window.opener&&window.opener!==window){
+    try{window.opener.postMessage({type:'portal-login-ok'},'*')}catch(e){}
+    setTimeout(()=>{try{window.close()}catch(e){}},400);
+    return;
+  }
   if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
+});
+
+window.addEventListener('message',e=>{
+  if(e.data&&e.data.type==='portal-login-ok')auth.auth.getSession().then(({data})=>entra(data.session));
+});
+window.addEventListener('storage',e=>{
+  if(e.key&&e.key.indexOf('-auth-token')>=0&&e.newValue)auth.auth.getSession().then(({data})=>entra(data.session));
 });
 
 setInterval(()=>{
