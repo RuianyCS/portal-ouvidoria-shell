@@ -54,7 +54,11 @@ async function consomeHash(){
 
 async function aquecerCache(){
   try{
-    const doc=frame.contentDocument;
+    try{
+    const t=frame.contentDocument&&frame.contentDocument.title;
+    if(t&&t!==document.title)document.title=t;
+  }catch(e){}
+  const doc=frame.contentDocument;
     if(!doc)return;
     const alvos=[...new Set([...doc.querySelectorAll('.side a[href]')]
       .map(a=>a.getAttribute('href'))
