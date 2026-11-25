@@ -14,7 +14,26 @@ async function registraWorker(){
   if(!('serviceWorker' in navigator))throw Error('Navegador sem suporte ao modo protegido.');
   sw=await navigator.serviceWorker.register('./sw.js',{scope:'./'});
   await navigator.serviceWorker.ready;
+  if(!navigator.serviceWorker.controller){
+    await new Promise(ok=>{
+      const t=setTimeout(ok,3000);
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{clearTimeout(t);ok();},{once:true});
+    });
+  }
   return sw;
+}
+
+async function consomeHash(){
+  const h=location.hash||'';
+  if(h.indexOf('access_token=')<0)return false;
+  const p=new URLSearchParams(h.slice(1));
+  const at=p.get('access_token'),rt=p.get('refresh_token');
+  if(!at||!rt)return false;
+  try{
+    const {data,error}=await auth.auth.setSession({access_token:at,refresh_token:rt});
+    history.replaceState({},'',location.pathname+location.search);
+    return !error&&!!data.session;
+  }catch(e){return false;}
 }
 
 function idbGrava(k,v){return new Promise((ok,no)=>{const r=indexedDB.open('portal-sw',1);
@@ -49,7 +68,7 @@ async function entra(s){
   if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
   if(!dentroDaJanela()){encerraPorTempo();return;}
   session=s;
-  try{await registraWorker();console.log('[portal] sw ok');}catch(e){console.log('[portal] sw erro', String(e));throw e;}
+  try{await registraWorker();throw e;}
   await entregaToken();
   await abreConteudo();
   } finally { entrando=false; }
@@ -88,6 +107,6 @@ frame.addEventListener('load',()=>{
   }
 });
 
-auth.auth.onAuthStateChange((ev,s)=>{console.log('[portal] authEvent', ev, !!s);if(!s){mostraLogin();return;}setTimeout(()=>entra(s),0);});
-auth.auth.getSession().then(({data,error})=>{console.log('[portal] getSession', !!data.session, error&&error.message);entra(data.session);}).catch(e=>console.log('[portal] getSession erro', String(e)));
+auth.auth.onAuthStateChange((ev,s)=>{
+auth.auth.getSession().then(({data,error})=>{
 setInterval(()=>{if(!session)return;if(!dentroDaJanela()){encerraPorTempo();return;}if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');else entregaToken();},60000);
