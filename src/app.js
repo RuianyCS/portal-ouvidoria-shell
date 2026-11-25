@@ -68,7 +68,7 @@ async function entra(s){
   if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
   if(!dentroDaJanela()){encerraPorTempo();return;}
   session=s;
-  try{await registraWorker();throw e;}
+  await registraWorker();
   await entregaToken();
   await abreConteudo();
   } finally { entrando=false; }
