@@ -33,14 +33,18 @@ async function abreConteudo(){
   frame.src=url;
 }
 
+let entrando=false;
 async function entra(s){
   if(!s){mostraLogin();return;}
+  if(entrando)return; entrando=true;
+  try{
   if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
   if(!dentroDaJanela()){encerraPorTempo();return;}
   session=s;
   await registraWorker();
   await entregaToken();
   await abreConteudo();
+  } finally { entrando=false; }
 }
 
 function encerraPorTempo(){try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}mostraLogin('Sessão de 8 horas encerrada. Entre novamente.');auth.auth.signOut({scope:'global'}).catch(()=>{});}
