@@ -60,10 +60,14 @@ async function aquecerCache(){
       .map(a=>a.getAttribute('href'))
       .filter(h=>h&&!h.startsWith('#')&&!h.startsWith('http'))
       .map(h=>PREFIX+h.replace(/^\.\//,'')))];
-    for(const u of alvos){
-      try{await fetch(u,{cache:'no-store'})}catch(e){}
-      await new Promise(r=>setTimeout(r,120));
-    }
+    let i=0;
+    const operario=async()=>{
+      while(i<alvos.length){
+        const u=alvos[i++];
+        try{await fetch(u,{cache:'no-store'})}catch(e){}
+      }
+    };
+    await Promise.all([operario(),operario(),operario()]);
   }catch(e){}
 }
 
@@ -87,7 +91,7 @@ async function entra(s){
     await registraWorker();
     await entregaToken();
     await abreConteudo();
-    setTimeout(aquecerCache,2500);
+    setTimeout(aquecerCache,600);
   }catch(e){
     $('status').textContent='Não foi possível abrir o Portal agora. Recarregue a página.';
   }finally{entrando=false;}
