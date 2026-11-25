@@ -35,13 +35,14 @@ async function abreConteudo(){
 
 let entrando=false;
 async function entra(s){
+  console.log('[portal] entra', !!s);
   if(!s){mostraLogin();return;}
   if(entrando)return; entrando=true;
   try{
   if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
   if(!dentroDaJanela()){encerraPorTempo();return;}
   session=s;
-  await registraWorker();
+  try{await registraWorker();console.log('[portal] sw ok');}catch(e){console.log('[portal] sw erro', String(e));throw e;}
   await entregaToken();
   await abreConteudo();
   } finally { entrando=false; }
@@ -75,6 +76,6 @@ frame.addEventListener('load',()=>{
   }
 });
 
-auth.auth.onAuthStateChange((ev,s)=>{if(!s){mostraLogin();return;}setTimeout(()=>entra(s),0);});
-auth.auth.getSession().then(({data})=>entra(data.session));
+auth.auth.onAuthStateChange((ev,s)=>{console.log('[portal] authEvent', ev, !!s);if(!s){mostraLogin();return;}setTimeout(()=>entra(s),0);});
+auth.auth.getSession().then(({data,error})=>{console.log('[portal] getSession', !!data.session, error&&error.message);entra(data.session);}).catch(e=>console.log('[portal] getSession erro', String(e)));
 setInterval(()=>{if(!session)return;if(!dentroDaJanela()){encerraPorTempo();return;}if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');else entregaToken();},60000);
