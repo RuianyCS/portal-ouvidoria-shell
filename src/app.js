@@ -52,6 +52,21 @@ async function consomeHash(){
   }catch(e){return false;}
 }
 
+async function aquecerCache(){
+  try{
+    const doc=frame.contentDocument;
+    if(!doc)return;
+    const alvos=[...new Set([...doc.querySelectorAll('.side a[href]')]
+      .map(a=>a.getAttribute('href'))
+      .filter(h=>h&&!h.startsWith('#')&&!h.startsWith('http'))
+      .map(h=>PREFIX+h.replace(/^\.\//,'')))];
+    for(const u of alvos){
+      try{await fetch(u,{cache:'no-store'})}catch(e){}
+      await new Promise(r=>setTimeout(r,120));
+    }
+  }catch(e){}
+}
+
 async function abreConteudo(){
   const r=rota();
   const url=PREFIX+r.page+(r.q?'?q='+encodeURIComponent(r.q):'');
@@ -72,6 +87,7 @@ async function entra(s){
     await registraWorker();
     await entregaToken();
     await abreConteudo();
+    setTimeout(aquecerCache,2500);
   }catch(e){
     $('status').textContent='Não foi possível abrir o Portal agora. Recarregue a página.';
   }finally{entrando=false;}
