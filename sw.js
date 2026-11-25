@@ -24,11 +24,20 @@ self.addEventListener('fetch',event=>{
   event.respondWith(serve(path));
 });
 
+function paginaErro(codigo,titulo,texto){
+  const html='<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>'+titulo+'</title>'
+   +'<style>body{margin:0;font:16px/1.5 system-ui,-apple-system,sans-serif;background:#f7f9fb;color:#1d2733;display:grid;place-items:center;height:100vh}'
+   +'.c{max-width:420px;padding:28px;background:#fff;border:1px solid #e3e9f0;border-radius:14px;text-align:center}'
+   +'h1{font-size:1.1rem;margin:0 0 8px;color:#0f3d63}p{margin:0;color:#5b6b7c;font-size:.92rem}</style></head>'
+   +'<body data-portal-erro="'+codigo+'"><div class="c"><h1>'+titulo+'</h1><p>'+texto+'</p></div></body></html>';
+  return new Response(html,{status:codigo,headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store'}});
+}
+
 async function serve(path){
  try{
   let token=null;
   try{token=await pega(KEYNAME)}catch(e){}
-  if(!token)return new Response('login necessario',{status:401,headers:{'content-type':'text/plain; charset=utf-8'}});
+  if(!token)return paginaErro(401,'Sessao necessaria','Entre com uma conta autorizada.');
   let r;
   try{
     r=await fetch(SUPA+'/functions/v1/portal-content',{method:'POST',
@@ -37,7 +46,8 @@ async function serve(path){
   }catch(e){
     return new Response('sem conexao',{status:503,headers:{'content-type':'text/plain; charset=utf-8'}});
   }
-  if(!r.ok)return new Response('acesso negado ('+r.status+')',{status:r.status,headers:{'content-type':'text/plain; charset=utf-8'}});
+  if(!r.ok)return paginaErro(r.status,r.status===403?'Acesso nao liberado':'Falha ao carregar',
+    r.status===403?'Este e-mail nao esta na lista de acesso do Portal da Ouvidoria.':'Tente novamente em instantes.');
   const j=await r.json();
   const bin=atob(j.body),bytes=new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);

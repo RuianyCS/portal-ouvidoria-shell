@@ -67,7 +67,12 @@ frame.addEventListener('load',()=>{
     }
   }catch(e){}
   const doc=frame.contentDocument;
-  if(doc&&doc.body&&doc.body.textContent.length<40)$('status').textContent='Conteúdo indisponível para este e-mail ou sessão expirada.';
+  const codigo=doc&&doc.body?doc.body.getAttribute('data-portal-erro'):null;
+  if(codigo){
+    mostraLogin(codigo==='403'?'Este e-mail não tem acesso liberado. Entre com uma conta autorizada.':'Sessão expirada. Entre novamente.');
+    try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
+    auth.auth.signOut({scope:'local'}).catch(()=>{});
+  }
 });
 
 auth.auth.onAuthStateChange((ev,s)=>{if(!s){mostraLogin();return;}setTimeout(()=>entra(s),0);});
