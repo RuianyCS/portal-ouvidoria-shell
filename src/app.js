@@ -10,8 +10,9 @@ function mostraLogin(msg=''){session=null;frame.removeAttribute('src');frame.hid
 
 async function registraWorker(){
   if(!('serviceWorker' in navigator))throw Error('Navegador sem suporte ao modo protegido.');
-  sw=await navigator.serviceWorker.register('./sw.js',{scope:'./'});
+  sw=await navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'});
   await navigator.serviceWorker.ready;
+  try{sw.update()}catch(e){}
   if(!navigator.serviceWorker.controller){
     await new Promise(ok=>{
       const t=setTimeout(ok,3000);
