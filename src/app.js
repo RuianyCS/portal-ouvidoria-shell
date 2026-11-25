@@ -117,7 +117,10 @@ frame.addEventListener('load',()=>{
 });
 
 auth.auth.onAuthStateChange((ev,s)=>{
-  if(!s){if(ev==='SIGNED_OUT')mostraLogin();return;}
+  if(!s){
+    if(ev==='SIGNED_OUT'&&!$('error').textContent)mostraLogin();
+    return;
+  }
   setTimeout(()=>entra(s),0);
 });
 
