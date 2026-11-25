@@ -25,6 +25,7 @@ self.addEventListener('fetch',event=>{
 });
 
 async function serve(path){
+ try{
   let token=null;
   try{token=await pega(KEYNAME)}catch(e){}
   if(!token)return new Response('login necessario',{status:401,headers:{'content-type':'text/plain; charset=utf-8'}});
@@ -41,4 +42,7 @@ async function serve(path){
   const bin=atob(j.body),bytes=new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
   return new Response(bytes,{headers:{'content-type':j.mime||'application/octet-stream','cache-control':'no-store'}});
+ }catch(err){
+  return new Response('sw-erro: '+(err&&err.message?err.message:String(err)),{status:500,headers:{'content-type':'text/plain; charset=utf-8'}});
+ }
 }
