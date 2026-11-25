@@ -1,13 +1,11 @@
 import {createClient} from '@supabase/supabase-js';
 const auth=createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
 const $=id=>document.getElementById(id),frame=$('view');
-const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000;
-let session=null,sw=null,carregado='',tentativas=0;
-const PREFIX='./__portal/';
+const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000,PREFIX='./__portal/';
+let session=null,sw=null,carregado='',tentativas=0,entrando=false;
 
 function dentroDaJanela(){const t=Number(localStorage.getItem(PORTAL_LOGIN_AT)||0);if(!t)return true;return Date.now()-t<SESSAO_MAX_MS;}
 function rota(){const q=new URLSearchParams(location.search);return {page:q.get('page')||'index.html',q:q.get('q')||''};}
-
 function mostraLogin(msg=''){session=null;frame.removeAttribute('src');frame.hidden=true;$('internal').hidden=true;$('login').hidden=false;$('error').textContent=msg;}
 
 async function registraWorker(){
@@ -23,6 +21,22 @@ async function registraWorker(){
   return sw;
 }
 
+function idbGrava(k,v){return new Promise((ok,no)=>{
+  const r=indexedDB.open('portal-sw',1);
+  r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains('kv'))r.result.createObjectStore('kv')};
+  r.onsuccess=()=>{const db=r.result;
+    try{const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>ok();t.onerror=()=>no(t.error)}catch(e){no(e)}};
+  r.onerror=()=>no(r.error)})}
+
+async function entregaToken(){
+  if(!session)return;
+  const token=session.access_token;
+  try{await idbGrava('token',token)}catch(e){}
+  if(!sw)return;
+  const alvo=sw.active||sw.waiting||sw.installing;
+  if(alvo)alvo.postMessage({type:'portal-token',token});
+}
+
 async function consomeHash(){
   const h=location.hash||'';
   if(h.indexOf('access_token=')<0)return false;
@@ -36,52 +50,47 @@ async function consomeHash(){
   }catch(e){return false;}
 }
 
-function idbGrava(k,v){return new Promise((ok,no)=>{const r=indexedDB.open('portal-sw',1);
-  r.onupgradeneeded=()=>{r.result.createObjectStore('kv')};
-  r.onsuccess=()=>{const db=r.result;try{const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>ok();t.onerror=()=>no(t.error)}catch(e){no(e)}};
-  r.onerror=()=>no(r.error)})}
-
-async function entregaToken(){
-  if(!session)return;
-  const token=session.access_token;
-  try{await idbGrava('token',token)}catch(e){}
-  if(!sw)return;
-  const alvo=sw.active||sw.waiting||sw.installing;
-  if(alvo)alvo.postMessage({type:'portal-token',token});
-}
-
 async function abreConteudo(){
   const r=rota();
   const url=PREFIX+r.page+(r.q?'?q='+encodeURIComponent(r.q):'');
+  $('login').hidden=true;$('internal').hidden=false;frame.hidden=false;$('status').textContent='';
   if(carregado===url)return;
   carregado=url;
-  $('login').hidden=true;$('internal').hidden=false;frame.hidden=false;
-  $('status').textContent='';
   frame.src=url;
 }
 
-let entrando=false;
 async function entra(s){
   if(!s){mostraLogin();return;}
-  if(entrando)return; entrando=true;
+  if(entrando)return;
+  entrando=true;
   try{
-  if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
-  if(!dentroDaJanela()){encerraPorTempo();return;}
-  session=s;
-  await registraWorker();
-  await entregaToken();
-  await abreConteudo();
-  } finally { entrando=false; }
+    if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
+    if(!dentroDaJanela()){encerraPorTempo();return;}
+    session=s;
+    await registraWorker();
+    await entregaToken();
+    await abreConteudo();
+  }catch(e){
+    $('status').textContent='Não foi possível abrir o Portal agora. Recarregue a página.';
+  }finally{entrando=false;}
 }
 
-function encerraPorTempo(){try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}mostraLogin('Sessão de 8 horas encerrada. Entre novamente.');auth.auth.signOut({scope:'global'}).catch(()=>{});}
+function encerraPorTempo(){
+  try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
+  mostraLogin('Sessão de 8 horas encerrada. Entre novamente.');
+  auth.auth.signOut({scope:'global'}).catch(()=>{});
+}
 
 $('enter').onclick=async()=>{
   const redirect=new URL(location.href);redirect.search='';redirect.hash='';
   const {error}=await auth.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect.href,queryParams:{prompt:'select_account'}}});
   if(error)$('error').textContent=error.message;
 };
-$('exit').onclick=async()=>{try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}mostraLogin();await auth.auth.signOut({scope:'global'});};
+$('exit').onclick=async()=>{
+  try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
+  mostraLogin();
+  await auth.auth.signOut({scope:'global'});
+};
 
 frame.addEventListener('load',()=>{
   try{
@@ -108,5 +117,17 @@ frame.addEventListener('load',()=>{
 });
 
 auth.auth.onAuthStateChange((ev,s)=>{
-auth.auth.getSession().then(({data,error})=>{
-setInterval(()=>{if(!session)return;if(!dentroDaJanela()){encerraPorTempo();return;}if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');else entregaToken();},60000);
+  if(!s){if(ev==='SIGNED_OUT')mostraLogin();return;}
+  setTimeout(()=>entra(s),0);
+});
+
+consomeHash().then(ok=>{
+  if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
+});
+
+setInterval(()=>{
+  if(!session)return;
+  if(!dentroDaJanela()){encerraPorTempo();return;}
+  if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');
+  else entregaToken();
+},60000);
