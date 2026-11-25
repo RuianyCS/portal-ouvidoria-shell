@@ -2,7 +2,7 @@ import {createClient} from '@supabase/supabase-js';
 const auth=createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
 const $=id=>document.getElementById(id),frame=$('view');
 const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000;
-let session=null,sw=null,carregado='';
+let session=null,sw=null,carregado='',tentativas=0;
 const PREFIX='./__portal/';
 
 function dentroDaJanela(){const t=Number(localStorage.getItem(PORTAL_LOGIN_AT)||0);if(!t)return true;return Date.now()-t<SESSAO_MAX_MS;}
@@ -17,10 +17,18 @@ async function registraWorker(){
   return sw;
 }
 
+function idbGrava(k,v){return new Promise((ok,no)=>{const r=indexedDB.open('portal-sw',1);
+  r.onupgradeneeded=()=>{r.result.createObjectStore('kv')};
+  r.onsuccess=()=>{const db=r.result;try{const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>ok();t.onerror=()=>no(t.error)}catch(e){no(e)}};
+  r.onerror=()=>no(r.error)})}
+
 async function entregaToken(){
-  if(!sw||!session)return;
+  if(!session)return;
+  const token=session.access_token;
+  try{await idbGrava('token',token)}catch(e){}
+  if(!sw)return;
   const alvo=sw.active||sw.waiting||sw.installing;
-  if(alvo)alvo.postMessage({type:'portal-token',token:session.access_token});
+  if(alvo)alvo.postMessage({type:'portal-token',token});
 }
 
 async function abreConteudo(){
@@ -35,7 +43,6 @@ async function abreConteudo(){
 
 let entrando=false;
 async function entra(s){
-  console.log('[portal] entra', !!s);
   if(!s){mostraLogin();return;}
   if(entrando)return; entrando=true;
   try{
@@ -69,6 +76,11 @@ frame.addEventListener('load',()=>{
   }catch(e){}
   const doc=frame.contentDocument;
   const codigo=doc&&doc.body?doc.body.getAttribute('data-portal-erro'):null;
+  if(codigo==='401'&&session&&tentativas<2){
+    tentativas++;
+    entregaToken().then(()=>{carregado='';abreConteudo();});
+    return;
+  }
   if(codigo){
     mostraLogin(codigo==='403'?'Este e-mail não tem acesso liberado. Entre com uma conta autorizada.':'Sessão expirada. Entre novamente.');
     try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
