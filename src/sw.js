@@ -9,8 +9,9 @@ function grava(k,v){return abre().then(db=>new Promise((ok,no)=>{const t=db.tran
 const PREFIX=new URL('./__portal/',self.registration.scope).pathname;
 const SUPA='__SUPABASE_URL__', ANON='__SUPABASE_ANON__';
 
-const CACHE='portal-assets-v1';
-const CACHEAVEL=/\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|pdf)(\?.*)?$/i;
+const CACHE='portal-assets-v2';
+const CACHEAVEL=/\.(html|css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|otf|pdf)(\?.*)?$/i;
+const TTL=6*3600*1000;
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',e=>e.waitUntil((async()=>{
   const nomes=await caches.keys();
@@ -42,7 +43,14 @@ function paginaErro(codigo,titulo,texto){
 async function serve(path,req){
  try{
   if(CACHEAVEL.test(path)){
-    try{const c=await caches.open(CACHE);const hit=await c.match(req,{ignoreSearch:true});if(hit)return hit}catch(e){}
+    try{
+      const c=await caches.open(CACHE);
+      const hit=await c.match(req,{ignoreSearch:true});
+      if(hit){
+        const idade=Date.now()-Number(hit.headers.get('x-cached-at')||0);
+        if(idade<TTL)return hit;
+      }
+    }catch(e){}
   }
   let token=null;
   try{token=await pega(KEYNAME)}catch(e){}
@@ -62,7 +70,13 @@ async function serve(path,req){
   for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
   const resp=new Response(bytes,{headers:{'content-type':j.mime||'application/octet-stream','cache-control':'no-store'}});
   if(CACHEAVEL.test(path)){
-    try{const c=await caches.open(CACHE);await c.put(new Request(new URL(req.url).origin+'/__portal/'+path),resp.clone())}catch(e){}
+    try{
+      const c=await caches.open(CACHE);
+      const copia=resp.clone();
+      const cab=new Headers(copia.headers);cab.set('x-cached-at',String(Date.now()));
+      const corpo=await copia.blob();
+      await c.put(new Request(new URL(req.url).origin+'/__portal/'+path),new Response(corpo,{headers:cab}));
+    }catch(e){}
   }
   return resp;
  }catch(err){
