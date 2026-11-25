@@ -80,6 +80,13 @@ async function abreConteudo(){
   frame.src=url;
 }
 
+function fechaPopupSeLogin(){
+  if(!(window.opener&&window.opener!==window))return false;
+  try{window.opener.postMessage({type:'portal-login-ok'},'*')}catch(e){}
+  setTimeout(()=>{try{window.close()}catch(e){}},300);
+  return true;
+}
+
 async function entra(s){
   if(!s){mostraLogin();return;}
   if(entrando)return;
@@ -88,6 +95,7 @@ async function entra(s){
     if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
     if(!dentroDaJanela()){encerraPorTempo();return;}
     session=s;
+    if(fechaPopupSeLogin())return;
     await registraWorker();
     await entregaToken();
     await abreConteudo();
@@ -156,11 +164,7 @@ auth.auth.onAuthStateChange((ev,s)=>{
 });
 
 consomeHash().then(ok=>{
-  if(ok&&window.opener&&window.opener!==window){
-    try{window.opener.postMessage({type:'portal-login-ok'},'*')}catch(e){}
-    setTimeout(()=>{try{window.close()}catch(e){}},400);
-    return;
-  }
+  if(ok&&fechaPopupSeLogin())return;
   if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
 });
 
