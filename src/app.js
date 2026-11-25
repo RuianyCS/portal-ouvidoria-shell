@@ -76,5 +76,5 @@ frame.addEventListener('load',()=>{
 });
 
 auth.auth.onAuthStateChange((ev,s)=>{if(!s){mostraLogin();return;}setTimeout(()=>entra(s),0);});
-auth.getSession().then(({data})=>entra(data.session));
+auth.auth.getSession().then(({data})=>entra(data.session));
 setInterval(()=>{if(!session)return;if(!dentroDaJanela()){encerraPorTempo();return;}if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');else entregaToken();},60000);
