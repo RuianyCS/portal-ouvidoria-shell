@@ -86,9 +86,21 @@ async function abreConteudo(){
   frame.src=url;
 }
 
-function fechaPopupSeLogin(){
+async function fechaPopupSeLogin(){
   if(!(window.opener&&window.opener!==window))return false;
-  if(session&&session.access_token&&session.refresh_token){
+  if(session&&session.access_token){
+    // sessao pode ter sido revogada (logout em outra janela): valida antes de repassar
+    let valida=true;
+    try{
+      const {data,error}=await auth.auth.getUser(session.access_token);
+      valida=!error&&!!data.user;
+    }catch(e){valida=false;}
+    if(!valida){
+      try{await auth.auth.signOut({scope:'local'})}catch(e){}
+      try{localStorage.removeItem(PORTAL_LOGIN_AT)}catch(e){}
+      mostraLogin('Sessão anterior encerrada. Entre novamente.');
+      return false;
+    }
     try{
       window.opener.postMessage({
         type:'portal-sessao',
@@ -111,7 +123,7 @@ async function entra(s){
     if(!localStorage.getItem(PORTAL_LOGIN_AT))localStorage.setItem(PORTAL_LOGIN_AT,String(Date.now()));
     if(!dentroDaJanela()){encerraPorTempo();return;}
     session=s;
-    if(fechaPopupSeLogin())return;
+    if(await fechaPopupSeLogin())return;
     await registraWorker();
     await entregaToken();
     await abreConteudo();
@@ -179,8 +191,8 @@ auth.auth.onAuthStateChange((ev,s)=>{
   setTimeout(()=>entra(s),0);
 });
 
-consomeHash().then(ok=>{
-  if(ok&&fechaPopupSeLogin())return;
+consomeHash().then(async ok=>{
+  if(ok&&await fechaPopupSeLogin())return;
   if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
 });
 
