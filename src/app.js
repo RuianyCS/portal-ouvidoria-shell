@@ -173,19 +173,33 @@ frame.addEventListener('load',()=>{
   const codigo=doc&&doc.body?doc.body.getAttribute('data-portal-erro'):null;
   if(codigo==='401'&&session&&tentativas<2){
     tentativas++;
+    registraFalha('conteudo_401','401','token sem sessao valida no servidor');
     entregaToken().then(()=>{carregado='';abreConteudo();});
     return;
   }
+  if(codigo==='401'&&session){
+    registraFalha('conteudo_401_final','401','renovando sessao antes de pedir login');
+    auth.auth.refreshSession().then(({data,error})=>{
+      if(!error&&data.session){session=data.session;tentativas=0;carregado='';entregaToken().then(()=>abreConteudo());}
+      else{mostraLogin('Sessão expirada. Entre novamente.');}
+    }).catch(()=>mostraLogin('Sessão expirada. Entre novamente.'));
+    return;
+  }
   if(codigo){
-    mostraLogin(codigo==='403'?'Este e-mail não tem acesso liberado. Entre com uma conta autorizada.':'Sessão expirada. Entre novamente.');
-    try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
-    auth.auth.signOut({scope:'local'}).catch(()=>{});
+    registraFalha('conteudo_'+codigo,codigo,codigo==='403'?'e-mail fora da whitelist ativa':'outro');
+    mostraLogin(codigo==='403'?'Este e-mail não tem acesso liberado. Entre com uma conta autorizada.':'Não foi possível validar sua sessão. Entre novamente.');
   }
 });
 
 auth.auth.onAuthStateChange((ev,s)=>{
   if(!s){
-    if(ev==='SIGNED_OUT'&&!$('error').textContent)mostraLogin();
+    if(ev==='SIGNED_OUT'){
+      registraFalha('auth_signed_out','','evento SIGNED_OUT');
+      setTimeout(async()=>{
+        const ok=await adotaSessaoDoStorage();
+        if(!ok&&!$('error').textContent)mostraLogin();
+      },900);
+    }
     return;
   }
   setTimeout(()=>entra(s),0);
@@ -199,6 +213,18 @@ consomeHash().then(async ok=>{
 // A sessao nasce em outra janela (popup de login). O client deste iframe mantem
 // a sessao em memoria, entao getSession() continua nulo: precisamos ler o
 // localStorage e adotar a sessao explicitamente.
+function registraFalha(evento,codigo,detalhe){
+  try{
+    const tok=session&&session.access_token;
+    if(!tok)return;
+    fetch(SUPABASE_URL+'/rest/v1/portal_access_log',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLIC_KEY,Authorization:'Bearer '+tok},
+      body:JSON.stringify({evento,codigo:String(codigo||''),email:(session.user&&session.user.email)||'',detalhe:(detalhe||'').slice(0,300)})
+    }).catch(()=>{});
+  }catch(e){}
+}
+
 function leSessaoStorage(){
   try{
     const raw=localStorage.getItem(CHAVE_TOKEN);
@@ -241,6 +267,10 @@ window.addEventListener('storage',e=>{
 setInterval(()=>{
   if(!session){adotaSessaoDoStorage();return;}
   if(!dentroDaJanela()){encerraPorTempo();return;}
-  if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');
-  else entregaToken();
+  if(session.expires_at*1000<=Date.now()+30000){
+    auth.auth.refreshSession().then(({data,error})=>{
+      if(!error&&data.session){session=data.session;entregaToken();}
+      else{registraFalha('refresh_falhou','','renovacao negada');mostraLogin('Sessão expirada. Entre novamente.');}
+    }).catch(()=>{});
+  }else entregaToken();
 },60000);
