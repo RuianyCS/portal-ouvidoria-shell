@@ -88,8 +88,18 @@ async function abreConteudo(){
 
 function fechaPopupSeLogin(){
   if(!(window.opener&&window.opener!==window))return false;
-  try{window.opener.postMessage({type:'portal-login-ok'},'*')}catch(e){}
-  setTimeout(()=>{try{window.close()}catch(e){}},300);
+  if(session&&session.access_token&&session.refresh_token){
+    try{
+      window.opener.postMessage({
+        type:'portal-sessao',
+        access_token:session.access_token,
+        refresh_token:session.refresh_token
+      },'*');
+    }catch(e){}
+  }else{
+    try{window.opener.postMessage({type:'portal-login-ok'},'*')}catch(e){}
+  }
+  setTimeout(()=>{try{window.close()}catch(e){}},400);
   return true;
 }
 
@@ -201,8 +211,16 @@ async function adotaSessaoDoStorage(){
   }catch(e){return false;}finally{adotando=false;}
 }
 
-window.addEventListener('message',e=>{
-  if(e.data&&e.data.type==='portal-login-ok')adotaSessaoDoStorage();
+window.addEventListener('message',async e=>{
+  const d=e.data||{};
+  if(d.type==='portal-sessao'&&d.access_token&&d.refresh_token){
+    try{
+      const {data,error}=await auth.auth.setSession({access_token:d.access_token,refresh_token:d.refresh_token});
+      if(!error&&data.session)await entra(data.session);
+    }catch(err){}
+    return;
+  }
+  if(d.type==='portal-login-ok')adotaSessaoDoStorage();
 });
 window.addEventListener('storage',e=>{
   if(e.key&&e.key.indexOf('-auth-token')>=0&&e.newValue)adotaSessaoDoStorage();
