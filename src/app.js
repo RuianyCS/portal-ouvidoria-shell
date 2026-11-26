@@ -2,6 +2,8 @@ import {createClient} from '@supabase/supabase-js';
 const auth=createClient(SUPABASE_URL,SUPABASE_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}});
 const $=id=>document.getElementById(id),frame=$('view');
 const PORTAL_LOGIN_AT='portal_login_at',SESSAO_MAX_MS=8*60*60*1000,PREFIX='./__portal/';
+const REF=(()=>{try{return new URL(SUPABASE_URL).hostname.split('.')[0]}catch(e){return ''}})();
+const CHAVE_TOKEN='sb-'+REF+'-auth-token';
 let session=null,sw=null,carregado='',tentativas=0,entrando=false;
 const emIframe=(()=>{try{return window.top!==window.self}catch(e){return true}})();
 
@@ -172,15 +174,42 @@ consomeHash().then(ok=>{
   if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
 });
 
+// A sessao nasce em outra janela (popup de login). O client deste iframe mantem
+// a sessao em memoria, entao getSession() continua nulo: precisamos ler o
+// localStorage e adotar a sessao explicitamente.
+function leSessaoStorage(){
+  try{
+    const raw=localStorage.getItem(CHAVE_TOKEN);
+    if(!raw)return null;
+    const d=JSON.parse(raw);
+    if(d&&d.access_token&&d.refresh_token)return {access_token:d.access_token,refresh_token:d.refresh_token};
+  }catch(e){}
+  return null;
+}
+
+let adotando=false;
+async function adotaSessaoDoStorage(){
+  if(session||adotando)return false;
+  const s=leSessaoStorage();
+  if(!s)return false;
+  adotando=true;
+  try{
+    const {data,error}=await auth.auth.setSession(s);
+    if(error||!data.session)return false;
+    await entra(data.session);
+    return true;
+  }catch(e){return false;}finally{adotando=false;}
+}
+
 window.addEventListener('message',e=>{
-  if(e.data&&e.data.type==='portal-login-ok')auth.auth.getSession().then(({data})=>entra(data.session));
+  if(e.data&&e.data.type==='portal-login-ok')adotaSessaoDoStorage();
 });
 window.addEventListener('storage',e=>{
-  if(e.key&&e.key.indexOf('-auth-token')>=0&&e.newValue)auth.auth.getSession().then(({data})=>entra(data.session));
+  if(e.key&&e.key.indexOf('-auth-token')>=0&&e.newValue)adotaSessaoDoStorage();
 });
 
 setInterval(()=>{
-  if(!session)return;
+  if(!session){adotaSessaoDoStorage();return;}
   if(!dentroDaJanela()){encerraPorTempo();return;}
   if(session.expires_at*1000<=Date.now())mostraLogin('Sessão expirada. Entre novamente.');
   else entregaToken();
