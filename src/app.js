@@ -9,7 +9,7 @@ const emIframe=(()=>{try{return window.top!==window.self}catch(e){return true}})
 
 function dentroDaJanela(){const t=Number(localStorage.getItem(PORTAL_LOGIN_AT)||0);if(!t)return true;return Date.now()-t<SESSAO_MAX_MS;}
 function rota(){const q=new URLSearchParams(location.search);return {page:q.get('page')||'index.html',q:q.get('q')||''};}
-function mostraLogin(msg=''){session=null;frame.removeAttribute('src');frame.hidden=true;$('internal').hidden=true;$('login').hidden=false;$('error').textContent=msg;}
+function mostraLogin(msg=''){session=null;carregado='';tentativas=0;frame.removeAttribute('src');frame.hidden=true;$('internal').hidden=true;$('login').hidden=false;$('error').textContent=msg;}
 
 async function registraWorker(){
   if(!('serviceWorker' in navigator))throw Error('Navegador sem suporte ao modo protegido.');
