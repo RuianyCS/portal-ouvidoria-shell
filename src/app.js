@@ -41,6 +41,36 @@ async function entregaToken(){
   if(alvo)alvo.postMessage({type:'portal-token',token});
 }
 
+
+// Retorno de erro do provedor (ex.: conta Google fora da whitelist => server_error).
+// Mostra o motivo, limpa a URL e deixa tentar de novo com outra conta.
+function trataErroNaUrl(){
+  try{
+    const q=new URLSearchParams(location.search);
+    const h=new URLSearchParams((location.hash||'').replace(/^#/,''));
+    const erro=q.get('error')||h.get('error');
+    if(!erro)return false;
+    const desc=(q.get('error_description')||h.get('error_description')||'').replace(/\+/g,' ');
+    const barrado=/database error|saving new user|nao autorizado|não autorizado|acesso restrito|unexpected_failure|server_error/i.test(erro+' '+desc+' '+(q.get('error_code')||''));
+    const msg=barrado
+      ?'Esta conta Google não está autorizada no Portal. Escolha outra conta (a autorizada) ou peça a liberação ao Desenvolvimento.'
+      :'Não foi possível concluir o login. Tente novamente.';
+    const limpa=new URL(location.href);limpa.search='';limpa.hash='';
+    history.replaceState({},'',limpa.pathname);
+    mostraLogin(msg);
+    if(window.opener&&window.opener!==window){
+      // popup: avisa o portal e permite fechar/tentar de novo
+      try{window.opener.postMessage({type:'portal-login-erro',mensagem:msg},'*')}catch(e){}
+    }
+    return true;
+  }catch(e){return false;}
+}
+
+window.addEventListener('message',e=>{
+  const d=e.data||{};
+  if(d.type==='portal-login-erro'&&!session)$('error').textContent=d.mensagem||'Esta conta não está autorizada.';
+});
+
 async function consomeHash(){
   const h=location.hash||'';
   if(h.indexOf('access_token=')<0)return false;
@@ -136,7 +166,7 @@ async function entra(s){
 function encerraPorTempo(){
   try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
   mostraLogin('Sessão de 8 horas encerrada. Entre novamente.');
-  auth.auth.signOut({scope:'global'}).catch(()=>{});
+  auth.auth.signOut({scope:'local'}).catch(()=>{});
 }
 
 $('enter').onclick=async()=>{
@@ -156,7 +186,9 @@ $('enter').onclick=async()=>{
 $('exit').onclick=async()=>{
   try{localStorage.removeItem(PORTAL_LOGIN_AT);}catch(e){}
   mostraLogin();
-  await auth.auth.signOut({scope:'global'});
+  // 'local': encerra só ESTA sessao. 'global' derrubava as outras pessoas que
+  // usam a mesma conta compartilhada (ex.: cs.ouvidoria.kpi) e elas caiam no login.
+  await auth.auth.signOut({scope:'local'});
 };
 
 frame.addEventListener('load',()=>{
@@ -205,7 +237,9 @@ auth.auth.onAuthStateChange((ev,s)=>{
   setTimeout(()=>entra(s),0);
 });
 
+const _erroUrl=trataErroNaUrl();
 consomeHash().then(async ok=>{
+  if(_erroUrl)return;
   if(ok&&await fechaPopupSeLogin())return;
   if(!ok)auth.auth.getSession().then(({data})=>entra(data.session));
 });
